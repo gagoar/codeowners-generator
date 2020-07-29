@@ -1,0 +1,4 @@
+# a comment
+*.ts      @moe
+# another comment
+dir3/*.ts @miny
