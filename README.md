@@ -44,7 +44,7 @@
 
 ## About The Project
 
-[CODEOWNERS](https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/about-code-owners) are automatically requested for review when someone opens a pull request that modifies code that they own. This is a great feature, but when working on monorepos ownership is shared between teams and makes difficult to maintain.
+[CODEOWNERS](https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/about-code-owners) are automatically requested for review when someone opens a pull request that modifies code that they own. This is a great feature, but when working on monorepos ownership is shared between teams and it becomes difficult to maintain.
 
 `codeowners-generator` allows you to position CODEOWNERS files anywhere in your project tree and it will take care of compiling all the files into a single generated file, that Github can understand. It also can read the maintainers field in `package.json` (`useMaintainers` option in the cli ) making easy to keep CODEOWNERS and package.json in sync.
 
