@@ -1,9 +1,6 @@
 name: codeowners-generator
 
-on:
-  pull_request:
-    paths:
-      - '*.*'
+on: push
 
 jobs:
   lint:

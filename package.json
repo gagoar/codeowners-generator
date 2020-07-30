@@ -21,12 +21,8 @@
   },
   "keywords": [
     "cli",
-    "AWS",
-    "SSM",
-    "secret",
-    "parameter store",
-    "parameter",
-    "store"
+    "CODEOWNERS",
+    "monorepo"
   ],
   "husky": {
     "hooks": {
@@ -104,24 +100,19 @@
   },
   "author": "Gago <xeroice@gmail.com>",
   "dependencies": {
-    "@types/common-tags": "^1.8.0",
-    "@types/is-valid-glob": "^1.0.0",
     "aws-sdk": "2.709.0",
-    "cli-table3": "0.6.0",
     "colors": "1.4.0",
     "commander": "5.1.0",
-    "common-tags": "^1.8.0",
+    "common-tags": "1.8.0",
     "cosmiconfig": "6.0.0",
-    "dateformat": "3.0.3",
-    "fast-glob": "^3.2.4",
-    "is-valid-glob": "^1.0.0",
-    "lodash.groupby": "^4.6.0",
-    "ora": "4.0.4",
-    "sort-paths": "^1.1.1"
+    "fast-glob": "3.2.4",
+    "is-valid-glob": "1.0.0",
+    "lodash.groupby": "4.6.0",
+    "ora": "4.0.4"
   },
   "devDependencies": {
-    "@types/dateformat": "3.0.1",
-    "@types/debug": "4.1.5",
+    "@types/common-tags": "1.8.0",
+    "@types/is-valid-glob": "1.0.0",
     "@types/jest": "26.0.3",
     "@types/lodash.groupby": "4.6.6",
     "@types/node": "13.13.12",
