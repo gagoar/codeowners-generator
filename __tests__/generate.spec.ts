@@ -26,8 +26,11 @@ const fullPathFiles = Object.keys(files).map((fileName) => path.join(mockedFullP
 type Callback = (err: Error | null, response: unknown) => void;
 describe('Generate', () => {
   beforeEach(() => {
+    sync.mockClear();
     stopAndPersist.mockClear();
+    writeFile.mockClear();
   });
+
   it('should generate a CODEOWNERS FILE', async () => {
     sync.mockReturnValue(fullPathFiles);
 
@@ -47,6 +50,53 @@ describe('Generate', () => {
       // This file has been generated with codeowners-generator (for more information https://github.com/gagoar/codeowners-generator/README.md)
       // To re-generate, run npm run codeowners-generator generate.
 
+      # Rule extracted from /full/path/dir1/CODEOWNERS
+      /full/path/dir1/*.ts @eeny @meeny
+      # Rule extracted from /full/path/dir1/CODEOWNERS
+      /full/path/dir1/README.md @miny
+      # Rule extracted from /full/path/dir2/CODEOWNERS
+      /full/path/dir2/*.ts @moe
+      # Rule extracted from /full/path/dir2/CODEOWNERS
+      /full/path/dir2/dir3/*.ts @miny
+      # Rule extracted from /full/path/dir2/dir3/CODEOWNERS
+      /full/path/dir2/dir3/*.ts @miny",
+        ],
+      ]
+    `);
+  });
+
+  it('should generate a CODEOWNERS FILE with package.maintainers field', async () => {
+    const addPackageFiles = {
+      ...files,
+      'dir5/package.json': '../__mocks__/package1.json',
+      'dir2/dir1/package.json': '../__mocks__/package2.json',
+    };
+    sync.mockReturnValueOnce([
+      ...fullPathFiles,
+      path.join(mockedFullPath, 'dir5/package.json'),
+      path.join(mockedFullPath, 'dir2/dir1/package.json'),
+    ]);
+
+    readFile.mockImplementation((file: string, callback: Callback) => {
+      const fileName = file.replace(`${mockedFullPath}/`, '') as keyof typeof addPackageFiles;
+      const content = readFileSync(path.join(__dirname, addPackageFiles[fileName]));
+      callback(null, content);
+    });
+
+    await command({ parent: {}, output: 'CODEOWNERS', useMaintainers: true });
+    expect(writeFile.mock.calls).toMatchInlineSnapshot(`
+      Array [
+        Array [
+          "CODEOWNERS",
+          "
+      // Generated File - do not edit!
+      // This file has been generated with codeowners-generator (for more information https://github.com/gagoar/codeowners-generator/README.md)
+      // To re-generate, run npm run codeowners-generator generate.
+
+      # Rule extracted from /full/path/dir5/package.json
+      /full/path/dir5/ friend@example.com other@example.com
+      # Rule extracted from /full/path/dir2/dir1/package.json
+      /full/path/dir2/dir1/ friend@example.com other@example.com
       # Rule extracted from /full/path/dir1/CODEOWNERS
       /full/path/dir1/*.ts @eeny @meeny
       # Rule extracted from /full/path/dir1/CODEOWNERS

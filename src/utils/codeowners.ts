@@ -2,7 +2,7 @@ import fs from 'fs';
 import { stripIndents } from 'common-tags';
 import { GENERATED_FILE_LEGEND, MAINTAINERS_EMAIL_PATTERN } from './constants';
 import isValidGlob from 'is-valid-glob';
-import { dirname, join, basename } from 'path';
+import { dirname, join } from 'path';
 import { promisify } from 'util';
 
 const isString = (x: unknown): x is string => {
@@ -63,8 +63,8 @@ export const loadCodeOwnerFiles = async (dirname: string, files: string[]): Prom
   return codeOwners.reduce((memo, rules) => [...memo, ...rules], []);
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 interface PACKAGE {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   maintainers: any[];
 }
 
@@ -78,8 +78,8 @@ const getOwnersFromMaintainerField = (filePath: string, content: string): ownerR
         if (isString(maintainer)) {
           const matches = maintainer.match(MAINTAINERS_EMAIL_PATTERN);
           if (matches?.length) return [...memo, matches[1]];
-        } else if (isObject(maintainer) && 'email' in maintainer) {
-          return maintainer.email;
+        } else if (isObject(maintainer) && 'email' in maintainer && isString(maintainer.email)) {
+          return [...memo, maintainer.email];
         }
 
         return memo;
@@ -93,7 +93,7 @@ const getOwnersFromMaintainerField = (filePath: string, content: string): ownerR
 
       return {
         filePath,
-        glob: basename(filePath),
+        glob: `${dirname(filePath)}/`,
         owners,
       };
     } else {

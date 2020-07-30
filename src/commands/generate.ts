@@ -22,6 +22,7 @@ export const generate: Generate = async ({ rootDir, includes, useMaintainers = f
   if (matches.length) {
     if (useMaintainers) {
       const groups = groupBy(files, (filePath) => (basename(filePath) === 'package.json' ? 'json' : 'txt')) as Partial<
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         Record<'json' | 'txt', any[]>
       >;
 

@@ -1,0 +1,7 @@
+{
+  "name": "otherPackage",
+  "maintainers": [
+    { "email": "friend@example.com" },
+    { "name": "Other Friend", "email": "other@example.com", "url": "http://other-website.com)" }
+  ]
+}
