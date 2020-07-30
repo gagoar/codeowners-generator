@@ -1,21 +1,40 @@
 import ora from 'ora';
-import path from 'path';
+import path, { basename } from 'path';
 import { sync } from 'fast-glob';
 import { Command, getGlobalOptions } from '../utils/getGlobalOptions';
-import { OUTPUT, INCLUDES, SUCCESS_SYMBOL, SHRUG_SYMBOL } from '../utils/constants';
-import { ownerRule, createOwnersFile, loadCodeOwnerFiles } from '../utils/codeowners';
+import { OUTPUT, INCLUDES, SUCCESS_SYMBOL, SHRUG_SYMBOL, INCLUDES_WITH_PACKAGE_JSON } from '../utils/constants';
+import { ownerRule, createOwnersFile, loadCodeOwnerFiles, loadOwnersFromPackage } from '../utils/codeowners';
+import groupBy from 'lodash.groupby';
 
 type Generate = (options: GenerateInput) => Promise<ownerRule[]>;
 type GenerateInput = { rootDir: string; verifyPaths?: boolean; useMaintainers?: boolean; includes?: string[] };
 
-export const generate: Generate = async ({ rootDir, includes = INCLUDES }) => {
-  const files = sync(includes, {
+export const generate: Generate = async ({ rootDir, includes, useMaintainers = false }) => {
+  const globs = !includes && useMaintainers ? INCLUDES_WITH_PACKAGE_JSON : INCLUDES;
+  const matches = sync(globs, {
     onlyFiles: true,
     absolute: true,
   });
 
-  if (files.length) {
-    const codeOwners = await loadCodeOwnerFiles(rootDir, files);
+  let codeOwners = [] as ownerRule[];
+  let files = matches as string[];
+
+  if (matches.length) {
+    if (useMaintainers) {
+      const groups = groupBy(files, (filePath) => (basename(filePath) === 'package.json' ? 'json' : 'txt')) as Partial<
+        Record<'json' | 'txt', any[]>
+      >;
+
+      if (groups.json?.length) {
+        codeOwners = [...codeOwners, ...(await loadOwnersFromPackage(rootDir, groups.json))];
+      }
+
+      files = groups.txt ?? [];
+    }
+
+    if (files.length) {
+      codeOwners = [...codeOwners, ...(await loadCodeOwnerFiles(rootDir, files))];
+    }
 
     // TODO: use Intl.Collator to naturally sort the file paths. https://stackoverflow.com/questions/57257395/how-to-get-a-sorted-file-path-list-using-node-js
     return codeOwners;

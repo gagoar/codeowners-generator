@@ -1,9 +1,15 @@
 import fs from 'fs';
 import { stripIndents } from 'common-tags';
-import { GENERATED_FILE_LEGEND } from './constants';
+import { GENERATED_FILE_LEGEND, MAINTAINERS_EMAIL_PATTERN } from './constants';
 import isValidGlob from 'is-valid-glob';
-import { dirname, join } from 'path';
+import { dirname, join, basename } from 'path';
 import { promisify } from 'util';
+
+const isString = (x: unknown): x is string => {
+  return typeof x === 'string';
+};
+
+const isObject = (x: unknown): x is Record<string, unknown> => x !== null && typeof x === 'object';
 
 const readFile = promisify(fs.readFile);
 export type ownerRule = {
@@ -55,4 +61,63 @@ export const loadCodeOwnerFiles = async (dirname: string, files: string[]): Prom
     })
   );
   return codeOwners.reduce((memo, rules) => [...memo, ...rules], []);
+};
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+interface PACKAGE {
+  maintainers: any[];
+}
+
+const getOwnersFromMaintainerField = (filePath: string, content: string): ownerRule => {
+  try {
+    const { maintainers = [] } = JSON.parse(content) as PACKAGE;
+
+    let owners = [] as string[];
+    if (maintainers.length) {
+      owners = maintainers.reduce((memo, maintainer) => {
+        if (isString(maintainer)) {
+          const matches = maintainer.match(MAINTAINERS_EMAIL_PATTERN);
+          if (matches?.length) return [...memo, matches[1]];
+        } else if (isObject(maintainer) && 'email' in maintainer) {
+          return maintainer.email;
+        }
+
+        return memo;
+      }, [] as string[]);
+
+      if (!owners.length) {
+        throw new Error(
+          `malformed maintainer entry ${maintainers} this file will be skipped. for more info https://classic.yarnpkg.com/en/docs/package-json/#toc-maintainers`
+        );
+      }
+
+      return {
+        filePath,
+        glob: basename(filePath),
+        owners,
+      };
+    } else {
+      throw new Error('No maintainers found, this file will be skipped.');
+    }
+  } catch (e) {
+    throw new Error(`Parsing ${filePath}: ${e}`);
+  }
+};
+export const loadOwnersFromPackage = async (dirname: string, files: string[]): Promise<ownerRule[]> => {
+  const codeOwners = await Promise.all(
+    files.map(async (filePath) => {
+      const rawContent = await readFile(filePath);
+
+      const content = rawContent.toString();
+
+      try {
+        return getOwnersFromMaintainerField(filePath.replace(`${dirname}/`, ''), content);
+      } catch (e) {
+        return undefined;
+      }
+    })
+  );
+
+  // https://github.com/microsoft/TypeScript/issues/30621
+  return codeOwners.filter(Boolean) as ownerRule[];
 };
