@@ -70,11 +70,15 @@ describe('Generate', () => {
       ...files,
       'dir5/package.json': '../__mocks__/package1.json',
       'dir2/dir1/package.json': '../__mocks__/package2.json',
+      'dir6/package.json': '../__mocks__/package3.json',
+      'dir7/package.json': '../__mocks__/package4.json',
     };
     sync.mockReturnValueOnce([
       ...fullPathFiles,
       path.join(mockedFullPath, 'dir5/package.json'),
       path.join(mockedFullPath, 'dir2/dir1/package.json'),
+      path.join(mockedFullPath, 'dir6/package.json'),
+      path.join(mockedFullPath, 'dir7/package.json'),
     ]);
 
     readFile.mockImplementation((file: string, callback: Callback) => {
