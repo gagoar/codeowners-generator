@@ -17,7 +17,7 @@ program
   .description('Generates a topLevel file containing the paths of all the nested CODEOWNERS')
   .option('--use-maintainers', 'For every package.json found, generate a CODEOWNERS entry using the maintainers field', false)
   .option('--output [output file]', 'The output path and name of the file', 'CODEOWNERS')
-  .option('--verify-paths', 'It will verify paths existence', false)
+  .option('--verify-paths', 'Verify each CODEOWNER path's existence', false)
   .option('--reuse-top-level-codeowners', 'It will verify paths existence', false)
   .action(generateCommand);
 
