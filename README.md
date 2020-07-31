@@ -64,7 +64,7 @@ If you wish to use `codeowners-generator` as a standalone utility:
 npm -g install codeowners-generator
 ```
 
-This will make the `alo` command available in your terminal.
+This will make the `codeowners-generator` command available in your terminal.
 
 ```sh
 codeowners-generator --help
