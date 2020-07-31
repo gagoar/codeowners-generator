@@ -1,7 +1,8 @@
 import * as fs from 'fs';
 import * as fg from 'fast-glob';
 
-import { generate, command } from '../src/commands/generate';
+import { generateCommand } from '../';
+import { generate } from '../src/commands/generate';
 import { fail, stopAndPersist } from '../__mocks__/ora';
 import path from 'path';
 
@@ -40,7 +41,7 @@ describe('Generate', () => {
       callback(null, content);
     });
 
-    await command({ parent: {}, output: 'CODEOWNERS' });
+    await generateCommand({ parent: {}, output: 'CODEOWNERS' });
     expect(writeFile.mock.calls).toMatchInlineSnapshot(`
       Array [
         Array [
@@ -87,7 +88,7 @@ describe('Generate', () => {
       callback(null, content);
     });
 
-    await command({ parent: {}, output: 'CODEOWNERS', useMaintainers: true });
+    await generateCommand({ parent: {}, output: 'CODEOWNERS', useMaintainers: true });
     expect(writeFile.mock.calls).toMatchInlineSnapshot(`
       Array [
         Array [
@@ -168,7 +169,7 @@ describe('Generate', () => {
 
   it('should not find any rules', async () => {
     sync.mockReturnValue([]);
-    await command({
+    await generateCommand({
       parent: {
         includes: ['**/NOT_STANDARD_CODEOWNERS'],
       },
@@ -203,7 +204,7 @@ describe('Generate', () => {
       const content = readFileSync(path.join(__dirname, addedMalformedFiles[fileName]));
       callback(null, content);
     });
-    await command({ parent: {}, output: 'CODEOWNERS' });
+    await generateCommand({ parent: {}, output: 'CODEOWNERS' });
     expect(fail.mock.calls).toMatchInlineSnapshot(`
       Array [
         Array [
