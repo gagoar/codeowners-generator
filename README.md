@@ -90,7 +90,7 @@ Every command accepts several options through command line or custom configurati
   codeowners-generator generate
 ```
 
-### Generate CODEOWNERS file (using maintainers field from package.json's)
+### Generate CODEOWNERS file (using `maintainers` field from `package.json`)
 
 ```sh
 codeowners-generator generate --useMaintainers
