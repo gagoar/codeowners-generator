@@ -2,7 +2,7 @@
   "name": "codeowners-generator",
   "repository": "git@github.com:gagoar/codeowners-generator.git",
   "license": "MIT",
-  "version": "1.3.3",
+  "version": "1.0.0",
   "description": " CODEOWNERS generator with mono repos",
   "main": "index.ts",
   "bin": {
