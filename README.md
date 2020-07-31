@@ -76,8 +76,6 @@ If instead you would like to add it to a package:
 npm install --only=dev codeowners-generator
 ```
 
-or
-
 <!-- USAGE EXAMPLES -->
 
 ## Usage
