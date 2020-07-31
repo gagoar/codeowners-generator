@@ -93,8 +93,7 @@ Every command accepts several options through command line or custom configurati
 ### Generate CODEOWNERS file (using maintainers field from package.json's)
 
 ```sh
-
-  codeowners-generator generate --useMaintainers
+codeowners-generator generate --useMaintainers
 ```
 
 ### Specify CODEOWNERS (in case are named differently)
