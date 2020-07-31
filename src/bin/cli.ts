@@ -8,7 +8,7 @@ program
   .name(packageJSON.name)
   .version(packageJSON.version)
   .description(packageJSON.description)
-  .option('--includes [glob patterns...]', 'The patterns that will return CODEOWNERS files', '**/CODEOWNERS')
+  .option('--includes [glob patterns...]', 'The patterns that match CODEOWNERS files', '**/CODEOWNERS')
   .option('--verbose', 'The amount of debugging information displayed', false)
   .option('--ci', 'Removes colors to avoid odd input', false);
 
