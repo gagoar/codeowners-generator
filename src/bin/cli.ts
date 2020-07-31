@@ -10,20 +10,17 @@ program
   .description(packageJSON.description)
   .option('--includes [glob patterns...]', 'The patterns that will return CODEOWNERS files', '**/CODEOWNERS')
   .option('--verbose', 'The amount of debugging information displayed', false)
-  .option('--ci', 'Removes colors to avoid odd input', false)
+  .option('--ci', 'Removes colors to avoid odd input', false);
 
 program
   .command('generate')
   .description('Generates a topLevel file containing the paths of all the nested CODEOWNERS')
-  .option('--use-maintainers', 'For every package.json found, generate a CODEOWNERS entry using the maintainers field', false)
+  .option(
+    '--use-maintainers',
+    'For every package.json found, generate a CODEOWNERS entry using the maintainers field',
+    false
+  )
   .option('--output [output file]', 'The output path and name of the file', 'CODEOWNERS')
-  .option('--verify-paths', 'Verify each CODEOWNER path's existence', false)
-  .option('--reuse-top-level-codeowners', 'It will verify paths existence', false)
   .action(generateCommand);
-
-// program
-//   .command('list')
-//   .description('list CODEOWNERS found')
-//   .action(listCommand);
 
 program.parse(process.argv);

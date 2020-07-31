@@ -96,7 +96,7 @@ Every command accepts several options through command line or custom configurati
 codeowners-generator generate --useMaintainers
 ```
 
-### Specify CODEOWNERS (in case are named differently)
+### Specify CODEOWNERS (in case the CODEOWNERS files are named differently)
 
 ```sh
   codeowners-generator generate --includes '**/CODEOWNERS'
