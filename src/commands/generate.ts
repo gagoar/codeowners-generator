@@ -2,7 +2,7 @@ import ora from 'ora';
 import path, { basename } from 'path';
 import { sync } from 'fast-glob';
 import { Command, getGlobalOptions } from '../utils/getGlobalOptions';
-import { OUTPUT, INCLUDES, SUCCESS_SYMBOL, SHRUG_SYMBOL, INCLUDES_WITH_PACKAGE_JSON } from '../utils/constants';
+import { OUTPUT, INCLUDES, SUCCESS_SYMBOL, SHRUG_SYMBOL, PACKAGE_JSON_PATTERN } from '../utils/constants';
 import { ownerRule, createOwnersFile, loadCodeOwnerFiles, loadOwnersFromPackage } from '../utils/codeowners';
 import { logger } from '../utils/debug';
 import groupBy from 'lodash.groupby';
@@ -13,13 +13,16 @@ const debug = logger('generate');
 type Generate = (options: GenerateInput) => Promise<ownerRule[]>;
 type GenerateInput = { rootDir: string; verifyPaths?: boolean; useMaintainers?: boolean; includes?: string[] };
 
-export const generate: Generate = async ({ rootDir, includes, useMaintainers = false }) => {
-  const globs = !includes && useMaintainers ? INCLUDES_WITH_PACKAGE_JSON : INCLUDES;
+export const generate: Generate = async ({ rootDir, includes = INCLUDES, useMaintainers = false }) => {
+  const globs = useMaintainers ? [...includes, ...PACKAGE_JSON_PATTERN] : includes;
+
   debug('provided globs:', globs);
 
   const matches = sync(globs, {
     onlyFiles: true,
   });
+
+  debug('files found:', matches);
 
   const ig = ignore().add(await getPatternsFromIgnoreFiles());
 
@@ -65,6 +68,7 @@ export const command = async (command: CommandGenerate): Promise<void> => {
   const { output, verifyPaths, useMaintainers } = command;
 
   const loader = ora('generating codeowners...').start();
+  debug('Options:', { ...globalOptions, useMaintainers, output });
 
   try {
     const ownerRules = await generate({ rootDir: __dirname, verifyPaths, useMaintainers, ...globalOptions });

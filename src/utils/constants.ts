@@ -2,9 +2,9 @@ export const SUCCESS_SYMBOL = '💫';
 export const SHRUG_SYMBOL = '¯\\_(ツ)_/¯';
 export const OUTPUT = 'CODEOWNERS';
 
-export const INCLUDES = ['**/CODEOWNERS', '!./CODEOWNERS'];
+export const INCLUDES = ['**/CODEOWNERS', '!CODEOWNERS'];
 
-export const INCLUDES_WITH_PACKAGE_JSON = [...INCLUDES, '**/package.json'];
+export const PACKAGE_JSON_PATTERN = ['**/package.json'];
 
 export const MAINTAINERS_EMAIL_PATTERN = /<(.+)>/;
 

@@ -19,7 +19,10 @@ const files = {
   'dir1/CODEOWNERS': '../__mocks__/CODEOWNERS1',
   'dir2/CODEOWNERS': '../__mocks__/CODEOWNERS2',
   'dir2/dir3/CODEOWNERS': '../__mocks__/CODEOWNERS3',
+  'node_modules/dir1/CODEOWNERS': '../__mocks__/CODEOWNERS5',
 };
+
+const withGitIgnore = { ...files, '.gitignore': '../__mocks__/gitignore1' };
 
 type Callback = (err: Error | null, response: unknown) => void;
 describe('Generate', () => {
@@ -33,8 +36,8 @@ describe('Generate', () => {
     sync.mockReturnValueOnce(Object.keys(files));
 
     sync.mockReturnValueOnce(['.gitignore']);
-    readFile.mockImplementation((file: keyof typeof files, callback: Callback) => {
-      const content = readFileSync(path.join(__dirname, files[file]));
+    readFile.mockImplementation((file: keyof typeof withGitIgnore, callback: Callback) => {
+      const content = readFileSync(path.join(__dirname, withGitIgnore[file]));
       callback(null, content);
     });
 
@@ -64,7 +67,7 @@ describe('Generate', () => {
   });
 
   it('should generate a CODEOWNERS FILE with package.maintainers field', async () => {
-    const addPackageFiles = {
+    const packageFiles = {
       ...files,
       'dir5/package.json': '../__mocks__/package1.json',
       'dir2/dir1/package.json': '../__mocks__/package2.json',
@@ -73,7 +76,7 @@ describe('Generate', () => {
     };
 
     sync.mockReturnValueOnce([
-      ...Object.keys(addPackageFiles),
+      ...Object.keys(packageFiles),
       'dir5/package.json',
       'dir2/dir1/package.json',
       'dir6/package.json',
@@ -81,8 +84,9 @@ describe('Generate', () => {
     ]);
 
     sync.mockReturnValueOnce(['.gitignore']);
-    readFile.mockImplementation((file: keyof typeof addPackageFiles, callback: Callback) => {
-      const content = readFileSync(path.join(__dirname, addPackageFiles[file]));
+    const withAddedPackageFiles = { ...packageFiles, ...withGitIgnore };
+    readFile.mockImplementation((file: keyof typeof withAddedPackageFiles, callback: Callback) => {
+      const content = readFileSync(path.join(__dirname, withAddedPackageFiles[file]));
       callback(null, content);
     });
 
@@ -124,7 +128,7 @@ describe('Generate', () => {
 
     const filesWithIgnore = {
       ...files,
-      '.gitignore': '../__mocks__/gitIgnore1',
+      ...withGitIgnore,
     };
     readFile.mockImplementation((file: keyof typeof filesWithIgnore, callback: Callback) => {
       const content = readFileSync(path.join(__dirname, filesWithIgnore[file]));

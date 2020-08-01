@@ -3,14 +3,13 @@
 import program from 'commander';
 import { generateCommand } from '../commands';
 import packageJSON from '../../package.json';
+import { INCLUDES } from '../utils/constants';
 
 program
   .name(packageJSON.name)
   .version(packageJSON.version)
   .description(packageJSON.description)
-  .option('--includes [glob patterns...]', 'The patterns that match CODEOWNERS files', '**/CODEOWNERS')
-  .option('--verbose', 'The amount of debugging information displayed', false)
-  .option('--ci', 'Removes colors to avoid odd input', false);
+  .option('--includes [glob patterns...]', `The patterns that match CODEOWNERS files, by default ${INCLUDES}`);
 
 program
   .command('generate')
