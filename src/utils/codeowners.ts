@@ -3,7 +3,7 @@ import { stripIndents } from 'common-tags';
 import { GENERATED_FILE_LEGEND, MAINTAINERS_EMAIL_PATTERN } from './constants';
 import isValidGlob from 'is-valid-glob';
 import { dirname, join } from 'path';
-import { promisify } from 'util';
+import { readContent } from './readContent';
 
 const isString = (x: unknown): x is string => {
   return typeof x === 'string';
@@ -11,7 +11,6 @@ const isString = (x: unknown): x is string => {
 
 const isObject = (x: unknown): x is Record<string, unknown> => x !== null && typeof x === 'object';
 
-const readFile = promisify(fs.readFile);
 export type ownerRule = {
   filePath: string;
   owners: string[];
@@ -53,9 +52,7 @@ const createMatcherCodeownersRule = (filePath: string, rule: string) => {
 export const loadCodeOwnerFiles = async (dirname: string, files: string[]): Promise<ownerRule[]> => {
   const codeOwners = await Promise.all(
     files.map(async (filePath) => {
-      const rawContent = await readFile(filePath);
-
-      const content = rawContent.toString();
+      const content = await readContent(filePath);
 
       return parseCodeOwner(filePath.replace(`${dirname}/`, ''), content);
     })
@@ -106,9 +103,7 @@ const getOwnersFromMaintainerField = (filePath: string, content: string): ownerR
 export const loadOwnersFromPackage = async (dirname: string, files: string[]): Promise<ownerRule[]> => {
   const codeOwners = await Promise.all(
     files.map(async (filePath) => {
-      const rawContent = await readFile(filePath);
-
-      const content = rawContent.toString();
+      const content = await readContent(filePath);
 
       try {
         return getOwnersFromMaintainerField(filePath.replace(`${dirname}/`, ''), content);

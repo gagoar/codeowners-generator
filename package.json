@@ -6,7 +6,7 @@
   "description": " CODEOWNERS generator with mono repos",
   "main": "index.ts",
   "bin": {
-    "alo": "dist/index.js"
+    "codeowners-generator": "dist/index.js"
   },
   "scripts": {
     "precommit": "lint-staged",
@@ -100,18 +100,19 @@
   },
   "author": "Gago <xeroice@gmail.com>",
   "dependencies": {
-    "aws-sdk": "2.709.0",
-    "colors": "1.4.0",
     "commander": "5.1.0",
     "common-tags": "1.8.0",
     "cosmiconfig": "6.0.0",
+    "debug": "4.1.1",
     "fast-glob": "3.2.4",
+    "ignore": "^5.1.8",
     "is-valid-glob": "1.0.0",
     "lodash.groupby": "4.6.0",
     "ora": "4.0.4"
   },
   "devDependencies": {
     "@types/common-tags": "1.8.0",
+    "@types/debug": "4.1.5",
     "@types/is-valid-glob": "1.0.0",
     "@types/jest": "26.0.3",
     "@types/lodash.groupby": "4.6.6",

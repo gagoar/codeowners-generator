@@ -21,9 +21,6 @@ const files = {
   'dir2/dir3/CODEOWNERS': '../__mocks__/CODEOWNERS3',
 };
 
-const mockedFullPath = '/full/path';
-const fullPathFiles = Object.keys(files).map((fileName) => path.join(mockedFullPath, fileName));
-
 type Callback = (err: Error | null, response: unknown) => void;
 describe('Generate', () => {
   beforeEach(() => {
@@ -33,11 +30,11 @@ describe('Generate', () => {
   });
 
   it('should generate a CODEOWNERS FILE', async () => {
-    sync.mockReturnValue(fullPathFiles);
+    sync.mockReturnValueOnce(Object.keys(files));
 
-    readFile.mockImplementation((file: string, callback: Callback) => {
-      const fileName = file.replace(`${mockedFullPath}/`, '') as keyof typeof files;
-      const content = readFileSync(path.join(__dirname, files[fileName]));
+    sync.mockReturnValueOnce(['.gitignore']);
+    readFile.mockImplementation((file: keyof typeof files, callback: Callback) => {
+      const content = readFileSync(path.join(__dirname, files[file]));
       callback(null, content);
     });
 
@@ -47,20 +44,20 @@ describe('Generate', () => {
         Array [
           "CODEOWNERS",
           "
-      // Generated File - do not edit!
-      // This file has been generated with codeowners-generator (for more information https://github.com/gagoar/codeowners-generator/README.md)
-      // To re-generate, run npm run codeowners-generator generate.
+      # Generated File - do not edit!
+      # This file has been generated with codeowners-generator (for more information https://github.com/gagoar/codeowners-generator/README.md)
+      # To re-generate, run npm run codeowners-generator generate.
 
-      # Rule extracted from /full/path/dir1/CODEOWNERS
-      /full/path/dir1/*.ts @eeny @meeny
-      # Rule extracted from /full/path/dir1/CODEOWNERS
-      /full/path/dir1/README.md @miny
-      # Rule extracted from /full/path/dir2/CODEOWNERS
-      /full/path/dir2/*.ts @moe
-      # Rule extracted from /full/path/dir2/CODEOWNERS
-      /full/path/dir2/dir3/*.ts @miny
-      # Rule extracted from /full/path/dir2/dir3/CODEOWNERS
-      /full/path/dir2/dir3/*.ts @miny",
+      # Rule extracted from dir1/CODEOWNERS
+      dir1/*.ts @eeny @meeny
+      # Rule extracted from dir1/CODEOWNERS
+      dir1/README.md @miny
+      # Rule extracted from dir2/CODEOWNERS
+      dir2/*.ts @moe
+      # Rule extracted from dir2/CODEOWNERS
+      dir2/dir3/*.ts @miny
+      # Rule extracted from dir2/dir3/CODEOWNERS
+      dir2/dir3/*.ts @miny",
         ],
       ]
     `);
@@ -74,17 +71,18 @@ describe('Generate', () => {
       'dir6/package.json': '../__mocks__/package3.json',
       'dir7/package.json': '../__mocks__/package4.json',
     };
+
     sync.mockReturnValueOnce([
-      ...fullPathFiles,
-      path.join(mockedFullPath, 'dir5/package.json'),
-      path.join(mockedFullPath, 'dir2/dir1/package.json'),
-      path.join(mockedFullPath, 'dir6/package.json'),
-      path.join(mockedFullPath, 'dir7/package.json'),
+      ...Object.keys(addPackageFiles),
+      'dir5/package.json',
+      'dir2/dir1/package.json',
+      'dir6/package.json',
+      'dir7/package.json',
     ]);
 
-    readFile.mockImplementation((file: string, callback: Callback) => {
-      const fileName = file.replace(`${mockedFullPath}/`, '') as keyof typeof addPackageFiles;
-      const content = readFileSync(path.join(__dirname, addPackageFiles[fileName]));
+    sync.mockReturnValueOnce(['.gitignore']);
+    readFile.mockImplementation((file: keyof typeof addPackageFiles, callback: Callback) => {
+      const content = readFileSync(path.join(__dirname, addPackageFiles[file]));
       callback(null, content);
     });
 
@@ -94,33 +92,42 @@ describe('Generate', () => {
         Array [
           "CODEOWNERS",
           "
-      // Generated File - do not edit!
-      // This file has been generated with codeowners-generator (for more information https://github.com/gagoar/codeowners-generator/README.md)
-      // To re-generate, run npm run codeowners-generator generate.
+      # Generated File - do not edit!
+      # This file has been generated with codeowners-generator (for more information https://github.com/gagoar/codeowners-generator/README.md)
+      # To re-generate, run npm run codeowners-generator generate.
 
-      # Rule extracted from /full/path/dir5/package.json
-      /full/path/dir5/ friend@example.com other@example.com
-      # Rule extracted from /full/path/dir2/dir1/package.json
-      /full/path/dir2/dir1/ friend@example.com other@example.com
-      # Rule extracted from /full/path/dir1/CODEOWNERS
-      /full/path/dir1/*.ts @eeny @meeny
-      # Rule extracted from /full/path/dir1/CODEOWNERS
-      /full/path/dir1/README.md @miny
-      # Rule extracted from /full/path/dir2/CODEOWNERS
-      /full/path/dir2/*.ts @moe
-      # Rule extracted from /full/path/dir2/CODEOWNERS
-      /full/path/dir2/dir3/*.ts @miny
-      # Rule extracted from /full/path/dir2/dir3/CODEOWNERS
-      /full/path/dir2/dir3/*.ts @miny",
+      # Rule extracted from dir5/package.json
+      dir5/ friend@example.com other@example.com
+      # Rule extracted from dir2/dir1/package.json
+      dir2/dir1/ friend@example.com other@example.com
+      # Rule extracted from dir5/package.json
+      dir5/ friend@example.com other@example.com
+      # Rule extracted from dir2/dir1/package.json
+      dir2/dir1/ friend@example.com other@example.com
+      # Rule extracted from dir1/CODEOWNERS
+      dir1/*.ts @eeny @meeny
+      # Rule extracted from dir1/CODEOWNERS
+      dir1/README.md @miny
+      # Rule extracted from dir2/CODEOWNERS
+      dir2/*.ts @moe
+      # Rule extracted from dir2/CODEOWNERS
+      dir2/dir3/*.ts @miny
+      # Rule extracted from dir2/dir3/CODEOWNERS
+      dir2/dir3/*.ts @miny",
         ],
       ]
     `);
   });
   it('should return rules', async () => {
-    sync.mockReturnValue(fullPathFiles);
-    readFile.mockImplementation((file: string, callback: Callback) => {
-      const fileName = file.replace(`${mockedFullPath}/`, '') as keyof typeof files;
-      const content = readFileSync(path.join(__dirname, files[fileName]));
+    sync.mockReturnValueOnce(Object.keys(files));
+    sync.mockReturnValueOnce(['.gitignore']);
+
+    const filesWithIgnore = {
+      ...files,
+      '.gitignore': '../__mocks__/gitIgnore1',
+    };
+    readFile.mockImplementation((file: keyof typeof filesWithIgnore, callback: Callback) => {
+      const content = readFileSync(path.join(__dirname, filesWithIgnore[file]));
       callback(null, content);
     });
 
@@ -128,37 +135,37 @@ describe('Generate', () => {
     expect(response).toMatchInlineSnapshot(`
       Array [
         Object {
-          "filePath": "/full/path/dir1/CODEOWNERS",
-          "glob": "/full/path/dir1/*.ts",
+          "filePath": "dir1/CODEOWNERS",
+          "glob": "dir1/*.ts",
           "owners": Array [
             "@eeny",
             "@meeny",
           ],
         },
         Object {
-          "filePath": "/full/path/dir1/CODEOWNERS",
-          "glob": "/full/path/dir1/README.md",
+          "filePath": "dir1/CODEOWNERS",
+          "glob": "dir1/README.md",
           "owners": Array [
             "@miny",
           ],
         },
         Object {
-          "filePath": "/full/path/dir2/CODEOWNERS",
-          "glob": "/full/path/dir2/*.ts",
+          "filePath": "dir2/CODEOWNERS",
+          "glob": "dir2/*.ts",
           "owners": Array [
             "@moe",
           ],
         },
         Object {
-          "filePath": "/full/path/dir2/CODEOWNERS",
-          "glob": "/full/path/dir2/dir3/*.ts",
+          "filePath": "dir2/CODEOWNERS",
+          "glob": "dir2/dir3/*.ts",
           "owners": Array [
             "@miny",
           ],
         },
         Object {
-          "filePath": "/full/path/dir2/dir3/CODEOWNERS",
-          "glob": "/full/path/dir2/dir3/*.ts",
+          "filePath": "dir2/dir3/CODEOWNERS",
+          "glob": "dir2/dir3/*.ts",
           "owners": Array [
             "@miny",
           ],
@@ -197,18 +204,17 @@ describe('Generate', () => {
       ...files,
       'dir4/CODEOWNERS': '../__mocks__/CODEOWNERS4',
     };
-    sync.mockReturnValue([...fullPathFiles, path.join(mockedFullPath, 'dir4/CODEOWNERS')]);
+    sync.mockReturnValue([...Object.keys(files), 'dir4/CODEOWNERS']);
 
-    readFile.mockImplementation((file: string, callback: Callback) => {
-      const fileName = file.replace(`${mockedFullPath}/`, '') as keyof typeof addedMalformedFiles;
-      const content = readFileSync(path.join(__dirname, addedMalformedFiles[fileName]));
+    readFile.mockImplementation((file: keyof typeof addedMalformedFiles, callback: Callback) => {
+      const content = readFileSync(path.join(__dirname, addedMalformedFiles[file]));
       callback(null, content);
     });
     await generateCommand({ parent: {}, output: 'CODEOWNERS' });
     expect(fail.mock.calls).toMatchInlineSnapshot(`
       Array [
         Array [
-          "We encountered an error: Error: *.ts in /full/path/dir4/CODEOWNERS can not be parsed",
+          "We encountered an error: Error: *.ts in dir4/CODEOWNERS can not be parsed",
         ],
       ]
     `);

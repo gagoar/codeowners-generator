@@ -4,21 +4,30 @@ import { sync } from 'fast-glob';
 import { Command, getGlobalOptions } from '../utils/getGlobalOptions';
 import { OUTPUT, INCLUDES, SUCCESS_SYMBOL, SHRUG_SYMBOL, INCLUDES_WITH_PACKAGE_JSON } from '../utils/constants';
 import { ownerRule, createOwnersFile, loadCodeOwnerFiles, loadOwnersFromPackage } from '../utils/codeowners';
+import { logger } from '../utils/debug';
 import groupBy from 'lodash.groupby';
+import ignore from 'ignore';
+import { getPatternsFromIgnoreFiles } from '../utils/getPatternsFromIgnoreFiles';
 
+const debug = logger('generate');
 type Generate = (options: GenerateInput) => Promise<ownerRule[]>;
 type GenerateInput = { rootDir: string; verifyPaths?: boolean; useMaintainers?: boolean; includes?: string[] };
 
 export const generate: Generate = async ({ rootDir, includes, useMaintainers = false }) => {
   const globs = !includes && useMaintainers ? INCLUDES_WITH_PACKAGE_JSON : INCLUDES;
+  debug('provided globs:', globs);
+
   const matches = sync(globs, {
     onlyFiles: true,
-    absolute: true,
   });
 
-  let codeOwners = [] as ownerRule[];
-  let files = matches as string[];
+  const ig = ignore().add(await getPatternsFromIgnoreFiles());
 
+  let files = matches.filter(ig.createFilter());
+
+  debug('matches after filtering ignore patterns:', files);
+
+  let codeOwners = [] as ownerRule[];
   if (matches.length) {
     if (useMaintainers) {
       const groups = groupBy(files, (filePath) => (basename(filePath) === 'package.json' ? 'json' : 'txt')) as Partial<
