@@ -34,7 +34,7 @@ describe('Generate', () => {
     existsSync.mockRestore();
   });
 
-  it.only('should generate a CODEOWNERS file (re-using codeowners content)', async () => {
+  it('should generate a CODEOWNERS file (re-using codeowners content)', async () => {
     sync.mockReturnValueOnce(Object.keys(files));
 
     sync.mockReturnValueOnce(['.gitignore']);
