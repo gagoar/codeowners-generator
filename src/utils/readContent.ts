@@ -3,11 +3,10 @@ import { promisify } from 'util';
 import { logger } from './debug';
 
 const debug = logger('readFile');
-
+const readFile = promisify(fs.readFile);
 export const readContent = async (filePath: string): Promise<string> => {
-  debug(`reading ${filePath}`);
+  debug('reading...', filePath);
 
-  const readFile = promisify(fs.readFile);
   const rawContent = await readFile(filePath);
 
   const content = rawContent.toString();

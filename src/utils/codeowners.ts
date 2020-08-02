@@ -1,6 +1,6 @@
 import fs from 'fs';
 import { stripIndents } from 'common-tags';
-import { GENERATED_FILE_LEGEND, MAINTAINERS_EMAIL_PATTERN } from './constants';
+import { MAINTAINERS_EMAIL_PATTERN, contentTemplate } from './constants';
 import isValidGlob from 'is-valid-glob';
 import { dirname, join } from 'path';
 import { readContent } from './readContent';
@@ -24,7 +24,7 @@ export const createOwnersFile = (outputFile: string, ownerRules: ownerRule[]): v
     `
   );
 
-  fs.writeFileSync(outputFile, [GENERATED_FILE_LEGEND, ...content].join('\n'));
+  fs.writeFileSync(outputFile, contentTemplate(content.join('\n')));
 };
 
 const parseCodeOwner = (filePath: string, codeOwnerContent: string): ownerRule[] => {

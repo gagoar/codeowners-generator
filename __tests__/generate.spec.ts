@@ -46,10 +46,10 @@ describe('Generate', () => {
       Array [
         Array [
           "CODEOWNERS",
-          "
-      # Generated File - do not edit!
-      # This file has been generated with codeowners-generator (for more information https://github.com/gagoar/codeowners-generator/README.md)
-      # To re-generate, run npm run codeowners-generator generate.
+          "#################################### Generated content - do not edit! ####################################
+
+      # This block has been generated with codeowners-generator (for more information https://github.com/gagoar/codeowners-generator/README.md)
+      # To re-generate, run npm run codeowners-generator generate. Don't worry, the content outside this block will be kept.
 
       # Rule extracted from dir1/CODEOWNERS
       dir1/*.ts @eeny @meeny
@@ -60,7 +60,9 @@ describe('Generate', () => {
       # Rule extracted from dir2/CODEOWNERS
       dir2/dir3/*.ts @miny
       # Rule extracted from dir2/dir3/CODEOWNERS
-      dir2/dir3/*.ts @miny",
+      dir2/dir3/*.ts @miny
+
+      #################################### Generated content - do not edit! ####################################",
         ],
       ]
     `);
@@ -95,10 +97,10 @@ describe('Generate', () => {
       Array [
         Array [
           "CODEOWNERS",
-          "
-      # Generated File - do not edit!
-      # This file has been generated with codeowners-generator (for more information https://github.com/gagoar/codeowners-generator/README.md)
-      # To re-generate, run npm run codeowners-generator generate.
+          "#################################### Generated content - do not edit! ####################################
+
+      # This block has been generated with codeowners-generator (for more information https://github.com/gagoar/codeowners-generator/README.md)
+      # To re-generate, run npm run codeowners-generator generate. Don't worry, the content outside this block will be kept.
 
       # Rule extracted from dir5/package.json
       dir5/ friend@example.com other@example.com
@@ -117,7 +119,9 @@ describe('Generate', () => {
       # Rule extracted from dir2/CODEOWNERS
       dir2/dir3/*.ts @miny
       # Rule extracted from dir2/dir3/CODEOWNERS
-      dir2/dir3/*.ts @miny",
+      dir2/dir3/*.ts @miny
+
+      #################################### Generated content - do not edit! ####################################",
         ],
       ]
     `);
