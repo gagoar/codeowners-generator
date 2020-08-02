@@ -1,9 +1,12 @@
 import fs from 'fs';
 import { stripIndents } from 'common-tags';
-import { MAINTAINERS_EMAIL_PATTERN, contentTemplate } from './constants';
+import { MAINTAINERS_EMAIL_PATTERN, contentTemplate, CONTENT_MARK } from './constants';
 import isValidGlob from 'is-valid-glob';
 import { dirname, join } from 'path';
 import { readContent } from './readContent';
+import { logger } from '../utils/debug';
+
+const debug = logger('utils/codeowners');
 
 const isString = (x: unknown): x is string => {
   return typeof x === 'string';
@@ -16,7 +19,31 @@ export type ownerRule = {
   owners: string[];
   glob: string;
 };
-export const createOwnersFile = (outputFile: string, ownerRules: ownerRule[]): void => {
+
+const filterGeneratedContent = (content: string) => {
+  const lines = content.split('\n');
+
+  let skip = false;
+  return lines
+    .reduce((memo, line) => {
+      if (line === CONTENT_MARK) {
+        skip = !skip;
+        return memo;
+      }
+
+      return skip ? memo : [...memo, line];
+    }, [] as string[])
+    .join('\n');
+};
+export const createOwnersFile = async (outputFile: string, ownerRules: ownerRule[]): Promise<void> => {
+  let originalContent = '';
+
+  if (fs.existsSync(outputFile)) {
+    debug(`CODEOWNERS ${outputFile} exists, extracting content before overwriting`);
+    originalContent = await readContent(outputFile);
+    originalContent = filterGeneratedContent(originalContent);
+  }
+
   const content = ownerRules.map(
     (rule) => stripIndents` 
     # Rule extracted from ${rule.filePath}
@@ -24,7 +51,7 @@ export const createOwnersFile = (outputFile: string, ownerRules: ownerRule[]): v
     `
   );
 
-  fs.writeFileSync(outputFile, contentTemplate(content.join('\n')));
+  fs.writeFileSync(outputFile, contentTemplate(content.join('\n'), originalContent));
 };
 
 const parseCodeOwner = (filePath: string, codeOwnerContent: string): ownerRule[] => {
