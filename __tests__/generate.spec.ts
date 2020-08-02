@@ -45,7 +45,9 @@ describe('Generate', () => {
     };
     existsSync.mockReturnValue(true);
     readFile.mockImplementation((file: keyof typeof withPopulatedCodeownersFile, callback: Callback) => {
-      const content = readFileSync(path.join(__dirname, withPopulatedCodeownersFile[file]));
+      const fullPath = path.join(__dirname, withPopulatedCodeownersFile[file]);
+      console.warn('mocked file', file, fullPath);
+      const content = readFileSync(fullPath);
       callback(null, content);
     });
 
