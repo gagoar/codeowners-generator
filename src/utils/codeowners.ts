@@ -39,7 +39,7 @@ export const createOwnersFile = async (outputFile: string, ownerRules: ownerRule
   let originalContent = '';
 
   if (fs.existsSync(outputFile)) {
-    debug(`CODEOWNERS ${outputFile} exists, extracting content before overwriting`);
+    debug(`output file ${outputFile} exists, extracting content before overwriting`);
     originalContent = await readContent(outputFile);
     originalContent = filterGeneratedContent(originalContent);
   }
