@@ -17,7 +17,7 @@ export const CONTENT_LEGEND = stripIndents`
 # To re-generate, run npm run codeowners-generator generate. Don't worry, the content outside this block will be kept. 
 `;
 export const contentTemplate = (content: string): string => stripIndents`
-${OPEN_CONTENT_MARK}\n
+${OPEN_CONTENT_MARK}
 ${CONTENT_LEGEND}\n
 ${content}\n
 ${CLOSE_CONTENT_MARK}\n

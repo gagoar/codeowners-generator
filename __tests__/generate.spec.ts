@@ -47,7 +47,6 @@ describe('Generate', () => {
         Array [
           "CODEOWNERS",
           "#################################### Generated content - do not edit! ####################################
-
       # This block has been generated with codeowners-generator (for more information https://github.com/gagoar/codeowners-generator/README.md)
       # To re-generate, run npm run codeowners-generator generate. Don't worry, the content outside this block will be kept.
 
@@ -98,7 +97,6 @@ describe('Generate', () => {
         Array [
           "CODEOWNERS",
           "#################################### Generated content - do not edit! ####################################
-
       # This block has been generated with codeowners-generator (for more information https://github.com/gagoar/codeowners-generator/README.md)
       # To re-generate, run npm run codeowners-generator generate. Don't worry, the content outside this block will be kept.
 
