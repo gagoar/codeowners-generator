@@ -1,0 +1,11 @@
+# We are already using CODEOWNERS and we don't want to lose the content of this file.
+scripts/ @myOrg/infraTeam
+# We might wanna keep an eye on something else, like yml files and workflows.
+.github/workflows/ @myOrg/infraTeam
+
+#################################### Generated content - do not edit! ####################################
+# This block has been generated with codeowners-generator (for more information https://github.com/gagoar/codeowners-generator/README.md)
+# To re-generate, run npm run codeowners-generator generate. Don't worry, the content outside this block will be kept.
+# Rule extracted from dir1/CODEOWNERS
+dir1/*.ts @eeny @meeny
+#################################### Generated content - do not edit! ####################################

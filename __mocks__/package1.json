@@ -1,0 +1,8 @@
+{
+  "name": "randomPackage",
+  "maintainers": [
+    "Your Friend <friend@example.com> (http://friends-website.com)",
+    "Other Friend <other@example.com> (http://other-website.com)",
+    "Friend without an email (http://other-website.com)"
+  ]
+}
