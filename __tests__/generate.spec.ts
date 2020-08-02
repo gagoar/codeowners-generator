@@ -23,7 +23,7 @@ const files = {
   'node_modules/dir1/CODEOWNERS': '../__mocks__/CODEOWNERS5',
 };
 
-const withGitIgnore = { ...files, '.gitignore': '../__mocks__/gitignore1' };
+const withGitIgnore = { ...files, '.gitignore': '../__mocks__/gitIgnore1' };
 
 type Callback = (err: Error | null, response: unknown) => void;
 describe('Generate', () => {
