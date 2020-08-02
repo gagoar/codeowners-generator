@@ -14,6 +14,7 @@ const { readFileSync } = jest.requireActual('fs');
 const sync = fg.sync as jest.Mock<unknown>;
 const readFile = (fs.readFile as unknown) as jest.Mock<unknown>;
 const writeFile = (fs.writeFileSync as unknown) as jest.Mock<unknown>;
+const existsSync = (fs.existsSync as unknown) as jest.Mock<unknown>;
 
 const files = {
   'dir1/CODEOWNERS': '../__mocks__/CODEOWNERS1',
@@ -30,12 +31,60 @@ describe('Generate', () => {
     sync.mockClear();
     stopAndPersist.mockClear();
     writeFile.mockClear();
+    existsSync.mockRestore();
   });
 
+  it('should generate a CODEOWNERS file (re-using codeowners content)', async () => {
+    sync.mockReturnValueOnce(Object.keys(files));
+
+    sync.mockReturnValueOnce(['.gitignore']);
+
+    const withPopulatedCodeownersFile = {
+      ...withGitIgnore,
+      CODEOWNERS: '../__mocks__/CODEOWNERS_POPULATED_OUTPUT',
+    };
+    existsSync.mockReturnValue(true);
+    readFile.mockImplementation((file: keyof typeof withPopulatedCodeownersFile, callback: Callback) => {
+      const content = readFileSync(path.join(__dirname, withPopulatedCodeownersFile[file]));
+      callback(null, content);
+    });
+
+    await generateCommand({ parent: {}, output: 'CODEOWNERS' });
+    expect(writeFile.mock.calls).toMatchInlineSnapshot(`
+      Array [
+        Array [
+          "CODEOWNERS",
+          "# We are already using CODEOWNERS and we don't want to lose the content of this file.
+      scripts/ @myOrg/infraTeam
+      # We might wanna keep an eye on something else, like yml files and workflows.
+      .github/workflows/ @myOrg/infraTeam
+
+
+      #################################### Generated content - do not edit! ####################################
+      # This block has been generated with codeowners-generator (for more information https://github.com/gagoar/codeowners-generator/README.md)
+      # To re-generate, run npm run codeowners-generator generate. Don't worry, the content outside this block will be kept.
+
+      # Rule extracted from dir1/CODEOWNERS
+      dir1/*.ts @eeny @meeny
+      # Rule extracted from dir1/CODEOWNERS
+      dir1/README.md @miny
+      # Rule extracted from dir2/CODEOWNERS
+      dir2/*.ts @moe
+      # Rule extracted from dir2/CODEOWNERS
+      dir2/dir3/*.ts @miny
+      # Rule extracted from dir2/dir3/CODEOWNERS
+      dir2/dir3/*.ts @miny
+
+      #################################### Generated content - do not edit! ####################################",
+        ],
+      ]
+    `);
+  });
   it('should generate a CODEOWNERS FILE', async () => {
     sync.mockReturnValueOnce(Object.keys(files));
 
     sync.mockReturnValueOnce(['.gitignore']);
+
     readFile.mockImplementation((file: keyof typeof withGitIgnore, callback: Callback) => {
       const content = readFileSync(path.join(__dirname, withGitIgnore[file]));
       callback(null, content);

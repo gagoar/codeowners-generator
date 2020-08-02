@@ -76,7 +76,7 @@ export const command = async (command: CommandGenerate): Promise<void> => {
     const outputFile = output || path.join(__dirname, OUTPUT);
 
     if (ownerRules.length) {
-      createOwnersFile(outputFile, ownerRules);
+      await createOwnersFile(outputFile, ownerRules);
 
       loader.stopAndPersist({ text: `CODEOWNERS file was created! location: ${outputFile}`, symbol: SUCCESS_SYMBOL });
     } else {
