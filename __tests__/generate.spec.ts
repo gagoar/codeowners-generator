@@ -66,7 +66,7 @@ describe('Generate', () => {
 
       #################################### Generated content - do not edit! ####################################
       # This block has been generated with codeowners-generator (for more information https://github.com/gagoar/codeowners-generator/README.md)
-      # To re-generate, run npm run codeowners-generator generate. Don't worry, the content outside this block will be kept.
+      # To re-generate, run \`yarn codeowners-generator generate\`. Don't worry, the content outside this block will be kept.
 
       # Rule extracted from dir1/CODEOWNERS
       dir1/*.ts @eeny @meeny
@@ -100,7 +100,7 @@ describe('Generate', () => {
           "CODEOWNERS",
           "#################################### Generated content - do not edit! ####################################
       # This block has been generated with codeowners-generator (for more information https://github.com/gagoar/codeowners-generator/README.md)
-      # To re-generate, run npm run codeowners-generator generate. Don't worry, the content outside this block will be kept.
+      # To re-generate, run \`npm run codeowners-generator generate\`. Don't worry, the content outside this block will be kept.
 
       # Rule extracted from dir1/CODEOWNERS
       dir1/*.ts @eeny @meeny
@@ -159,7 +159,7 @@ describe('Generate', () => {
     expect(writeFile.mock.calls[0][1]).toMatchInlineSnapshot(`
       "#################################### Generated content - do not edit! ####################################
       # This block has been generated with codeowners-generator (for more information https://github.com/gagoar/codeowners-generator/README.md)
-      # To re-generate, run npm run codeowners-generator generate. Don't worry, the content outside this block will be kept.
+      # To re-generate, run \`npm run codeowners-generator generate\`. Don't worry, the content outside this block will be kept.
 
       # Rule extracted from dir5/package.json
       dir5/ friend@example.com other@example.com
@@ -211,7 +211,7 @@ describe('Generate', () => {
     expect(writeFile.mock.calls[0][1]).toMatchInlineSnapshot(`
       "#################################### Generated content - do not edit! ####################################
       # This block has been generated with codeowners-generator (for more information https://github.com/gagoar/codeowners-generator/README.md)
-      # To re-generate, run npm run codeowners-generator generate. Don't worry, the content outside this block will be kept.
+      # To re-generate, run \`npm run codeowners-generator generate\`. Don't worry, the content outside this block will be kept.
 
       # Rule extracted from dir5/package.json
       dir5/ friend@example.com other@example.com

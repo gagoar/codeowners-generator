@@ -108,9 +108,9 @@ You can configure `codeowners-generator` from several places:
 
 ### CLI options
 
-- **includes** (`--includes`): The glob used to find CODEOWNERS files in the repo `default: **/CODEOWNERS`a
+- **includes** (`--includes`): The glob used to find CODEOWNERS files in the repo `default: ['**/CODEOWNERS', '!CODEOWNERS', '!node_modules']`
 
-- **useMaintainers** (`--useMaintainers`): It will use `maintainers` field from package.json to generate codeowners `default: **/package.json`
+- **useMaintainers** (`--useMaintainers`): It will use `maintainers` field from package.json to generate codeowners, by default it will use `**/package.json`
 
 for more details you can invoke:
 

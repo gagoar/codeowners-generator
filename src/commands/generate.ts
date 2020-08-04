@@ -13,8 +13,14 @@ const debug = logger('generate');
 type Generate = (options: GenerateInput) => Promise<ownerRule[]>;
 type GenerateInput = { rootDir: string; verifyPaths?: boolean; useMaintainers?: boolean; includes?: string[] };
 
-export const generate: Generate = async ({ rootDir, includes = INCLUDES, useMaintainers = false }) => {
-  const globs = useMaintainers ? [...includes, ...PACKAGE_JSON_PATTERN] : includes;
+export const generate: Generate = async ({ rootDir, includes, useMaintainers = false }) => {
+  debug('input:', rootDir, includes, useMaintainers);
+
+  const includePatterns = includes && includes.length ? includes : INCLUDES;
+
+  debug('includePatterns:', includePatterns);
+
+  const globs = useMaintainers ? [...includePatterns, ...PACKAGE_JSON_PATTERN] : includePatterns;
 
   debug('provided globs:', globs);
 
@@ -68,6 +74,7 @@ export const command = async (command: CommandGenerate): Promise<void> => {
   const { output, verifyPaths, useMaintainers } = command;
 
   const loader = ora('generating codeowners...').start();
+
   debug('Options:', { ...globalOptions, useMaintainers, output });
 
   try {

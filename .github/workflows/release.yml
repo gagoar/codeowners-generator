@@ -2,18 +2,24 @@ on:
   push:
     # Sequence of patterns matched against refs/tags
     tags:
-      - "v*" # Push events to matching v*, i.e. v1.0, v20.15.10
+      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
 
 name: Create Release
 
 jobs:
-  build:
-    name: Create Release
+  release:
+    name: Release a new version
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - uses: actions/checkout@master
+      - name: Use Node.js 12.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+      - name: Install dependencies
+        run: |
+          npm install
       - name: Create Release
         run: npm run release
         env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }} # this token is generated via npm token create
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
