@@ -1,15 +1,14 @@
 import { getCustomConfiguration } from './getCustomConfiguration';
-
 interface GlobalOptions {
-  includes?: string[];
+  includes: string[];
 }
 export interface Command {
-  parent: GlobalOptions;
+  parent: Partial<GlobalOptions>;
 }
 
 const makeArray = (field: unknown) => (field && Array.isArray(field) ? field : [field].filter(Boolean));
 
-const getOptionsFromCommand = (command: Command): Partial<GlobalOptions> => {
+const getOptionsFromCommand = (command: Command): GlobalOptions => {
   const {
     parent: { includes },
   } = command;
