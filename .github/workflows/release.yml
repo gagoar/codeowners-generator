@@ -7,7 +7,7 @@ on:
 name: Create Release
 
 jobs:
-  test:
+  release:
     name: Release a new version
     runs-on: ubuntu-latest
     steps:
