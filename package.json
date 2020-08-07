@@ -108,7 +108,7 @@
     "ignore": "^5.1.8",
     "is-valid-glob": "1.0.0",
     "lodash.groupby": "4.6.0",
-    "ora": "4.0.4"
+    "ora": "5.0.0"
   },
   "devDependencies": {
     "@types/common-tags": "1.8.0",
