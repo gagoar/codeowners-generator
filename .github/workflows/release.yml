@@ -11,15 +11,18 @@ jobs:
     name: Release a new version
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
-      - name: Use Node.js 12.x
-        uses: actions/setup-node@v1
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
         with:
-          node-version: 12.x
-      - name: Install dependencies
-        run: |
-          npm install
-      - name: Create Release
-        run: npm run release
+          node-version: '12.x'
+          registry-url: 'https://registry.npmjs.org'
+      - run: npm install
+      - run: npm release
         env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - uses: actions/setup-node@v1
+        with:
+          registry-url: 'https://npm.pkg.github.com'
+      - run: npm release
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
