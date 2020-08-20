@@ -135,7 +135,7 @@
     "prettier-eslint": "11.0.0",
     "prettier-eslint-cli": "5.0.0",
     "pretty-quick": "2.0.1",
-    "ts-jest": "26.1.4",
+    "ts-jest": "26.2.0",
     "ts-node": "8.10.2",
     "tslib": "2.0.1",
     "typescript": "3.9.7",
