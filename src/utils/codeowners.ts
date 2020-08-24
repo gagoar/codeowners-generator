@@ -90,15 +90,24 @@ export const loadCodeOwnerFiles = async (dirname: string, files: string[]): Prom
 interface PACKAGE {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   maintainers: any[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  contributors: any[];
+  author?: Record<string, string>;
 }
 
 const getOwnersFromMaintainerField = (filePath: string, content: string): ownerRule => {
   try {
-    const { maintainers = [] } = JSON.parse(content) as PACKAGE;
+    const { maintainers = [], contributors = [], author } = JSON.parse(content) as PACKAGE;
+
+    const packageOwners = [...maintainers, ...contributors];
+
+    if (author) {
+      packageOwners.unshift(author);
+    }
 
     let owners = [] as string[];
-    if (maintainers.length) {
-      owners = maintainers.reduce((memo, maintainer) => {
+    if (packageOwners.length) {
+      owners = packageOwners.reduce((memo, maintainer) => {
         if (isString(maintainer)) {
           const matches = maintainer.match(MAINTAINERS_EMAIL_PATTERN);
           if (matches?.length) return [...memo, matches[1]];
