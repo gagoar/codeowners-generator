@@ -119,6 +119,63 @@ describe('Generate', () => {
     `);
   });
 
+  it('should generate a CODEOWNERS FILE with package.contributors and package.author field using cosmiconfig', async () => {
+    search.mockImplementationOnce(() =>
+      Promise.resolve({
+        isEmpty: false,
+        filepath: '/some/package.json',
+        config: {
+          output: 'CODEOWNERS',
+          useMaintainers: true,
+        },
+      })
+    );
+
+    const packageFiles = {
+      ...files,
+      'dir5/package.json': '../__mocks__/package1.json',
+      'dir2/dir1/package.json': '../__mocks__/package2.json',
+      'dir6/package.json': '../__mocks__/package3.json',
+      'dir7/package.json': '../__mocks__/package4.json',
+      'dir8/package.json': '../__mocks__/package5.json',
+    };
+
+    sync.mockReturnValueOnce(Object.keys(packageFiles));
+
+    sync.mockReturnValueOnce(['.gitignore']);
+    const withAddedPackageFiles = { ...packageFiles, ...withGitIgnore };
+    readFile.mockImplementation((file: keyof typeof withAddedPackageFiles, callback: Callback) => {
+      const content = readFileSync(path.join(__dirname, withAddedPackageFiles[file]));
+      callback(null, content);
+    });
+
+    await generateCommand({ parent: {} });
+    expect(search).toHaveBeenCalled();
+    expect(writeFile.mock.calls[0][1]).toMatchInlineSnapshot(`
+      "#################################### Generated content - do not edit! ####################################
+      # This block has been generated with codeowners-generator (for more information https://github.com/gagoar/codeowners-generator/README.md)
+      # To re-generate, run \`npm run codeowners-generator generate\`. Don't worry, the content outside this block will be kept.
+
+      # Rule extracted from dir5/package.json
+      dir5/ friend@example.com other@example.com
+      # Rule extracted from dir2/dir1/package.json
+      dir2/dir1/ friend@example.com other@example.com
+      # Rule extracted from dir8/package.json
+      dir8/ gbuilder@builder.com other.friend@domain.com
+      # Rule extracted from dir1/CODEOWNERS
+      dir1/*.ts @eeny @meeny
+      # Rule extracted from dir1/CODEOWNERS
+      dir1/README.md @miny
+      # Rule extracted from dir2/CODEOWNERS
+      dir2/*.ts @moe
+      # Rule extracted from dir2/CODEOWNERS
+      dir2/dir3/*.ts @miny
+      # Rule extracted from dir2/dir3/CODEOWNERS
+      dir2/dir3/*.ts @miny
+
+      #################################### Generated content - do not edit! ####################################"
+    `);
+  });
   it('should generate a CODEOWNERS FILE with package.maintainers field using cosmiconfig', async () => {
     search.mockImplementationOnce(() =>
       Promise.resolve({
@@ -139,13 +196,7 @@ describe('Generate', () => {
       'dir7/package.json': '../__mocks__/package4.json',
     };
 
-    sync.mockReturnValueOnce([
-      ...Object.keys(packageFiles),
-      'dir5/package.json',
-      'dir2/dir1/package.json',
-      'dir6/package.json',
-      'dir7/package.json',
-    ]);
+    sync.mockReturnValueOnce(Object.keys(packageFiles));
 
     sync.mockReturnValueOnce(['.gitignore']);
     const withAddedPackageFiles = { ...packageFiles, ...withGitIgnore };
@@ -161,10 +212,6 @@ describe('Generate', () => {
       # This block has been generated with codeowners-generator (for more information https://github.com/gagoar/codeowners-generator/README.md)
       # To re-generate, run \`npm run codeowners-generator generate\`. Don't worry, the content outside this block will be kept.
 
-      # Rule extracted from dir5/package.json
-      dir5/ friend@example.com other@example.com
-      # Rule extracted from dir2/dir1/package.json
-      dir2/dir1/ friend@example.com other@example.com
       # Rule extracted from dir5/package.json
       dir5/ friend@example.com other@example.com
       # Rule extracted from dir2/dir1/package.json

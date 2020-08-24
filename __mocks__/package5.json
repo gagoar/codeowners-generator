@@ -1,0 +1,5 @@
+{
+  "name": "otherPackage",
+  "contributors": [{ "name": "Other Friend", "email": "other.friend@domain.com" }],
+  "author": { "name": "George the Builder", "email": "gbuilder@builder.com" }
+}
