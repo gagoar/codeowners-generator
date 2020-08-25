@@ -176,7 +176,7 @@ describe('Generate', () => {
       #################################### Generated content - do not edit! ####################################"
     `);
   });
-  it('should generate a CODEOWNERS FILE with package.maintainers field using cosmiconfig', async () => {
+  it.only('should generate a CODEOWNERS FILE with package.maintainers field using cosmiconfig', async () => {
     search.mockImplementationOnce(() =>
       Promise.resolve({
         isEmpty: false,
@@ -184,6 +184,7 @@ describe('Generate', () => {
         config: {
           output: 'CODEOWNERS',
           useMaintainers: true,
+          includes: ['dir1/*', 'dir2/*', 'dir5/*', 'dir6/*', 'dir7/*'],
         },
       })
     );

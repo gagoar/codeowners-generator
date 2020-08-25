@@ -3,8 +3,10 @@ import { SUCCESS_SYMBOL } from './constants';
 import ora from 'ora';
 
 import packageJSON from '../../package.json';
+import { logger } from './debug';
 
-export type CustomConfig = Record<string, string | string[]>;
+const debug = logger('customConfiguration');
+export type CustomConfig = { includes?: string[]; useMaintainers?: boolean; output?: string };
 
 export const getCustomConfiguration = async (): Promise<CustomConfig | void> => {
   const loader = ora('Loading available configuration').start();
@@ -14,7 +16,8 @@ export const getCustomConfiguration = async (): Promise<CustomConfig | void> => 
     const result = await explorer.search();
     if (result?.config && typeof result.config === 'object') {
       loader.stopAndPersist({ text: `Custom configuration found in ${result.filepath}`, symbol: SUCCESS_SYMBOL });
-      return result.config;
+      debug('custom configuration found:', result);
+      return result.config as CustomConfig;
     } else {
       loader.stopAndPersist({ text: 'No custom configuration found', symbol: SUCCESS_SYMBOL });
       return {};
@@ -22,4 +25,4 @@ export const getCustomConfiguration = async (): Promise<CustomConfig | void> => 
   } catch (e) {
     loader.fail('We found an error looking for custom configuration, we will use cli options if provided');
   }
-}
+};

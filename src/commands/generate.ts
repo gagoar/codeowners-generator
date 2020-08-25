@@ -66,6 +66,7 @@ interface CommandGenerate extends Command {
   output?: string;
   verifyPaths?: boolean;
   useMaintainers?: boolean;
+  includes?: string[];
 }
 
 export const command = async (command: CommandGenerate): Promise<void> => {
