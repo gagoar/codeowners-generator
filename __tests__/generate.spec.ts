@@ -176,7 +176,7 @@ describe('Generate', () => {
       #################################### Generated content - do not edit! ####################################"
     `);
   });
-  it.only('should generate a CODEOWNERS FILE with package.maintainers field using cosmiconfig', async () => {
+  it('should generate a CODEOWNERS FILE with package.maintainers field using cosmiconfig', async () => {
     search.mockImplementationOnce(() =>
       Promise.resolve({
         isEmpty: false,
