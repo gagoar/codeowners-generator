@@ -17,7 +17,11 @@
 <p align="center">
 
   <h3 align="center">codeowners-generator</h3>
-
+  <p align="center">
+     <a href="https://github.com/gagoar/use-herald-action">
+        <img src="images/logo.png" alt="Logo" width="128" height="128">
+    </a>
+  </p>
   <p align="center">
     ✨ use codeowners anywhere in your monorepo 🛠️
     <br />
