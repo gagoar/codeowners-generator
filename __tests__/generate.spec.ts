@@ -184,6 +184,7 @@ describe('Generate', () => {
         config: {
           output: 'CODEOWNERS',
           useMaintainers: true,
+          includes: ['dir1/*', 'dir2/*', 'dir5/*', 'dir6/*', 'dir7/*'],
         },
       })
     );
