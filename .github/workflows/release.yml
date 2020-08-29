@@ -18,11 +18,11 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
       - run: npm install
       - run: npm run build
-      - name: publishing to NPM
+      - name: Publishing to NPM
       - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-      - name: publishing to Github
+      - name: Publishing to Github
       - run: npm config set registry https://npm.pkg.github.com
       - run: npm publish
         env:
