@@ -116,7 +116,7 @@
     "@types/is-valid-glob": "1.0.0",
     "@types/jest": "26.0.14",
     "@types/lodash.groupby": "4.6.6",
-    "@types/node": "13.13.20",
+    "@types/node": "13.13.21",
     "@typescript-eslint/eslint-plugin": "4.1.1",
     "@typescript-eslint/parser": "4.1.1",
     "@zeit/ncc": "0.22.3",
