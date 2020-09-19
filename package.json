@@ -103,7 +103,7 @@
     "commander": "6.1.0",
     "common-tags": "1.8.0",
     "cosmiconfig": "7.0.0",
-    "debug": "4.1.1",
+    "debug": "4.2.0",
     "fast-glob": "3.2.4",
     "ignore": "^5.1.8",
     "is-valid-glob": "1.0.0",
