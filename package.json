@@ -125,7 +125,7 @@
     "bufferutil": "4.0.1",
     "canvas": "2.6.1",
     "eslint": "7.9.0",
-    "eslint-config-prettier": "6.11.0",
+    "eslint-config-prettier": "6.12.0",
     "husky": "4.3.0",
     "jest": "26.4.2",
     "jest-mock-process": "1.4.0",
