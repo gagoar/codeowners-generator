@@ -72,7 +72,9 @@ interface CommandGenerate extends Command {
 export const command = async (command: CommandGenerate): Promise<void> => {
   const globalOptions = await getGlobalOptions(command);
 
-  const { output, verifyPaths, useMaintainers } = command;
+  const { verifyPaths, useMaintainers } = command;
+
+  const { output = globalOptions.output || path.join(__dirname, OUTPUT) } = command;
 
   const loader = ora('generating codeowners...').start();
 
@@ -81,12 +83,10 @@ export const command = async (command: CommandGenerate): Promise<void> => {
   try {
     const ownerRules = await generate({ rootDir: __dirname, verifyPaths, useMaintainers, ...globalOptions });
 
-    const outputFile = output || path.join(__dirname, OUTPUT);
-
     if (ownerRules.length) {
-      await createOwnersFile(outputFile, ownerRules);
+      await createOwnersFile(output, ownerRules);
 
-      loader.stopAndPersist({ text: `CODEOWNERS file was created! location: ${outputFile}`, symbol: SUCCESS_SYMBOL });
+      loader.stopAndPersist({ text: `CODEOWNERS file was created! location: ${output}`, symbol: SUCCESS_SYMBOL });
     } else {
       const includes = globalOptions.includes?.length ? globalOptions.includes : INCLUDES;
       loader.stopAndPersist({
