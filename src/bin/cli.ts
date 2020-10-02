@@ -19,7 +19,7 @@ program
     'For every package.json found, generate a CODEOWNERS entry using the maintainers field',
     false
   )
-  .option('--output [output file]', 'The output path and name of the file', 'CODEOWNERS')
+  .option('--output [output file]', 'The output path and name of the file, (default: CODEOWNERS)')
   .action(generateCommand);
 
 program.parse(process.argv);
