@@ -1,5 +1,5 @@
 import ora from 'ora';
-import path, { basename } from 'path';
+import { basename } from 'path';
 import { sync } from 'fast-glob';
 import { Command, getGlobalOptions } from '../utils/getGlobalOptions';
 import { OUTPUT, INCLUDES, SUCCESS_SYMBOL, SHRUG_SYMBOL, PACKAGE_JSON_PATTERN } from '../utils/constants';
@@ -74,7 +74,7 @@ export const command = async (command: CommandGenerate): Promise<void> => {
 
   const { verifyPaths, useMaintainers } = command;
 
-  const { output = globalOptions.output || path.join(__dirname, OUTPUT) } = command;
+  const { output = globalOptions.output || OUTPUT } = command;
 
   const loader = ora('generating codeowners...').start();
 
