@@ -1,6 +1,9 @@
 name: codeowners-generator
 
-on: [pull_request]
+on:
+  push:
+    branches:
+      - master
 
 jobs:
   lint:
