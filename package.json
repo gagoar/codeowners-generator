@@ -100,7 +100,7 @@
   },
   "author": "Gago <xeroice@gmail.com>",
   "dependencies": {
-    "commander": "6.1.0",
+    "commander": "6.2.0",
     "common-tags": "1.8.0",
     "cosmiconfig": "7.0.0",
     "debug": "4.2.0",
