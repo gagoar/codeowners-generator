@@ -42,7 +42,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
   build:
-    name: Run build
+    name: Run build-cli
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
@@ -51,7 +51,6 @@ jobs:
         with:
           node-version: 12.x
       - name: Install dependencies
-        run: |
-          npm install
+        run: npm install
       - name: Build
-        run: npm run build
+        run: npm run build-cli
