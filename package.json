@@ -4,17 +4,18 @@
   "license": "MIT",
   "version": "1.2.5",
   "description": " CODEOWNERS generator with mono repos",
-  "main": "index.ts",
+  "main": "build/index.js",
   "bin": {
     "codeowners-generator": "dist/index.js"
   },
   "scripts": {
     "precommit": "lint-staged",
     "test": "jest",
-    "build": "ncc build ./src/bin/cli.ts",
+    "build-cli": "ncc build ./src/bin/cli.ts",
+    "build": "ncc build ./index.ts -o build",
     "lint": "eslint src/* --ext .ts",
     "version": "auto-changelog -p && git add CHANGELOG.md",
-    "release": "npm run build && npm publish"
+    "release": "npm run build && npm run build-cli && npm publish"
   },
   "engines": {
     "node": ">10.0.0"
