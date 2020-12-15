@@ -121,7 +121,7 @@
     "@typescript-eslint/eslint-plugin": "4.8.1",
     "@typescript-eslint/parser": "4.8.1",
     "@zeit/ncc": "0.22.3",
-    "ajv-keywords": "3.5.2",
+    "ajv-keywords": "4.0.0",
     "auto-changelog": "2.2.1",
     "bufferutil": "4.0.2",
     "canvas": "2.6.1",
