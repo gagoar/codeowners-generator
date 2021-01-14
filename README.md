@@ -114,6 +114,8 @@ You can configure `codeowners-generator` from several places:
 
 - **includes** (`--includes`): The glob used to find CODEOWNERS files in the repo `default: ['**/CODEOWNERS', '!CODEOWNERS', '!node_modules']`
 
+- **output** (`--output`): The output path and name of the file `default: CODEOWNERS`
+
 - **useMaintainers** (`--useMaintainers`): It will use `maintainers` field from package.json to generate codeowners, by default it will use `**/package.json`
 
 for more details you can invoke:
@@ -131,6 +133,7 @@ You can also define custom configuration in your package:
   "name": "my-package",
   "codeowners-generator": {
     "includes": ["**/CODEOWNERS"],
+    "output": ".github/CODEOWNERS",
     "useMaintainers": true
   },
   "scripts": {
