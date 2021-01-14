@@ -2,3 +2,6 @@
 *.ts      @moe
 # another comment
 dir3/*.ts @miny
+**/*.md @meeny 
+# the line below refers to any directory named dir4/
+dir4/ @eeny

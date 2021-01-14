@@ -1,3 +1,6 @@
 # some comment
 *.ts      @eeny @meeny
+# the line below refers to any file named README.md
 README.md @miny
+# the line below refers to a file in the root
+/README.md @moe
