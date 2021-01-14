@@ -5,6 +5,7 @@ import isValidGlob from 'is-valid-glob';
 import { dirname, join } from 'path';
 import { readContent } from './readContent';
 import { logger } from '../utils/debug';
+import parseGlob from 'parse-glob';
 
 const debug = logger('utils/codeowners');
 
@@ -63,17 +64,61 @@ const parseCodeOwner = (filePath: string, codeOwnerContent: string): ownerRule[]
   return filteredRules.map((rule) => ({ filePath, ...createMatcherCodeownersRule(filePath, rule) }));
 };
 
+const translateGlob = (glob: string) => {
+  const parsedGlob = parseGlob(glob);
+
+  // These controls are based on the Github CODEOWNERS syntax documentation
+  // https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/about-code-owners#codeowners-syntax
+  // as well as the gitignore pattern format which it extends
+  // https://git-scm.com/docs/gitignore#_pattern_format
+
+  if (parsedGlob.is.negated) {
+    throw new Error('Rule cannot contain negations');
+  }
+  if (parsedGlob.is.braces) {
+    throw new Error('Rule cannot contain braces');
+  }
+  if (glob.startsWith('\\#')) {
+    throw new Error('Rule cannot start with escaped #');
+  }
+  if (parsedGlob.is.glob && /\[(?:.-.)+\]/.test(parsedGlob.glob)) {
+    throw new Error('Rule cannot contain brackets');
+  }
+
+  if (parsedGlob.base === '.' && !parsedGlob.is.globstar) {
+    // For patterns that are might be globs but not globstars, they match
+    // they match files in any folder.
+    // This matches e.g. `*`, `*.ts`, `something.ts`, and `something`.
+    return join('**', glob);
+  }
+
+  if (parsedGlob.base !== '.' && !parsedGlob.is.glob && glob.indexOf('/') === glob.length - 1) {
+    // For patterns that are not globs and contain one slash trailing slash (e.g. `apps/`),
+    // they match directories in any folder.
+    return join('**', glob);
+  }
+
+  return glob;
+};
+
 const createMatcherCodeownersRule = (filePath: string, rule: string) => {
   const parts = rule.split(/\s+/);
   const [glob, ...owners] = parts;
 
-  if (owners.length && isValidGlob(glob)) {
+  try {
+    if (owners.length === 0) {
+      throw new Error('Rule is missing an owner');
+    }
+    if (!isValidGlob(glob)) {
+      throw new Error('Rule glob pattern is not valid');
+    }
+
     return {
-      glob: join(dirname(filePath), glob),
+      glob: join(dirname(filePath), translateGlob(glob)),
       owners,
     };
-  } else {
-    throw new Error(`${rule} in ${filePath} can not be parsed`);
+  } catch (error) {
+    throw new Error(`${rule} in ${filePath}: ${error instanceof Error ? error.message : error}`);
   }
 };
 export const loadCodeOwnerFiles = async (dirname: string, files: string[]): Promise<ownerRule[]> => {

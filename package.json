@@ -109,7 +109,8 @@
     "ignore": "^5.1.8",
     "is-valid-glob": "1.0.0",
     "lodash.groupby": "4.6.0",
-    "ora": "5.1.0"
+    "ora": "5.1.0",
+    "parse-glob": "^3.0.4"
   },
   "devDependencies": {
     "@types/common-tags": "1.8.0",
@@ -118,6 +119,7 @@
     "@types/jest": "26.0.16",
     "@types/lodash.groupby": "4.6.6",
     "@types/node": "13.13.34",
+    "@types/parse-glob": "^3.0.29",
     "@typescript-eslint/eslint-plugin": "4.8.1",
     "@typescript-eslint/parser": "4.8.1",
     "@zeit/ncc": "0.22.3",
