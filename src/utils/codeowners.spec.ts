@@ -136,11 +136,35 @@ describe('Codeowners', () => {
       ]);
     });
 
-    it('should append static directory patterns to the given directory', async () => {
+    it('should append static directory patterns (dir2/dir3/) to the given directory', async () => {
       readContentMock.mockResolvedValueOnce('dir2/dir3/ @miny');
 
       await expect(loadCodeOwnerFiles('/root', ['/root/dir1/CODEOWNERS'])).resolves.toEqual([
         { filePath: 'dir1/CODEOWNERS', glob: 'dir1/dir2/dir3/', owners: ['@miny'] },
+      ]);
+    });
+
+    it('should append patterns starting with a slash (/) to the given directory', async () => {
+      readContentMock.mockResolvedValueOnce('/ @moe');
+
+      await expect(loadCodeOwnerFiles('/root', ['/root/dir1/CODEOWNERS'])).resolves.toEqual([
+        { filePath: 'dir1/CODEOWNERS', glob: 'dir1/', owners: ['@moe'] },
+      ]);
+    });
+
+    it('should append file patterns starting with a slash (/asd/asd.ts) to the given directory', async () => {
+      readContentMock.mockResolvedValueOnce('/asd/asd.ts @eeny');
+
+      await expect(loadCodeOwnerFiles('/root', ['/root/dir1/CODEOWNERS'])).resolves.toEqual([
+        { filePath: 'dir1/CODEOWNERS', glob: 'dir1/asd/asd.ts', owners: ['@eeny'] },
+      ]);
+    });
+
+    it('should append glob patterns starting with a slash (/**/asd.ts) to the given directory', async () => {
+      readContentMock.mockResolvedValueOnce('/**/asd.ts @meeny');
+
+      await expect(loadCodeOwnerFiles('/root', ['/root/dir1/CODEOWNERS'])).resolves.toEqual([
+        { filePath: 'dir1/CODEOWNERS', glob: 'dir1/**/asd.ts', owners: ['@meeny'] },
       ]);
     });
   });

@@ -85,6 +85,11 @@ const translateGlob = (glob: string) => {
     throw new Error('Rule cannot contain brackets');
   }
 
+  if (glob.startsWith('/')) {
+    // Patterns starting with a slash should match based on the current dir.
+    return glob;
+  }
+
   if (parsedGlob.base === '.' && !parsedGlob.is.globstar) {
     // For patterns that are might be globs but not globstars, they match
     // they match files in any folder.
