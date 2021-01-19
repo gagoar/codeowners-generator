@@ -12,7 +12,7 @@ describe('Codeowners', () => {
       readContentMock.mockResolvedValueOnce('*.ts');
 
       await expect(loadCodeOwnerFiles('/root', ['/root/dir1/CODEOWNERS'])).rejects.toThrowError(
-        '*.ts in dir1/CODEOWNERS: Rule is missing an owner'
+        '*.ts in dir1/CODEOWNERS can not be parsed'
       );
     });
 
@@ -20,7 +20,7 @@ describe('Codeowners', () => {
       readContentMock.mockResolvedValueOnce(' @eeny');
 
       await expect(loadCodeOwnerFiles('/root', ['/root/dir1/CODEOWNERS'])).rejects.toThrowError(
-        ' @eeny in dir1/CODEOWNERS: Rule glob pattern is not valid'
+        ' @eeny in dir1/CODEOWNERS can not be parsed'
       );
     });
 
@@ -28,7 +28,7 @@ describe('Codeowners', () => {
       readContentMock.mockResolvedValueOnce('!*.ts @eeny');
 
       await expect(loadCodeOwnerFiles('/root', ['/root/dir1/CODEOWNERS'])).rejects.toThrowError(
-        '!*.ts @eeny in dir1/CODEOWNERS: Rule cannot contain negations'
+        '!*.ts @eeny in dir1/CODEOWNERS can not be parsed'
       );
     });
 
@@ -36,7 +36,7 @@ describe('Codeowners', () => {
       readContentMock.mockResolvedValueOnce('[a-z].ts @meeny');
 
       await expect(loadCodeOwnerFiles('/root', ['/root/dir1/CODEOWNERS'])).rejects.toThrowError(
-        '[a-z].ts @meeny in dir1/CODEOWNERS: Rule cannot contain brackets'
+        '[a-z].ts @meeny in dir1/CODEOWNERS can not be parsed'
       );
     });
 
@@ -44,7 +44,7 @@ describe('Codeowners', () => {
       readContentMock.mockResolvedValueOnce('*.{txt,md} @miny');
 
       await expect(loadCodeOwnerFiles('/root', ['/root/dir1/CODEOWNERS'])).rejects.toThrowError(
-        '*.{txt,md} @miny in dir1/CODEOWNERS: Rule cannot contain braces'
+        '*.{txt,md} @miny in dir1/CODEOWNERS can not be parsed'
       );
     });
 
@@ -52,7 +52,7 @@ describe('Codeowners', () => {
       readContentMock.mockResolvedValueOnce('\\#fileName @moe');
 
       await expect(loadCodeOwnerFiles('/root', ['/root/dir1/CODEOWNERS'])).rejects.toThrowError(
-        '#fileName @moe in dir1/CODEOWNERS: Rule cannot start with escaped #'
+        '\\#fileName @moe in dir1/CODEOWNERS can not be parsed'
       );
     });
 

@@ -107,7 +107,6 @@
     "debug": "4.3.1",
     "fast-glob": "3.2.4",
     "ignore": "^5.1.8",
-    "is-valid-glob": "1.0.0",
     "lodash.groupby": "4.6.0",
     "ora": "5.1.0",
     "parse-glob": "^3.0.4"
@@ -115,7 +114,6 @@
   "devDependencies": {
     "@types/common-tags": "1.8.0",
     "@types/debug": "4.1.5",
-    "@types/is-valid-glob": "1.0.0",
     "@types/jest": "26.0.16",
     "@types/lodash.groupby": "4.6.6",
     "@types/node": "13.13.34",

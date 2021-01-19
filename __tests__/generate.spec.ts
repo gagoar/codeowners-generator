@@ -479,7 +479,7 @@ describe('Generate', () => {
     await generateCommand({ parent: {}, output: 'CODEOWNERS' });
     expect(fail.mock.calls[0]).toMatchInlineSnapshot(`
       Array [
-        "We encountered an error: Error: *.ts in dir4/CODEOWNERS: Rule is missing an owner",
+        "We encountered an error: Error: *.ts in dir4/CODEOWNERS can not be parsed",
       ]
     `);
   });
