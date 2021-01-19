@@ -64,6 +64,22 @@ describe('Codeowners', () => {
       ]);
     });
 
+    it('should match * to all file under the given directory and its subdirectories', async () => {
+      readContentMock.mockResolvedValueOnce('* @meeny');
+
+      await expect(loadCodeOwnerFiles('/root', ['/root/dir1/CODEOWNERS'])).resolves.toEqual([
+        { filePath: 'dir1/CODEOWNERS', glob: 'dir1/**/*', owners: ['@meeny'] },
+      ]);
+    });
+
+    it('should only match /* to all file in the root of the given directory and not its subdirectories', async () => {
+      readContentMock.mockResolvedValueOnce('/* @miny');
+
+      await expect(loadCodeOwnerFiles('/root', ['/root/dir1/CODEOWNERS'])).resolves.toEqual([
+        { filePath: 'dir1/CODEOWNERS', glob: 'dir1/*', owners: ['@miny'] },
+      ]);
+    });
+
     it('should match *.ts to all ts file under the given directory and its subdirectories', async () => {
       readContentMock.mockResolvedValueOnce('*.ts @meeny');
 

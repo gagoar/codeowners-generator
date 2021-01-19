@@ -71,6 +71,8 @@ describe('Generate', () => {
       # Rule extracted from dir1/CODEOWNERS
       dir1/**/*.ts @eeny @meeny
       # Rule extracted from dir1/CODEOWNERS
+      dir1/*.ts @miny
+      # Rule extracted from dir1/CODEOWNERS
       dir1/**/README.md @miny
       # Rule extracted from dir1/CODEOWNERS
       dir1/README.md @moe
@@ -110,6 +112,8 @@ describe('Generate', () => {
 
       # Rule extracted from dir1/CODEOWNERS
       dir1/**/*.ts @eeny @meeny
+      # Rule extracted from dir1/CODEOWNERS
+      dir1/*.ts @miny
       # Rule extracted from dir1/CODEOWNERS
       dir1/**/README.md @miny
       # Rule extracted from dir1/CODEOWNERS
@@ -177,6 +181,8 @@ describe('Generate', () => {
       # Rule extracted from dir1/CODEOWNERS
       dir1/**/*.ts @eeny @meeny
       # Rule extracted from dir1/CODEOWNERS
+      dir1/*.ts @miny
+      # Rule extracted from dir1/CODEOWNERS
       dir1/**/README.md @miny
       # Rule extracted from dir1/CODEOWNERS
       dir1/README.md @moe
@@ -238,6 +244,8 @@ describe('Generate', () => {
       # Rule extracted from dir1/CODEOWNERS
       dir1/**/*.ts @eeny @meeny
       # Rule extracted from dir1/CODEOWNERS
+      dir1/*.ts @miny
+      # Rule extracted from dir1/CODEOWNERS
       dir1/**/README.md @miny
       # Rule extracted from dir1/CODEOWNERS
       dir1/README.md @moe
@@ -296,6 +304,8 @@ describe('Generate', () => {
       # Rule extracted from dir1/CODEOWNERS
       dir1/**/*.ts @eeny @meeny
       # Rule extracted from dir1/CODEOWNERS
+      dir1/*.ts @miny
+      # Rule extracted from dir1/CODEOWNERS
       dir1/**/README.md @miny
       # Rule extracted from dir1/CODEOWNERS
       dir1/README.md @moe
@@ -335,6 +345,13 @@ describe('Generate', () => {
           "owners": Array [
             "@eeny",
             "@meeny",
+          ],
+        },
+        Object {
+          "filePath": "dir1/CODEOWNERS",
+          "glob": "dir1/*.ts",
+          "owners": Array [
+            "@miny",
           ],
         },
         Object {
