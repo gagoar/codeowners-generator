@@ -57,10 +57,10 @@ describe('Codeowners', () => {
     });
 
     it('should allow rules with escaped brackets', async () => {
-      readContentMock.mockResolvedValueOnce('[*].ts @eeny');
+      readContentMock.mockResolvedValueOnce('\\[*\\].ts @eeny');
 
       await expect(loadCodeOwnerFiles('/root', ['/root/dir1/CODEOWNERS'])).resolves.toEqual([
-        { filePath: 'dir1/CODEOWNERS', glob: 'dir1/**/[*].ts', owners: ['@eeny'] },
+        { filePath: 'dir1/CODEOWNERS', glob: 'dir1/**/\\[*\\].ts', owners: ['@eeny'] },
       ]);
     });
 
