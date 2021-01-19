@@ -7,6 +7,7 @@ export const INCLUDES = ['**/CODEOWNERS', '!CODEOWNERS', '!node_modules'];
 export const PACKAGE_JSON_PATTERN = ['**/package.json'];
 export const MAINTAINERS_EMAIL_PATTERN = /<(.+)>/;
 export const IGNORE_FILES_PATTERN = ['.gitignore'];
+export const CHARACTER_RANGE_PATTERN = /\[(?:.-.)+\]/;
 
 export const CONTENT_MARK = stripIndents`
 #################################### Generated content - do not edit! ####################################

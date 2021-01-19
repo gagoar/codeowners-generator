@@ -1,6 +1,6 @@
 import fs from 'fs';
 import { stripIndents } from 'common-tags';
-import { MAINTAINERS_EMAIL_PATTERN, contentTemplate, CONTENT_MARK } from './constants';
+import { MAINTAINERS_EMAIL_PATTERN, contentTemplate, CONTENT_MARK, CHARACTER_RANGE_PATTERN } from './constants';
 import isValidGlob from 'is-valid-glob';
 import { dirname, join } from 'path';
 import { readContent } from './readContent';
@@ -81,7 +81,7 @@ const translateGlob = (glob: string) => {
   if (glob.startsWith('\\#')) {
     throw new Error('Rule cannot start with escaped #');
   }
-  if (parsedGlob.is.glob && /\[(?:.-.)+\]/.test(parsedGlob.glob)) {
+  if (parsedGlob.is.glob && CHARACTER_RANGE_PATTERN.test(parsedGlob.glob)) {
     throw new Error('Rule cannot contain brackets');
   }
 
