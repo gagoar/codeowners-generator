@@ -117,7 +117,7 @@
     "@types/jest": "26.0.20",
     "@types/lodash.groupby": "4.6.6",
     "@types/node": "13.13.40",
-    "@types/parse-glob": "^3.0.29",
+    "@types/parse-glob": "3.0.29",
     "@typescript-eslint/eslint-plugin": "4.14.0",
     "@typescript-eslint/parser": "4.14.0",
     "@zeit/ncc": "0.22.3",
