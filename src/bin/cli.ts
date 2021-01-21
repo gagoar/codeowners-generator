@@ -19,6 +19,7 @@ program
     'For every package.json found, generate a CODEOWNERS entry using the maintainers field',
     false
   )
+  .option('--group-source-comments', 'Group rules by source, reducing the amount of comments added', false)
   .option('--output [output file]', 'The output path and name of the file, (default: CODEOWNERS)')
   .action(generateCommand);
 

@@ -2,6 +2,8 @@ import { getCustomConfiguration } from './getCustomConfiguration';
 interface GlobalOptions {
   includes?: string[];
   output?: string;
+
+  groupSourceComments?: boolean;
 }
 export interface Command {
   parent: Partial<GlobalOptions>;

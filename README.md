@@ -118,7 +118,9 @@ You can configure `codeowners-generator` from several places:
 
 - **useMaintainers** (`--use-maintainers`): It will use `maintainers` field from package.json to generate codeowners, by default it will use `**/package.json`
 
-for more details you can invoke:
+- **groupSourceComments** (`--group-source-comments`): It will add a comment per source file, instead of adding one on every rule found. Useful if your codeowners file gets too noisy.
+
+  For more details you can invoke:
 
 ```sh
   codeowners-generator --help
@@ -134,7 +136,8 @@ You can also define custom configuration in your package:
   "codeowners-generator": {
     "includes": ["**/CODEOWNERS"],
     "output": ".github/CODEOWNERS",
-    "useMaintainers": true
+    "useMaintainers": true,
+    "groupSourceComments": true
   },
   "scripts": {
     "codeowners": " codeowners-generator generate"
