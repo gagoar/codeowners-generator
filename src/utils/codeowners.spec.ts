@@ -8,60 +8,35 @@ const readContentMock = mocked(readContent);
 
 describe('Codeowners', () => {
   describe('loadCodeOwnerFiles', () => {
-    it('should throw if a rule is missing owners', async () => {
-      readContentMock.mockResolvedValueOnce('*.ts');
+    const invalidRuleCases = [
+      ['should throw if a rule is missing owners', '*.ts', '*.ts in dir1/CODEOWNERS can not be parsed'],
+      ['should throw if a rule is missing a file pattern', ' @eeny', ' @eeny in dir1/CODEOWNERS can not be parsed'],
+      [
+        'should throw if a rule is using ! to negate a pattern',
+        '!*.ts @eeny',
+        '!*.ts @eeny in dir1/CODEOWNERS can not be parsed',
+      ],
+      [
+        'should throw if a pattern is using [ ] to define a character range',
+        '[a-z].ts @meeny',
+        '[a-z].ts @meeny in dir1/CODEOWNERS can not be parsed',
+      ],
+      [
+        'should throw if a pattern is using braces for brace expansion or brace sets',
+        '*.{txt,md} @miny',
+        '*.{txt,md} @miny in dir1/CODEOWNERS can not be parsed',
+      ],
+      [
+        'should throw if a pattern is escaping a pattern starting with # using \\ so it is treated as a pattern and not a comment',
+        '\\#fileName @moe',
+        '\\#fileName @moe in dir1/CODEOWNERS can not be parsed',
+      ],
+    ];
 
-      await expect(loadCodeOwnerFiles('/root', ['/root/dir1/CODEOWNERS'])).rejects.toThrowError(
-        '*.ts in dir1/CODEOWNERS can not be parsed'
-      );
-    });
+    it.each(invalidRuleCases)('%s (%s)', async (_name, rule, expectedError) => {
+      readContentMock.mockResolvedValueOnce(rule);
 
-    it("should throw if a rule's glob pattern is invalid", async () => {
-      readContentMock.mockResolvedValueOnce(' @eeny');
-
-      await expect(loadCodeOwnerFiles('/root', ['/root/dir1/CODEOWNERS'])).rejects.toThrowError(
-        ' @eeny in dir1/CODEOWNERS can not be parsed'
-      );
-    });
-
-    it('should throw if a rule is using ! to negate a pattern', async () => {
-      readContentMock.mockResolvedValueOnce('!*.ts @eeny');
-
-      await expect(loadCodeOwnerFiles('/root', ['/root/dir1/CODEOWNERS'])).rejects.toThrowError(
-        '!*.ts @eeny in dir1/CODEOWNERS can not be parsed'
-      );
-    });
-
-    it('should throw if a rule is using [ ] to define a character range', async () => {
-      readContentMock.mockResolvedValueOnce('[a-z].ts @meeny');
-
-      await expect(loadCodeOwnerFiles('/root', ['/root/dir1/CODEOWNERS'])).rejects.toThrowError(
-        '[a-z].ts @meeny in dir1/CODEOWNERS can not be parsed'
-      );
-    });
-
-    it('should throw if a rule is using braces', async () => {
-      readContentMock.mockResolvedValueOnce('*.{txt,md} @miny');
-
-      await expect(loadCodeOwnerFiles('/root', ['/root/dir1/CODEOWNERS'])).rejects.toThrowError(
-        '*.{txt,md} @miny in dir1/CODEOWNERS can not be parsed'
-      );
-    });
-
-    it('should throw if a rule is escaping a pattern starting with # using  so it is treated as a pattern and not a comment', async () => {
-      readContentMock.mockResolvedValueOnce('\\#fileName @moe');
-
-      await expect(loadCodeOwnerFiles('/root', ['/root/dir1/CODEOWNERS'])).rejects.toThrowError(
-        '\\#fileName @moe in dir1/CODEOWNERS can not be parsed'
-      );
-    });
-
-    it('should allow rules with escaped brackets', async () => {
-      readContentMock.mockResolvedValueOnce('\\[*\\].ts @eeny');
-
-      await expect(loadCodeOwnerFiles('/root', ['/root/dir1/CODEOWNERS'])).resolves.toEqual([
-        { filePath: 'dir1/CODEOWNERS', glob: '/dir1/**/\\[*\\].ts', owners: ['@eeny'] },
-      ]);
+      await expect(loadCodeOwnerFiles('/root', ['/root/dir1/CODEOWNERS'])).rejects.toThrowError(expectedError);
     });
 
     it('should match * to all file under the given directory and its subdirectories', async () => {

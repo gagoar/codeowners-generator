@@ -1,10 +1,10 @@
 import fs from 'fs';
 import { stripIndents } from 'common-tags';
+import parseGlob from 'parse-glob';
 import { MAINTAINERS_EMAIL_PATTERN, contentTemplate, CONTENT_MARK, CHARACTER_RANGE_PATTERN } from './constants';
 import { dirname, join } from 'path';
 import { readContent } from './readContent';
 import { logger } from '../utils/debug';
-import parseGlob from 'parse-glob';
 
 const debug = logger('utils/codeowners');
 
@@ -65,7 +65,7 @@ const parseCodeOwner = (filePath: string, codeOwnerContent: string): ownerRule[]
 
 const isValidCodeownersGlob = (glob: string) => {
   if (typeof glob !== 'string' || glob.length <= 0) {
-    // Glob pattern is not valid
+    // A pattern must be string and cannot be empty
     return false;
   }
   const parsedGlob = parseGlob(glob);
@@ -76,19 +76,19 @@ const isValidCodeownersGlob = (glob: string) => {
   // https://git-scm.com/docs/gitignore#_pattern_format
 
   if (parsedGlob.is.negated) {
-    // Pattern cannot contain negations
+    // A pattern cannot use ! to negate
     return false;
   }
   if (parsedGlob.is.braces) {
-    // Pattern cannot contain braces
+    // A pattern cannot use { } for brace expansion or brace sets
     return false;
   }
   if (glob.startsWith('\\#')) {
-    // Pattern cannot start with escaped #
+    // A pattern cannot start with an escaped # using \ so it is treated as a pattern and not a comment
     return false;
   }
   if (parsedGlob.is.glob && CHARACTER_RANGE_PATTERN.test(parsedGlob.glob)) {
-    // Pattern cannot contain brackets
+    // A pattern cannot use [ ] to define a character range
     return false;
   }
 
