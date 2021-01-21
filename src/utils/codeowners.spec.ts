@@ -43,7 +43,7 @@ describe('Codeowners', () => {
       readContentMock.mockResolvedValueOnce('* @meeny');
 
       await expect(loadCodeOwnerFiles('/root', ['/root/dir1/CODEOWNERS'])).resolves.toEqual([
-        { filePath: 'dir1/CODEOWNERS', glob: '/dir1/**/*', owners: ['@meeny'] },
+        { filePath: 'dir1/CODEOWNERS', glob: 'dir1/**/*', owners: ['@meeny'] },
       ]);
     });
 
@@ -51,7 +51,7 @@ describe('Codeowners', () => {
       readContentMock.mockResolvedValueOnce('/* @miny');
 
       await expect(loadCodeOwnerFiles('/root', ['/root/dir1/CODEOWNERS'])).resolves.toEqual([
-        { filePath: 'dir1/CODEOWNERS', glob: '/dir1/*', owners: ['@miny'] },
+        { filePath: 'dir1/CODEOWNERS', glob: 'dir1/*', owners: ['@miny'] },
       ]);
     });
 
@@ -59,7 +59,7 @@ describe('Codeowners', () => {
       readContentMock.mockResolvedValueOnce('*.ts @meeny');
 
       await expect(loadCodeOwnerFiles('/root', ['/root/dir1/CODEOWNERS'])).resolves.toEqual([
-        { filePath: 'dir1/CODEOWNERS', glob: '/dir1/**/*.ts', owners: ['@meeny'] },
+        { filePath: 'dir1/CODEOWNERS', glob: 'dir1/**/*.ts', owners: ['@meeny'] },
       ]);
     });
 
@@ -67,7 +67,7 @@ describe('Codeowners', () => {
       readContentMock.mockResolvedValueOnce('/*.ts @miny');
 
       await expect(loadCodeOwnerFiles('/root', ['/root/dir1/CODEOWNERS'])).resolves.toEqual([
-        { filePath: 'dir1/CODEOWNERS', glob: '/dir1/*.ts', owners: ['@miny'] },
+        { filePath: 'dir1/CODEOWNERS', glob: 'dir1/*.ts', owners: ['@miny'] },
       ]);
     });
 
@@ -75,7 +75,7 @@ describe('Codeowners', () => {
       readContentMock.mockResolvedValueOnce('apps/ @moe');
 
       await expect(loadCodeOwnerFiles('/root', ['/root/dir1/CODEOWNERS'])).resolves.toEqual([
-        { filePath: 'dir1/CODEOWNERS', glob: '/dir1/**/apps/', owners: ['@moe'] },
+        { filePath: 'dir1/CODEOWNERS', glob: 'dir1/**/apps/', owners: ['@moe'] },
       ]);
     });
 
@@ -83,7 +83,7 @@ describe('Codeowners', () => {
       readContentMock.mockResolvedValueOnce('docs/* @eeny');
 
       await expect(loadCodeOwnerFiles('/root', ['/root/dir1/CODEOWNERS'])).resolves.toEqual([
-        { filePath: 'dir1/CODEOWNERS', glob: '/dir1/docs/*', owners: ['@eeny'] },
+        { filePath: 'dir1/CODEOWNERS', glob: 'dir1/docs/*', owners: ['@eeny'] },
       ]);
     });
 
@@ -91,7 +91,7 @@ describe('Codeowners', () => {
       readContentMock.mockResolvedValueOnce('README.md @meeny');
 
       await expect(loadCodeOwnerFiles('/root', ['/root/dir1/CODEOWNERS'])).resolves.toEqual([
-        { filePath: 'dir1/CODEOWNERS', glob: '/dir1/**/README.md', owners: ['@meeny'] },
+        { filePath: 'dir1/CODEOWNERS', glob: 'dir1/**/README.md', owners: ['@meeny'] },
       ]);
     });
 
@@ -99,7 +99,7 @@ describe('Codeowners', () => {
       readContentMock.mockResolvedValueOnce('**/something.ts @miny');
 
       await expect(loadCodeOwnerFiles('/root', ['/root/dir1/CODEOWNERS'])).resolves.toEqual([
-        { filePath: 'dir1/CODEOWNERS', glob: '/dir1/**/something.ts', owners: ['@miny'] },
+        { filePath: 'dir1/CODEOWNERS', glob: 'dir1/**/something.ts', owners: ['@miny'] },
       ]);
     });
 
@@ -107,7 +107,7 @@ describe('Codeowners', () => {
       readContentMock.mockResolvedValueOnce('**/*.ts @moe');
 
       await expect(loadCodeOwnerFiles('/root', ['/root/dir1/CODEOWNERS'])).resolves.toEqual([
-        { filePath: 'dir1/CODEOWNERS', glob: '/dir1/**/*.ts', owners: ['@moe'] },
+        { filePath: 'dir1/CODEOWNERS', glob: 'dir1/**/*.ts', owners: ['@moe'] },
       ]);
     });
 
@@ -115,7 +115,7 @@ describe('Codeowners', () => {
       readContentMock.mockResolvedValueOnce('dir2/*.ts @eeny');
 
       await expect(loadCodeOwnerFiles('/root', ['/root/dir1/CODEOWNERS'])).resolves.toEqual([
-        { filePath: 'dir1/CODEOWNERS', glob: '/dir1/dir2/*.ts', owners: ['@eeny'] },
+        { filePath: 'dir1/CODEOWNERS', glob: 'dir1/dir2/*.ts', owners: ['@eeny'] },
       ]);
     });
 
@@ -123,7 +123,7 @@ describe('Codeowners', () => {
       readContentMock.mockResolvedValueOnce('dir2/something.ts @meeny');
 
       await expect(loadCodeOwnerFiles('/root', ['/root/dir1/CODEOWNERS'])).resolves.toEqual([
-        { filePath: 'dir1/CODEOWNERS', glob: '/dir1/dir2/something.ts', owners: ['@meeny'] },
+        { filePath: 'dir1/CODEOWNERS', glob: 'dir1/dir2/something.ts', owners: ['@meeny'] },
       ]);
     });
 
@@ -131,7 +131,7 @@ describe('Codeowners', () => {
       readContentMock.mockResolvedValueOnce('dir2/dir3/ @miny');
 
       await expect(loadCodeOwnerFiles('/root', ['/root/dir1/CODEOWNERS'])).resolves.toEqual([
-        { filePath: 'dir1/CODEOWNERS', glob: '/dir1/dir2/dir3/', owners: ['@miny'] },
+        { filePath: 'dir1/CODEOWNERS', glob: 'dir1/dir2/dir3/', owners: ['@miny'] },
       ]);
     });
 
@@ -139,7 +139,7 @@ describe('Codeowners', () => {
       readContentMock.mockResolvedValueOnce('/ @moe');
 
       await expect(loadCodeOwnerFiles('/root', ['/root/dir1/CODEOWNERS'])).resolves.toEqual([
-        { filePath: 'dir1/CODEOWNERS', glob: '/dir1/', owners: ['@moe'] },
+        { filePath: 'dir1/CODEOWNERS', glob: 'dir1/', owners: ['@moe'] },
       ]);
     });
 
@@ -147,7 +147,7 @@ describe('Codeowners', () => {
       readContentMock.mockResolvedValueOnce('/asd/asd.ts @eeny');
 
       await expect(loadCodeOwnerFiles('/root', ['/root/dir1/CODEOWNERS'])).resolves.toEqual([
-        { filePath: 'dir1/CODEOWNERS', glob: '/dir1/asd/asd.ts', owners: ['@eeny'] },
+        { filePath: 'dir1/CODEOWNERS', glob: 'dir1/asd/asd.ts', owners: ['@eeny'] },
       ]);
     });
 
@@ -155,7 +155,7 @@ describe('Codeowners', () => {
       readContentMock.mockResolvedValueOnce('/**/asd.ts @meeny');
 
       await expect(loadCodeOwnerFiles('/root', ['/root/dir1/CODEOWNERS'])).resolves.toEqual([
-        { filePath: 'dir1/CODEOWNERS', glob: '/dir1/**/asd.ts', owners: ['@meeny'] },
+        { filePath: 'dir1/CODEOWNERS', glob: 'dir1/**/asd.ts', owners: ['@meeny'] },
       ]);
     });
   });

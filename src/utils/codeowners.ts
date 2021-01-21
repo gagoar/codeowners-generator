@@ -125,7 +125,7 @@ const createMatcherCodeownersRule = (filePath: string, rule: string) => {
 
   if (owners.length && isValidCodeownersGlob(glob)) {
     return {
-      glob: '/' + join(dirname(filePath), translateGlob(glob)),
+      glob: join(dirname(filePath), translateGlob(glob)),
       owners,
     };
   } else {
