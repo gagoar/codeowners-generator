@@ -1,7 +1,7 @@
 import fs from 'fs';
 import { stripIndents } from 'common-tags';
-import { MAINTAINERS_EMAIL_PATTERN, contentTemplate, CONTENT_MARK } from './constants';
-import isValidGlob from 'is-valid-glob';
+import parseGlob from 'parse-glob';
+import { MAINTAINERS_EMAIL_PATTERN, contentTemplate, CONTENT_MARK, CHARACTER_RANGE_PATTERN } from './constants';
 import { dirname, join } from 'path';
 import { readContent } from './readContent';
 import { logger } from '../utils/debug';
@@ -63,11 +63,43 @@ const parseCodeOwner = (filePath: string, codeOwnerContent: string): ownerRule[]
   return filteredRules.map((rule) => ({ filePath, ...createMatcherCodeownersRule(filePath, rule) }));
 };
 
+const isValidCodeownersGlob = (glob: string) => {
+  if (typeof glob !== 'string' || glob.length <= 0) {
+    // A pattern must be string and cannot be empty
+    return false;
+  }
+  const parsedGlob = parseGlob(glob);
+
+  // These controls are based on the Github CODEOWNERS syntax documentation
+  // https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/about-code-owners#codeowners-syntax
+  // as well as the gitignore pattern format which it extends
+  // https://git-scm.com/docs/gitignore#_pattern_format
+
+  if (parsedGlob.is.negated) {
+    // A pattern cannot use ! to negate
+    return false;
+  }
+  if (parsedGlob.is.braces) {
+    // A pattern cannot use { } for brace expansion or brace sets
+    return false;
+  }
+  if (glob.startsWith('\\#')) {
+    // A pattern cannot start with an escaped # using \ so it is treated as a pattern and not a comment
+    return false;
+  }
+  if (parsedGlob.is.glob && CHARACTER_RANGE_PATTERN.test(parsedGlob.glob)) {
+    // A pattern cannot use [ ] to define a character range
+    return false;
+  }
+
+  return true;
+};
+
 const createMatcherCodeownersRule = (filePath: string, rule: string) => {
   const parts = rule.split(/\s+/);
   const [glob, ...owners] = parts;
 
-  if (owners.length && isValidGlob(glob)) {
+  if (owners.length && isValidCodeownersGlob(glob)) {
     return {
       glob: join(dirname(filePath), glob),
       owners,
