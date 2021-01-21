@@ -120,7 +120,7 @@ You can configure `codeowners-generator` from several places:
 
 - **groupSourceComments** (`--group-source-comments`): It will add a comment per source file, instead of adding one on every rule found. Useful if your codeowners file gets too noisy.
 
-  For more details you can invoke:
+For more details you can invoke:
 
 ```sh
   codeowners-generator --help
