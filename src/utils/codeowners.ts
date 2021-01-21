@@ -123,7 +123,7 @@ export const loadCodeOwnerFiles = async (dirname: string, files: string[]): Prom
     files.map(async (filePath) => {
       const content = await readContent(filePath);
 
-      return parseCodeOwner(filePath.replace(`${dirname} / `, ''), content);
+      return parseCodeOwner(filePath.replace(`${dirname}/`, ''), content);
     })
   );
   return codeOwners.reduce((memo, rules) => [...memo, ...rules], []);
@@ -162,7 +162,7 @@ const getOwnersFromMaintainerField = (filePath: string, content: string): ownerR
 
       if (!owners.length) {
         throw new Error(
-          `malformed maintainer entry ${maintainers} this file will be skipped.for more info https://classic.yarnpkg.com/en/docs/package-json/#toc-maintainers`
+          `malformed maintainer entry ${maintainers} this file will be skipped. For more info https://classic.yarnpkg.com/en/docs/package-json/#toc-maintainers`
         );
       }
 
