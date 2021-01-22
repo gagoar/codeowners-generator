@@ -79,7 +79,7 @@ export const command = async (options: Options, command: Command): Promise<void>
 
   const loader = ora('generating codeowners...').start();
 
-  const groupSourceComments = globalOptions.groupSourceComments || command.groupSourceComments;
+  const groupSourceComments = globalOptions.groupSourceComments || options.groupSourceComments;
 
   debug('Options:', { ...globalOptions, useMaintainers, groupSourceComments, output });
 
