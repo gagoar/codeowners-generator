@@ -102,10 +102,10 @@ describe('Generate', () => {
       # This block has been generated with codeowners-generator (for more information https://github.com/gagoar/codeowners-generator/README.md)
       # To re-generate, run \`npm run codeowners-generator generate\`. Don't worry, the content outside this block will be kept.
 
-      # Rule extracted from dir1/CODEOWNERS
+      # Rules extracted from dir1/CODEOWNERS
       dir1/*.ts @eeny @meeny
       dir1/README.md @miny
-      # Rule extracted from dir2/CODEOWNERS
+      # Rules extracted from dir2/CODEOWNERS
       dir2/*.ts @moe
       dir2/dir3/*.ts @miny
       # Rule extracted from dir2/dir3/CODEOWNERS
@@ -251,10 +251,10 @@ describe('Generate', () => {
       dir5/ friend@example.com other@example.com
       # Rule extracted from dir2/dir1/package.json
       dir2/dir1/ friend@example.com other@example.com
-      # Rule extracted from dir1/CODEOWNERS
+      # Rules extracted from dir1/CODEOWNERS
       dir1/*.ts @eeny @meeny
       dir1/README.md @miny
-      # Rule extracted from dir2/CODEOWNERS
+      # Rules extracted from dir2/CODEOWNERS
       dir2/*.ts @moe
       dir2/dir3/*.ts @miny
       # Rule extracted from dir2/dir3/CODEOWNERS
