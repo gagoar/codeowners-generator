@@ -118,7 +118,7 @@ You can configure `codeowners-generator` from several places:
 
 - **useMaintainers** (`--use-maintainers`): It will use `maintainers` field from package.json to generate codeowners, by default it will use `**/package.json`
 
-- **groupSourceComments** (`--group-source-comments`): It will add a comment per source file, instead of adding one on every rule found. Useful if your codeowners file gets too noisy.
+- **groupSourceComments** (`--group-source-comments`): Instead of generating one comment per rule, enabling this flag will group them, reducing comments to one per source file. Useful if your codeowners file gets too noisy.
 
 For more details you can invoke:
 
