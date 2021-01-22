@@ -54,7 +54,7 @@ describe('Generate', () => {
       callback(null, content);
     });
 
-    await generateCommand({ parent: {}, output: 'CODEOWNERS' });
+    await generateCommand({ output: 'CODEOWNERS' }, { parent: {} });
     expect(writeFile.mock.calls[0]).toMatchInlineSnapshot(`
       Array [
         "CODEOWNERS",
@@ -93,7 +93,7 @@ describe('Generate', () => {
       callback(null, content);
     });
 
-    await generateCommand({ parent: {}, output: 'CODEOWNERS' });
+    await generateCommand({ output: 'CODEOWNERS' }, { parent: {} });
     expect(writeFile.mock.calls).toMatchInlineSnapshot(`
       Array [
         Array [
@@ -149,7 +149,7 @@ describe('Generate', () => {
       callback(null, content);
     });
 
-    await generateCommand({ parent: {} });
+    await generateCommand({}, { parent: {} });
     expect(search).toHaveBeenCalled();
     expect(writeFile.mock.calls[0][1]).toMatchInlineSnapshot(`
       "#################################### Generated content - do not edit! ####################################
@@ -206,7 +206,7 @@ describe('Generate', () => {
       callback(null, content);
     });
 
-    await generateCommand({ parent: {} });
+    await generateCommand({}, { parent: {} });
     expect(search).toHaveBeenCalled();
     expect(writeFile.mock.calls[0][1]).toMatchInlineSnapshot(`
       "#################################### Generated content - do not edit! ####################################
@@ -255,7 +255,7 @@ describe('Generate', () => {
       callback(null, content);
     });
 
-    await generateCommand({ parent: {}, output: 'CODEOWNERS', useMaintainers: true });
+    await generateCommand({ output: 'CODEOWNERS', useMaintainers: true }, { parent: {} });
     expect(writeFile.mock.calls[0][1]).toMatchInlineSnapshot(`
       "#################################### Generated content - do not edit! ####################################
       # This block has been generated with codeowners-generator (for more information https://github.com/gagoar/codeowners-generator/README.md)
@@ -341,11 +341,14 @@ describe('Generate', () => {
 
   it('should not find any rules', async () => {
     sync.mockReturnValue([]);
-    await generateCommand({
-      parent: {
-        includes: ['**/NOT_STANDARD_CODEOWNERS'],
-      },
-    });
+    await generateCommand(
+      {},
+      {
+        parent: {
+          includes: ['**/NOT_STANDARD_CODEOWNERS'],
+        },
+      }
+    );
     expect(stopAndPersist.mock.calls).toMatchInlineSnapshot(`
       Array [
         Array [
@@ -378,7 +381,7 @@ describe('Generate', () => {
     });
     search.mockImplementationOnce(() => Promise.reject(new Error('some malformed configuration')));
 
-    await generateCommand({ parent: {} });
+    await generateCommand({}, { parent: {} });
     expect(fail.mock.calls).toMatchInlineSnapshot(`
       Array [
         Array [
@@ -397,7 +400,7 @@ describe('Generate', () => {
       callback(null, content);
     });
 
-    await generateCommand({ parent: {} });
+    await generateCommand({}, { parent: {} });
     expect(writeFile).toHaveBeenCalled();
   });
 
@@ -424,7 +427,7 @@ describe('Generate', () => {
       callback(null, content);
     });
 
-    await generateCommand({ parent: {}, output: 'CODEOWNERS' });
+    await generateCommand({ output: 'CODEOWNERS' }, { parent: {} });
     expect(fail.mock.calls[0]).toMatchInlineSnapshot(`
       Array [
         "We encountered an error: Error: *.ts in dir4/CODEOWNERS can not be parsed",

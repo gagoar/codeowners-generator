@@ -62,19 +62,19 @@ export const generate: Generate = async ({ rootDir, includes, useMaintainers = f
   }
 };
 
-interface CommandGenerate extends Command {
+interface Options {
   output?: string;
   verifyPaths?: boolean;
   useMaintainers?: boolean;
   includes?: string[];
 }
 
-export const command = async (command: CommandGenerate): Promise<void> => {
+export const command = async (options: Options, command: Command): Promise<void> => {
   const globalOptions = await getGlobalOptions(command);
 
-  const { verifyPaths, useMaintainers } = command;
+  const { verifyPaths, useMaintainers } = options;
 
-  const { output = globalOptions.output || OUTPUT } = command;
+  const { output = globalOptions.output || OUTPUT } = options;
 
   const loader = ora('generating codeowners...').start();
 
