@@ -33,9 +33,9 @@ export const contentTemplate = (generatedContent: string, originalContent: strin
 `;
 };
 
-export const rulesBlockTemplate = (source: string, entry: string[]): string => {
+export const rulesBlockTemplate = (source: string, entries: string[]): string => {
   return stripIndents`
-  # Rule extracted from ${source}
-  ${entry.join('\n')}
+  # Rule${entries.length && 's'} extracted from ${source}
+  ${entries.join('\n')}
   `;
 };
