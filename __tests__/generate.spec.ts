@@ -93,7 +93,7 @@ describe('Generate', () => {
       callback(null, content);
     });
 
-    await generateCommand({ parent: {}, output: 'CODEOWNERS', groupSourceComments: true });
+    await generateCommand({ output: 'CODEOWNERS', groupSourceComments: true }, { parent: {} });
     expect(writeFile.mock.calls).toMatchInlineSnapshot(`
       Array [
         Array [
