@@ -83,6 +83,39 @@ describe('Generate', () => {
       ]
     `);
   });
+  it('should generate a CODEOWNERS FILE with groupSourceComments', async () => {
+    sync.mockReturnValueOnce(Object.keys(files));
+
+    sync.mockReturnValueOnce(['.gitignore']);
+
+    readFile.mockImplementation((file: keyof typeof withGitIgnore, callback: Callback) => {
+      const content = readFileSync(path.join(__dirname, withGitIgnore[file]));
+      callback(null, content);
+    });
+
+    await generateCommand({ parent: {}, output: 'CODEOWNERS', groupSourceComments: true });
+    expect(writeFile.mock.calls).toMatchInlineSnapshot(`
+      Array [
+        Array [
+          "CODEOWNERS",
+          "#################################### Generated content - do not edit! ####################################
+      # This block has been generated with codeowners-generator (for more information https://github.com/gagoar/codeowners-generator/README.md)
+      # To re-generate, run \`npm run codeowners-generator generate\`. Don't worry, the content outside this block will be kept.
+
+      # Rules extracted from dir1/CODEOWNERS
+      dir1/*.ts @eeny @meeny
+      dir1/README.md @miny
+      # Rules extracted from dir2/CODEOWNERS
+      dir2/*.ts @moe
+      dir2/dir3/*.ts @miny
+      # Rule extracted from dir2/dir3/CODEOWNERS
+      dir2/dir3/*.ts @miny
+
+      #################################### Generated content - do not edit! ####################################",
+        ],
+      ]
+    `);
+  });
   it('should generate a CODEOWNERS FILE', async () => {
     sync.mockReturnValueOnce(Object.keys(files));
 
@@ -176,7 +209,7 @@ describe('Generate', () => {
       #################################### Generated content - do not edit! ####################################"
     `);
   });
-  it('should generate a CODEOWNERS FILE with package.maintainers field using cosmiconfig', async () => {
+  it('should generate a CODEOWNERS FILE with package.maintainers field and groupSourceComments using cosmiconfig', async () => {
     search.mockImplementationOnce(() =>
       Promise.resolve({
         isEmpty: false,
@@ -184,6 +217,7 @@ describe('Generate', () => {
         config: {
           output: '.github/CODEOWNERS',
           useMaintainers: true,
+          groupSourceComments: true,
           includes: ['dir1/*', 'dir2/*', 'dir5/*', 'dir6/*', 'dir7/*'],
         },
       })
@@ -217,13 +251,11 @@ describe('Generate', () => {
       dir5/ friend@example.com other@example.com
       # Rule extracted from dir2/dir1/package.json
       dir2/dir1/ friend@example.com other@example.com
-      # Rule extracted from dir1/CODEOWNERS
+      # Rules extracted from dir1/CODEOWNERS
       dir1/*.ts @eeny @meeny
-      # Rule extracted from dir1/CODEOWNERS
       dir1/README.md @miny
-      # Rule extracted from dir2/CODEOWNERS
+      # Rules extracted from dir2/CODEOWNERS
       dir2/*.ts @moe
-      # Rule extracted from dir2/CODEOWNERS
       dir2/dir3/*.ts @miny
       # Rule extracted from dir2/dir3/CODEOWNERS
       dir2/dir3/*.ts @miny

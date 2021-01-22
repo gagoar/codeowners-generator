@@ -6,7 +6,12 @@ import packageJSON from '../../package.json';
 import { logger } from './debug';
 
 const debug = logger('customConfiguration');
-export type CustomConfig = { includes?: string[]; useMaintainers?: boolean; output?: string };
+export type CustomConfig = {
+  includes?: string[];
+  useMaintainers?: boolean;
+  groupSourceComments?: boolean;
+  output?: string;
+};
 
 export const getCustomConfiguration = async (): Promise<CustomConfig | void> => {
   const loader = ora('Loading available configuration').start();
