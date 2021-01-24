@@ -54,7 +54,7 @@ describe('Generate', () => {
       callback(null, content);
     });
 
-    await generateCommand({ parent: {}, output: 'CODEOWNERS' });
+    await generateCommand({ output: 'CODEOWNERS' }, { parent: {} });
     expect(writeFile.mock.calls[0]).toMatchInlineSnapshot(`
       Array [
         "CODEOWNERS",
@@ -91,6 +91,43 @@ describe('Generate', () => {
       ]
     `);
   });
+  it('should generate a CODEOWNERS FILE with groupSourceComments', async () => {
+    sync.mockReturnValueOnce(Object.keys(files));
+
+    sync.mockReturnValueOnce(['.gitignore']);
+
+    readFile.mockImplementation((file: keyof typeof withGitIgnore, callback: Callback) => {
+      const content = readFileSync(path.join(__dirname, withGitIgnore[file]));
+      callback(null, content);
+    });
+
+    await generateCommand({ output: 'CODEOWNERS', groupSourceComments: true }, { parent: {} });
+    expect(writeFile.mock.calls).toMatchInlineSnapshot(`
+      Array [
+        Array [
+          "CODEOWNERS",
+          "#################################### Generated content - do not edit! ####################################
+      # This block has been generated with codeowners-generator (for more information https://github.com/gagoar/codeowners-generator/README.md)
+      # To re-generate, run \`npm run codeowners-generator generate\`. Don't worry, the content outside this block will be kept.
+
+      # Rules extracted from dir1/CODEOWNERS
+      dir1/**/*.ts @eeny @meeny
+      dir1/*.ts @miny
+      dir1/**/README.md @miny
+      dir1/README.md @moe
+      # Rules extracted from dir2/CODEOWNERS
+      dir2/**/*.ts @moe
+      dir2/dir3/*.ts @miny
+      dir2/**/*.md @meeny 
+      dir2/**/dir4/ @eeny
+      # Rule extracted from dir2/dir3/CODEOWNERS
+      dir2/dir3/**/*.ts @miny
+
+      #################################### Generated content - do not edit! ####################################",
+        ],
+      ]
+    `);
+  });
   it('should generate a CODEOWNERS FILE', async () => {
     sync.mockReturnValueOnce(Object.keys(files));
 
@@ -101,7 +138,7 @@ describe('Generate', () => {
       callback(null, content);
     });
 
-    await generateCommand({ parent: {}, output: 'CODEOWNERS' });
+    await generateCommand({ output: 'CODEOWNERS' }, { parent: {} });
     expect(writeFile.mock.calls).toMatchInlineSnapshot(`
       Array [
         Array [
@@ -165,7 +202,7 @@ describe('Generate', () => {
       callback(null, content);
     });
 
-    await generateCommand({ parent: {} });
+    await generateCommand({}, { parent: {} });
     expect(search).toHaveBeenCalled();
     expect(writeFile.mock.calls[0][1]).toMatchInlineSnapshot(`
       "#################################### Generated content - do not edit! ####################################
@@ -200,7 +237,7 @@ describe('Generate', () => {
       #################################### Generated content - do not edit! ####################################"
     `);
   });
-  it('should generate a CODEOWNERS FILE with package.maintainers field using cosmiconfig', async () => {
+  it('should generate a CODEOWNERS FILE with package.maintainers field and groupSourceComments using cosmiconfig', async () => {
     search.mockImplementationOnce(() =>
       Promise.resolve({
         isEmpty: false,
@@ -208,6 +245,7 @@ describe('Generate', () => {
         config: {
           output: '.github/CODEOWNERS',
           useMaintainers: true,
+          groupSourceComments: true,
           includes: ['dir1/*', 'dir2/*', 'dir5/*', 'dir6/*', 'dir7/*'],
         },
       })
@@ -230,7 +268,7 @@ describe('Generate', () => {
       callback(null, content);
     });
 
-    await generateCommand({ parent: {} });
+    await generateCommand({}, { parent: {} });
     expect(search).toHaveBeenCalled();
     expect(writeFile.mock.calls[0][1]).toMatchInlineSnapshot(`
       "#################################### Generated content - do not edit! ####################################
@@ -241,21 +279,15 @@ describe('Generate', () => {
       dir5/ friend@example.com other@example.com
       # Rule extracted from dir2/dir1/package.json
       dir2/dir1/ friend@example.com other@example.com
-      # Rule extracted from dir1/CODEOWNERS
+      # Rules extracted from dir1/CODEOWNERS
       dir1/**/*.ts @eeny @meeny
-      # Rule extracted from dir1/CODEOWNERS
       dir1/*.ts @miny
-      # Rule extracted from dir1/CODEOWNERS
       dir1/**/README.md @miny
-      # Rule extracted from dir1/CODEOWNERS
       dir1/README.md @moe
-      # Rule extracted from dir2/CODEOWNERS
+      # Rules extracted from dir2/CODEOWNERS
       dir2/**/*.ts @moe
-      # Rule extracted from dir2/CODEOWNERS
       dir2/dir3/*.ts @miny
-      # Rule extracted from dir2/CODEOWNERS
-      dir2/**/*.md @meeny
-      # Rule extracted from dir2/CODEOWNERS
+      dir2/**/*.md @meeny 
       dir2/**/dir4/ @eeny
       # Rule extracted from dir2/dir3/CODEOWNERS
       dir2/dir3/**/*.ts @miny
@@ -287,7 +319,7 @@ describe('Generate', () => {
       callback(null, content);
     });
 
-    await generateCommand({ parent: {}, output: 'CODEOWNERS', useMaintainers: true });
+    await generateCommand({ output: 'CODEOWNERS', useMaintainers: true }, { parent: {} });
     expect(writeFile.mock.calls[0][1]).toMatchInlineSnapshot(`
       "#################################### Generated content - do not edit! ####################################
       # This block has been generated with codeowners-generator (for more information https://github.com/gagoar/codeowners-generator/README.md)
@@ -410,11 +442,14 @@ describe('Generate', () => {
 
   it('should not find any rules', async () => {
     sync.mockReturnValue([]);
-    await generateCommand({
-      parent: {
-        includes: ['**/NOT_STANDARD_CODEOWNERS'],
-      },
-    });
+    await generateCommand(
+      {},
+      {
+        parent: {
+          includes: ['**/NOT_STANDARD_CODEOWNERS'],
+        },
+      }
+    );
     expect(stopAndPersist.mock.calls).toMatchInlineSnapshot(`
       Array [
         Array [
@@ -447,7 +482,7 @@ describe('Generate', () => {
     });
     search.mockImplementationOnce(() => Promise.reject(new Error('some malformed configuration')));
 
-    await generateCommand({ parent: {} });
+    await generateCommand({}, { parent: {} });
     expect(fail.mock.calls).toMatchInlineSnapshot(`
       Array [
         Array [
@@ -466,7 +501,7 @@ describe('Generate', () => {
       callback(null, content);
     });
 
-    await generateCommand({ parent: {} });
+    await generateCommand({}, { parent: {} });
     expect(writeFile).toHaveBeenCalled();
   });
 
@@ -493,7 +528,7 @@ describe('Generate', () => {
       callback(null, content);
     });
 
-    await generateCommand({ parent: {}, output: 'CODEOWNERS' });
+    await generateCommand({ output: 'CODEOWNERS' }, { parent: {} });
     expect(fail.mock.calls[0]).toMatchInlineSnapshot(`
       Array [
         "We encountered an error: Error: *.ts in dir4/CODEOWNERS can not be parsed",

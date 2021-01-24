@@ -62,29 +62,32 @@ export const generate: Generate = async ({ rootDir, includes, useMaintainers = f
   }
 };
 
-interface CommandGenerate extends Command {
+interface Options {
   output?: string;
   verifyPaths?: boolean;
   useMaintainers?: boolean;
+  groupSourceComments?: boolean;
   includes?: string[];
 }
 
-export const command = async (command: CommandGenerate): Promise<void> => {
+export const command = async (options: Options, command: Command): Promise<void> => {
   const globalOptions = await getGlobalOptions(command);
 
-  const { verifyPaths, useMaintainers } = command;
+  const { verifyPaths, useMaintainers } = options;
 
-  const { output = globalOptions.output || OUTPUT } = command;
+  const { output = globalOptions.output || OUTPUT } = options;
 
   const loader = ora('generating codeowners...').start();
 
-  debug('Options:', { ...globalOptions, useMaintainers, output });
+  const groupSourceComments = globalOptions.groupSourceComments || options.groupSourceComments;
+
+  debug('Options:', { ...globalOptions, useMaintainers, groupSourceComments, output });
 
   try {
     const ownerRules = await generate({ rootDir: __dirname, verifyPaths, useMaintainers, ...globalOptions });
 
     if (ownerRules.length) {
-      await createOwnersFile(output, ownerRules);
+      await createOwnersFile(output, ownerRules, groupSourceComments);
 
       loader.stopAndPersist({ text: `CODEOWNERS file was created! location: ${output}`, symbol: SUCCESS_SYMBOL });
     } else {

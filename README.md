@@ -50,7 +50,7 @@
 
 [CODEOWNERS](https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/about-code-owners) are automatically requested for review when someone opens a pull request that modifies code that they own. This is a great feature, but when working on monorepos ownership is shared between teams and it becomes difficult to maintain.
 
-`codeowners-generator` allows you to position CODEOWNERS files anywhere in your project tree and it will take care of compiling all the files into a single generated file, that Github can understand. It also can read the maintainers fields (`contributors`, `author` and alternatively `maintainers`) in `package.json` (`useMaintainers` option in the cli ) making easy to keep CODEOWNERS and package.json in sync. Make sure the `author`/`contributors` syntax matches with `package.json` expected syntax from the [documentation](https://docs.npmjs.com/files/package.json#people-fields-author-contributors).
+`codeowners-generator` allows you to position CODEOWNERS files anywhere in your project tree and it will take care of compiling all the files into a single generated file, that Github can understand. It also can read the maintainers fields (`contributors`, `author` and alternatively `maintainers`) in `package.json` (`--use-maintainers` option in the cli ) making easy to keep CODEOWNERS and package.json in sync. Make sure the `author`/`contributors` syntax matches with `package.json` expected syntax from the [documentation](https://docs.npmjs.com/files/package.json#people-fields-author-contributors).
 
 ### Built With
 
@@ -95,7 +95,7 @@ Every command accepts several options through command line or custom configurati
 ### Generate CODEOWNERS file (using `maintainers` field from `package.json`)
 
 ```sh
-codeowners-generator generate --useMaintainers
+codeowners-generator generate --use-maintainers
 ```
 
 ### Specify CODEOWNERS (in case the CODEOWNERS files are named differently)
@@ -116,9 +116,11 @@ You can configure `codeowners-generator` from several places:
 
 - **output** (`--output`): The output path and name of the file `default: CODEOWNERS`
 
-- **useMaintainers** (`--useMaintainers`): It will use `maintainers` field from package.json to generate codeowners, by default it will use `**/package.json`
+- **useMaintainers** (`--use-maintainers`): It will use `maintainers` field from package.json to generate codeowners, by default it will use `**/package.json`
 
-for more details you can invoke:
+- **groupSourceComments** (`--group-source-comments`): Instead of generating one comment per rule, enabling this flag will group them, reducing comments to one per source file. Useful if your codeowners file gets too noisy.
+
+For more details you can invoke:
 
 ```sh
   codeowners-generator --help
@@ -134,7 +136,8 @@ You can also define custom configuration in your package:
   "codeowners-generator": {
     "includes": ["**/CODEOWNERS"],
     "output": ".github/CODEOWNERS",
-    "useMaintainers": true
+    "useMaintainers": true,
+    "groupSourceComments": true
   },
   "scripts": {
     "codeowners": " codeowners-generator generate"

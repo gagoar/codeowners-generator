@@ -1,10 +1,16 @@
 import fs from 'fs';
-import { stripIndents } from 'common-tags';
 import parseGlob from 'parse-glob';
-import { MAINTAINERS_EMAIL_PATTERN, contentTemplate, CONTENT_MARK, CHARACTER_RANGE_PATTERN } from './constants';
+import {
+  MAINTAINERS_EMAIL_PATTERN,
+  contentTemplate,
+  CONTENT_MARK,
+  CHARACTER_RANGE_PATTERN,
+  rulesBlockTemplate,
+} from './constants';
 import { dirname, join } from 'path';
 import { readContent } from './readContent';
 import { logger } from '../utils/debug';
+import groupBy from 'lodash.groupby';
 
 const debug = logger('utils/codeowners');
 
@@ -35,7 +41,11 @@ const filterGeneratedContent = (content: string) => {
     }, [] as string[])
     .join('\n');
 };
-export const createOwnersFile = async (outputFile: string, ownerRules: ownerRule[]): Promise<void> => {
+export const createOwnersFile = async (
+  outputFile: string,
+  ownerRules: ownerRule[],
+  groupSourceComments = false
+): Promise<void> => {
   let originalContent = '';
 
   if (fs.existsSync(outputFile)) {
@@ -44,12 +54,18 @@ export const createOwnersFile = async (outputFile: string, ownerRules: ownerRule
     originalContent = filterGeneratedContent(originalContent);
   }
 
-  const content = ownerRules.map(
-    (rule) => stripIndents` 
-    # Rule extracted from ${rule.filePath}
-    ${rule.glob} ${rule.owners.join(' ')}
-    `
-  );
+  let content = [] as string[];
+
+  if (groupSourceComments) {
+    const groupedRules = groupBy(ownerRules, (rule) => rule.filePath);
+
+    content = Object.keys(groupedRules).reduce((memo, filePath) => {
+      const rules = groupedRules[filePath].map((rule) => `${rule.glob} ${rule.owners.join(' ')}`);
+      return [...memo, rulesBlockTemplate(filePath, rules)];
+    }, [] as string[]);
+  } else {
+    content = ownerRules.map((rule) => rulesBlockTemplate(rule.filePath, [`${rule.glob} ${rule.owners.join(' ')}`]));
+  }
 
   fs.writeFileSync(outputFile, contentTemplate(content.join('\n'), originalContent));
 };
@@ -176,7 +192,7 @@ const getOwnersFromMaintainerField = (filePath: string, content: string): ownerR
 
       if (!owners.length) {
         throw new Error(
-          `malformed maintainer entry ${maintainers} this file will be skipped. for more info https://classic.yarnpkg.com/en/docs/package-json/#toc-maintainers`
+          `malformed maintainer entry ${maintainers} this file will be skipped. For more info https://classic.yarnpkg.com/en/docs/package-json/#toc-maintainers`
         );
       }
 
