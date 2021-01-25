@@ -1,5 +1,5 @@
 {
-  "include": ["src", "test", "index.ts"],
+  "include": ["src", "__tests__", "index.ts"],
   "compilerOptions": {
     "target": "es2017",
     "module": "es6",
@@ -23,9 +23,6 @@
     "resolveJsonModule": true,
     "experimentalDecorators": true,
     "baseUrl": "./",
-    "paths": {
-      "*": ["node_modules/*"]
-    },
     "jsx": "react",
     "esModuleInterop": true
   }
