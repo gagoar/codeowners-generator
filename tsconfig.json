@@ -1,5 +1,5 @@
 {
-  "include": ["src", "test", "index.ts", "__tests__/codeowners.spec.ts"],
+  "include": ["src", "__tests__", "index.ts"],
   "compilerOptions": {
     "target": "es2017",
     "module": "es6",
