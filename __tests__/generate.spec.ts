@@ -275,21 +275,21 @@ describe('Generate', () => {
       # Don't worry, the content outside this block will be kept.
 
       # Rule extracted from dir5/package.json
-      dir5/ friend@example.com other@example.com
+      /dir5/ friend@example.com other@example.com
       # Rule extracted from dir2/dir1/package.json
-      dir2/dir1/ friend@example.com other@example.com
+      /dir2/dir1/ friend@example.com other@example.com
       # Rules extracted from dir1/CODEOWNERS
-      dir1/**/*.ts @eeny @meeny
-      dir1/*.ts @miny
-      dir1/**/README.md @miny
-      dir1/README.md @moe
+      /dir1/**/*.ts @eeny @meeny
+      /dir1/*.ts @miny
+      /dir1/**/README.md @miny
+      /dir1/README.md @moe
       # Rules extracted from dir2/CODEOWNERS
-      dir2/**/*.ts @moe
-      dir2/dir3/*.ts @miny
-      dir2/**/*.md @meeny 
-      dir2/**/dir4/ @eeny
+      /dir2/**/*.ts @moe
+      /dir2/dir3/*.ts @miny
+      /dir2/**/*.md @meeny 
+      /dir2/**/dir4/ @eeny
       # Rule extracted from dir2/dir3/CODEOWNERS
-      dir2/dir3/**/*.ts @miny
+      /dir2/dir3/**/*.ts @miny
 
       #################################### Generated content - do not edit! ####################################"
     `);
