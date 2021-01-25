@@ -3,15 +3,15 @@
   "repository": "git@github.com:gagoar/codeowners-generator.git",
   "license": "MIT",
   "version": "1.4.0",
-  "description": " CODEOWNERS generator with mono repos",
+  "description": " CODEOWNERS generator for mono-repos",
   "main": "build/index.js",
   "bin": {
-    "codeowners-generator": "dist/index.js"
+    "codeowners-generator": "dist/cli.js"
   },
   "scripts": {
     "test": "jest",
-    "build-cli": "ncc build ./src/bin/cli.ts",
-    "build": "ncc build ./index.ts -o build",
+    "build-cli": "esbuild --bundle src/bin/cli.ts --platform=node --target=node12 --main-fields=main --outdir=dist/",
+    "build": "esbuild --bundle index.ts --platform=node --target=node12 --main-fields=main --outdir=build/",
     "lint": "eslint src/* --ext .ts",
     "version": "auto-changelog -p && git add CHANGELOG.md",
     "release": "npm run build && npm run build-cli && npm publish"
@@ -119,8 +119,8 @@
     "@types/parse-glob": "3.0.29",
     "@typescript-eslint/eslint-plugin": "4.14.0",
     "@typescript-eslint/parser": "4.14.0",
-    "@vercel/ncc": "0.27.0",
     "auto-changelog": "2.2.1",
+    "esbuild": "0.8.34",
     "eslint": "7.18.0",
     "eslint-config-prettier": "7.2.0",
     "husky": "4.3.8",
