@@ -12,22 +12,21 @@ export const CHARACTER_RANGE_PATTERN = /\[(?:.-.)+\]/;
 export const CONTENT_MARK = stripIndents`
 #################################### Generated content - do not edit! ####################################
 `;
-const CONTENT_LEGEND_NPM = stripIndents`
-# This block has been generated with codeowners-generator (for more information https://github.com/gagoar/codeowners-generator/README.md)
-# To re-generate, run \`npm run codeowners-generator generate\`. Don't worry, the content outside this block will be kept. 
-`;
-const CONTENT_LEGEND_YARN = stripIndents`
-# This block has been generated with codeowners-generator (for more information https://github.com/gagoar/codeowners-generator/README.md)
-# To re-generate, run \`yarn codeowners-generator generate\`. Don't worry, the content outside this block will be kept. 
+
+const isYarn = () => existsSync('./yarn.lock');
+
+const getContentLegend = (customCommand?: string) => stripIndents`
+# This block has been generated with codeowners-generator (for more information https://github.com/gagoar/codeowners-generator)
+# ${
+  customCommand ? `To re-generate, run \`${isYarn() ? 'yarn' : 'npm run'} ${customCommand}\`. ` : ''
+}Don't worry, the content outside this block will be kept. 
 `;
 
-const getContentLegend = () => (existsSync('./yarn.lock') ? CONTENT_LEGEND_YARN : CONTENT_LEGEND_NPM);
-
-export const contentTemplate = (generatedContent: string, originalContent: string): string => {
+export const contentTemplate = (generatedContent: string, originalContent: string, customCommand?: string): string => {
   return stripIndents`
   ${originalContent && originalContent}
   ${CONTENT_MARK}
-  ${getContentLegend()}\n
+  ${getContentLegend(customCommand)}\n
   ${generatedContent}\n
   ${CONTENT_MARK}\n
 `;

@@ -68,6 +68,7 @@ interface Options {
   useMaintainers?: boolean;
   groupSourceComments?: boolean;
   includes?: string[];
+  customCommand?: string;
 }
 
 export const command = async (options: Options, command: Command): Promise<void> => {
@@ -81,13 +82,15 @@ export const command = async (options: Options, command: Command): Promise<void>
 
   const groupSourceComments = globalOptions.groupSourceComments || options.groupSourceComments;
 
-  debug('Options:', { ...globalOptions, useMaintainers, groupSourceComments, output });
+  const customCommand = globalOptions.customCommand || options.customCommand;
+
+  debug('Options:', { ...globalOptions, useMaintainers, groupSourceComments, customCommand, output });
 
   try {
     const ownerRules = await generate({ rootDir: __dirname, verifyPaths, useMaintainers, ...globalOptions });
 
     if (ownerRules.length) {
-      await createOwnersFile(output, ownerRules, groupSourceComments);
+      await createOwnersFile(output, ownerRules, groupSourceComments, customCommand);
 
       loader.stopAndPersist({ text: `CODEOWNERS file was created! location: ${output}`, symbol: SUCCESS_SYMBOL });
     } else {

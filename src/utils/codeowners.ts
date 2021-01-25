@@ -44,7 +44,8 @@ const filterGeneratedContent = (content: string) => {
 export const createOwnersFile = async (
   outputFile: string,
   ownerRules: ownerRule[],
-  groupSourceComments = false
+  groupSourceComments = false,
+  customCommand: string | undefined = undefined
 ): Promise<void> => {
   let originalContent = '';
 
@@ -67,7 +68,7 @@ export const createOwnersFile = async (
     content = ownerRules.map((rule) => rulesBlockTemplate(rule.filePath, [`${rule.glob} ${rule.owners.join(' ')}`]));
   }
 
-  fs.writeFileSync(outputFile, contentTemplate(content.join('\n'), originalContent));
+  fs.writeFileSync(outputFile, contentTemplate(content.join('\n'), originalContent, customCommand));
 };
 
 const parseCodeOwner = (filePath: string, codeOwnerContent: string): ownerRule[] => {

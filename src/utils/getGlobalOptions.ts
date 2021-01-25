@@ -2,7 +2,7 @@ import { getCustomConfiguration } from './getCustomConfiguration';
 interface GlobalOptions {
   includes?: string[];
   output?: string;
-
+  customCommand?: string;
   groupSourceComments?: boolean;
 }
 export interface Command {
