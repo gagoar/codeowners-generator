@@ -1,6 +1,12 @@
 import fs from 'fs';
 import parseGlob from 'parse-glob';
-import { MAINTAINERS_EMAIL_PATTERN, contentTemplate, CONTENT_MARK, CHARACTER_RANGE_PATTERN, rulesBlockTemplate } from './constants';
+import {
+  MAINTAINERS_EMAIL_PATTERN,
+  contentTemplate,
+  CONTENT_MARK,
+  CHARACTER_RANGE_PATTERN,
+  rulesBlockTemplate,
+} from './constants';
 import { dirname, join } from 'path';
 import { readContent } from './readContent';
 import { logger } from '../utils/debug';
@@ -105,13 +111,37 @@ const isValidCodeownersGlob = (glob: string) => {
   return true;
 };
 
+const translateGlob = (glob: string) => {
+  const parsedGlob = parseGlob(glob);
+
+  if (glob.startsWith('/')) {
+    // Patterns starting with a slash should match based on the current dir.
+    return glob;
+  }
+
+  if (parsedGlob.base === '.' && !parsedGlob.is.globstar) {
+    // For patterns that are might be globs but not globstars, they match
+    // they match files in any folder.
+    // This matches e.g. `*`, `*.ts`, `something.ts`, and `something`.
+    return join('**', glob);
+  }
+
+  if (parsedGlob.base !== '.' && !parsedGlob.is.glob && glob.indexOf('/') === glob.length - 1) {
+    // For patterns that are not globs and contain one slash trailing slash (e.g. `apps/`),
+    // they match directories in any folder.
+    return join('**', glob);
+  }
+
+  return glob;
+};
+
 const createMatcherCodeownersRule = (filePath: string, rule: string) => {
   const parts = rule.split(/\s+/);
   const [glob, ...owners] = parts;
 
   if (owners.length && isValidCodeownersGlob(glob)) {
     return {
-      glob: join(dirname(filePath), glob),
+      glob: join(dirname(filePath), translateGlob(glob)),
       owners,
     };
   } else {

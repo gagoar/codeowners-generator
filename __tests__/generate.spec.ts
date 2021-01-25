@@ -68,15 +68,23 @@ describe('Generate', () => {
       # To re-generate, run \`yarn codeowners-generator generate\`. Don't worry, the content outside this block will be kept.
 
       # Rule extracted from dir1/CODEOWNERS
-      dir1/*.ts @eeny @meeny
+      dir1/**/*.ts @eeny @meeny
       # Rule extracted from dir1/CODEOWNERS
-      dir1/README.md @miny
+      dir1/*.ts @miny
+      # Rule extracted from dir1/CODEOWNERS
+      dir1/**/README.md @miny
+      # Rule extracted from dir1/CODEOWNERS
+      dir1/README.md @moe
       # Rule extracted from dir2/CODEOWNERS
-      dir2/*.ts @moe
+      dir2/**/*.ts @moe
       # Rule extracted from dir2/CODEOWNERS
       dir2/dir3/*.ts @miny
+      # Rule extracted from dir2/CODEOWNERS
+      dir2/**/*.md @meeny
+      # Rule extracted from dir2/CODEOWNERS
+      dir2/**/dir4/ @eeny
       # Rule extracted from dir2/dir3/CODEOWNERS
-      dir2/dir3/*.ts @miny
+      dir2/dir3/**/*.ts @miny
 
       #################################### Generated content - do not edit! ####################################",
       ]
@@ -102,13 +110,17 @@ describe('Generate', () => {
       # To re-generate, run \`npm run codeowners-generator generate\`. Don't worry, the content outside this block will be kept.
 
       # Rules extracted from dir1/CODEOWNERS
-      dir1/*.ts @eeny @meeny
-      dir1/README.md @miny
+      dir1/**/*.ts @eeny @meeny
+      dir1/*.ts @miny
+      dir1/**/README.md @miny
+      dir1/README.md @moe
       # Rules extracted from dir2/CODEOWNERS
-      dir2/*.ts @moe
+      dir2/**/*.ts @moe
       dir2/dir3/*.ts @miny
+      dir2/**/*.md @meeny 
+      dir2/**/dir4/ @eeny
       # Rule extracted from dir2/dir3/CODEOWNERS
-      dir2/dir3/*.ts @miny
+      dir2/dir3/**/*.ts @miny
 
       #################################### Generated content - do not edit! ####################################",
         ],
@@ -135,15 +147,23 @@ describe('Generate', () => {
       # To re-generate, run \`npm run codeowners-generator generate\`. Don't worry, the content outside this block will be kept.
 
       # Rule extracted from dir1/CODEOWNERS
-      dir1/*.ts @eeny @meeny
+      dir1/**/*.ts @eeny @meeny
       # Rule extracted from dir1/CODEOWNERS
-      dir1/README.md @miny
+      dir1/*.ts @miny
+      # Rule extracted from dir1/CODEOWNERS
+      dir1/**/README.md @miny
+      # Rule extracted from dir1/CODEOWNERS
+      dir1/README.md @moe
       # Rule extracted from dir2/CODEOWNERS
-      dir2/*.ts @moe
+      dir2/**/*.ts @moe
       # Rule extracted from dir2/CODEOWNERS
       dir2/dir3/*.ts @miny
+      # Rule extracted from dir2/CODEOWNERS
+      dir2/**/*.md @meeny
+      # Rule extracted from dir2/CODEOWNERS
+      dir2/**/dir4/ @eeny
       # Rule extracted from dir2/dir3/CODEOWNERS
-      dir2/dir3/*.ts @miny
+      dir2/dir3/**/*.ts @miny
 
       #################################### Generated content - do not edit! ####################################",
         ],
@@ -195,15 +215,23 @@ describe('Generate', () => {
       # Rule extracted from dir8/package.json
       dir8/ gbuilder@builder.com other.friend@domain.com
       # Rule extracted from dir1/CODEOWNERS
-      dir1/*.ts @eeny @meeny
+      dir1/**/*.ts @eeny @meeny
       # Rule extracted from dir1/CODEOWNERS
-      dir1/README.md @miny
+      dir1/*.ts @miny
+      # Rule extracted from dir1/CODEOWNERS
+      dir1/**/README.md @miny
+      # Rule extracted from dir1/CODEOWNERS
+      dir1/README.md @moe
       # Rule extracted from dir2/CODEOWNERS
-      dir2/*.ts @moe
+      dir2/**/*.ts @moe
       # Rule extracted from dir2/CODEOWNERS
       dir2/dir3/*.ts @miny
+      # Rule extracted from dir2/CODEOWNERS
+      dir2/**/*.md @meeny
+      # Rule extracted from dir2/CODEOWNERS
+      dir2/**/dir4/ @eeny
       # Rule extracted from dir2/dir3/CODEOWNERS
-      dir2/dir3/*.ts @miny
+      dir2/dir3/**/*.ts @miny
 
       #################################### Generated content - do not edit! ####################################"
     `);
@@ -251,13 +279,17 @@ describe('Generate', () => {
       # Rule extracted from dir2/dir1/package.json
       dir2/dir1/ friend@example.com other@example.com
       # Rules extracted from dir1/CODEOWNERS
-      dir1/*.ts @eeny @meeny
-      dir1/README.md @miny
+      dir1/**/*.ts @eeny @meeny
+      dir1/*.ts @miny
+      dir1/**/README.md @miny
+      dir1/README.md @moe
       # Rules extracted from dir2/CODEOWNERS
-      dir2/*.ts @moe
+      dir2/**/*.ts @moe
       dir2/dir3/*.ts @miny
+      dir2/**/*.md @meeny 
+      dir2/**/dir4/ @eeny
       # Rule extracted from dir2/dir3/CODEOWNERS
-      dir2/dir3/*.ts @miny
+      dir2/dir3/**/*.ts @miny
 
       #################################### Generated content - do not edit! ####################################"
     `);
@@ -301,15 +333,23 @@ describe('Generate', () => {
       # Rule extracted from dir2/dir1/package.json
       dir2/dir1/ friend@example.com other@example.com
       # Rule extracted from dir1/CODEOWNERS
-      dir1/*.ts @eeny @meeny
+      dir1/**/*.ts @eeny @meeny
       # Rule extracted from dir1/CODEOWNERS
-      dir1/README.md @miny
+      dir1/*.ts @miny
+      # Rule extracted from dir1/CODEOWNERS
+      dir1/**/README.md @miny
+      # Rule extracted from dir1/CODEOWNERS
+      dir1/README.md @moe
       # Rule extracted from dir2/CODEOWNERS
-      dir2/*.ts @moe
+      dir2/**/*.ts @moe
       # Rule extracted from dir2/CODEOWNERS
       dir2/dir3/*.ts @miny
+      # Rule extracted from dir2/CODEOWNERS
+      dir2/**/*.md @meeny
+      # Rule extracted from dir2/CODEOWNERS
+      dir2/**/dir4/ @eeny
       # Rule extracted from dir2/dir3/CODEOWNERS
-      dir2/dir3/*.ts @miny
+      dir2/dir3/**/*.ts @miny
 
       #################################### Generated content - do not edit! ####################################"
     `);
@@ -332,7 +372,7 @@ describe('Generate', () => {
       Array [
         Object {
           "filePath": "dir1/CODEOWNERS",
-          "glob": "dir1/*.ts",
+          "glob": "dir1/**/*.ts",
           "owners": Array [
             "@eeny",
             "@meeny",
@@ -340,14 +380,28 @@ describe('Generate', () => {
         },
         Object {
           "filePath": "dir1/CODEOWNERS",
-          "glob": "dir1/README.md",
+          "glob": "dir1/*.ts",
           "owners": Array [
             "@miny",
           ],
         },
         Object {
+          "filePath": "dir1/CODEOWNERS",
+          "glob": "dir1/**/README.md",
+          "owners": Array [
+            "@miny",
+          ],
+        },
+        Object {
+          "filePath": "dir1/CODEOWNERS",
+          "glob": "dir1/README.md",
+          "owners": Array [
+            "@moe",
+          ],
+        },
+        Object {
           "filePath": "dir2/CODEOWNERS",
-          "glob": "dir2/*.ts",
+          "glob": "dir2/**/*.ts",
           "owners": Array [
             "@moe",
           ],
@@ -360,8 +414,23 @@ describe('Generate', () => {
           ],
         },
         Object {
+          "filePath": "dir2/CODEOWNERS",
+          "glob": "dir2/**/*.md",
+          "owners": Array [
+            "@meeny",
+            "",
+          ],
+        },
+        Object {
+          "filePath": "dir2/CODEOWNERS",
+          "glob": "dir2/**/dir4/",
+          "owners": Array [
+            "@eeny",
+          ],
+        },
+        Object {
           "filePath": "dir2/dir3/CODEOWNERS",
-          "glob": "dir2/dir3/*.ts",
+          "glob": "dir2/dir3/**/*.ts",
           "owners": Array [
             "@miny",
           ],
