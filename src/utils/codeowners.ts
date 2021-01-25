@@ -142,7 +142,7 @@ const createMatcherCodeownersRule = (filePath: string, rule: string) => {
 
   if (owners.length && isValidCodeownersGlob(glob)) {
     return {
-      glob: join(dirname(filePath), translateGlob(glob)),
+      glob: join('/', dirname(filePath), translateGlob(glob)),
       owners,
     };
   } else {
@@ -199,7 +199,7 @@ const getOwnersFromMaintainerField = (filePath: string, content: string): ownerR
 
       return {
         filePath,
-        glob: `${dirname(filePath)}/`,
+        glob: join('/', dirname(filePath), '/'),
         owners,
       };
     } else {
