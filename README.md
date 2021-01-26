@@ -120,6 +120,8 @@ You can configure `codeowners-generator` from several places:
 
 - **groupSourceComments** (`--group-source-comments`): Instead of generating one comment per rule, enabling this flag will group them, reducing comments to one per source file. Useful if your codeowners file gets too noisy.
 
+- **customRegenerationCommand** (`--custom-regeneration-command`): Specify a custom regeneration command to be printed in the generated CODEOWNERS file, it should be mapped to run codeowners-generator (e.g. "npm run codeowners").
+
 For more details you can invoke:
 
 ```sh
@@ -137,7 +139,8 @@ You can also define custom configuration in your package:
     "includes": ["**/CODEOWNERS"],
     "output": ".github/CODEOWNERS",
     "useMaintainers": true,
-    "groupSourceComments": true
+    "groupSourceComments": true,
+    "customRegenerationCommand": "npm run codeowners"
   },
   "scripts": {
     "codeowners": " codeowners-generator generate"

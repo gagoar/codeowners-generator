@@ -26,7 +26,7 @@ program
   )
   .option(
     '--custom-regeneration-command',
-    'Specify a custom regeneration command which will run codeowners-generator and should be printed in the generated file.'
+    'Specify a custom regeneration command to be printed in the generated CODEOWNERS file, it should be mapped to run codeowners-generator'
   )
   .option('--output [output file]', 'The output path and name of the file, (default: CODEOWNERS)')
   .action(generateCommand);
