@@ -325,12 +325,12 @@ describe('Generate', () => {
       callback(null, content);
     });
 
-    await generateCommand({ customCommand: 'generate-codeowners' }, { parent: {} });
+    await generateCommand({ customRegenerationCommand: 'npx codeowners-generator generate' }, { parent: {} });
     expect(search).toHaveBeenCalled();
     expect(writeFile.mock.calls[0][1]).toMatchInlineSnapshot(`
       "#################################### Generated content - do not edit! ####################################
       # This block has been generated with codeowners-generator (for more information https://github.com/gagoar/codeowners-generator)
-      # To re-generate, run \`npm run generate-codeowners\`. Don't worry, the content outside this block will be kept.
+      # To re-generate, run \`npx codeowners-generator generate\`. Don't worry, the content outside this block will be kept.
 
       # Rule extracted from dir5/package.json
       /dir5/ friend@example.com other@example.com

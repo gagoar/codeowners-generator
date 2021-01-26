@@ -68,7 +68,7 @@ interface Options {
   useMaintainers?: boolean;
   groupSourceComments?: boolean;
   includes?: string[];
-  customCommand?: string;
+  customRegenerationCommand?: string;
 }
 
 export const command = async (options: Options, command: Command): Promise<void> => {
@@ -82,7 +82,7 @@ export const command = async (options: Options, command: Command): Promise<void>
 
   const groupSourceComments = globalOptions.groupSourceComments || options.groupSourceComments;
 
-  const customCommand = globalOptions.customCommand || options.customCommand;
+  const customCommand = globalOptions.customRegenerationCommand || options.customRegenerationCommand;
 
   debug('Options:', { ...globalOptions, useMaintainers, groupSourceComments, customCommand, output });
 

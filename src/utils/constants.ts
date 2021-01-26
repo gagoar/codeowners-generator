@@ -1,5 +1,4 @@
 import { stripIndents } from 'common-tags';
-import { existsSync } from 'fs';
 export const SUCCESS_SYMBOL = '💫';
 export const SHRUG_SYMBOL = '¯\\_(ツ)_/¯';
 export const OUTPUT = 'CODEOWNERS';
@@ -13,20 +12,22 @@ export const CONTENT_MARK = stripIndents`
 #################################### Generated content - do not edit! ####################################
 `;
 
-const isYarn = () => existsSync('./yarn.lock');
-
-const getContentLegend = (customCommand?: string) => stripIndents`
+const getContentLegend = (customRegenerationCommand?: string) => stripIndents`
 # This block has been generated with codeowners-generator (for more information https://github.com/gagoar/codeowners-generator)
 # ${
-  customCommand ? `To re-generate, run \`${isYarn() ? 'yarn' : 'npm run'} ${customCommand}\`. ` : ''
+  customRegenerationCommand ? `To re-generate, run \`${customRegenerationCommand}\`. ` : ''
 }Don't worry, the content outside this block will be kept. 
 `;
 
-export const contentTemplate = (generatedContent: string, originalContent: string, customCommand?: string): string => {
+export const contentTemplate = (
+  generatedContent: string,
+  originalContent: string,
+  customRegenerationCommand?: string
+): string => {
   return stripIndents`
   ${originalContent && originalContent}
   ${CONTENT_MARK}
-  ${getContentLegend(customCommand)}\n
+  ${getContentLegend(customRegenerationCommand)}\n
   ${generatedContent}\n
   ${CONTENT_MARK}\n
 `;

@@ -25,8 +25,8 @@ program
     false
   )
   .option(
-    '--custom-command',
-    'Specify a custom command which will run codeowners-generator and should be printed in the generated file.'
+    '--custom-regeneration-command',
+    'Specify a custom regeneration command which will run codeowners-generator and should be printed in the generated file.'
   )
   .option('--output [output file]', 'The output path and name of the file, (default: CODEOWNERS)')
   .action(generateCommand);
