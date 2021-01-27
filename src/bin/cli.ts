@@ -24,6 +24,10 @@ program
     'Instead of generating one comment per rule, enabling this flag will group them, reducing comments to one per source file. Useful if your codeowners file gets too noisy',
     false
   )
+  .option(
+    '--custom-regeneration-command',
+    'Specify a custom regeneration command to be printed in the generated CODEOWNERS file, it should be mapped to run codeowners-generator'
+  )
   .option('--output [output file]', 'The output path and name of the file, (default: CODEOWNERS)')
   .action(generateCommand);
 

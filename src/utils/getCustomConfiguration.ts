@@ -11,6 +11,7 @@ export type CustomConfig = {
   useMaintainers?: boolean;
   groupSourceComments?: boolean;
   output?: string;
+  customRegenerationCommand?: string;
 };
 
 export const getCustomConfiguration = async (): Promise<CustomConfig | void> => {
