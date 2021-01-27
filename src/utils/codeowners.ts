@@ -44,8 +44,8 @@ const filterGeneratedContent = (content: string) => {
 export const createOwnersFile = async (
   outputFile: string,
   ownerRules: ownerRule[],
-  groupSourceComments = false,
-  customRegenerationCommand: string | undefined = undefined
+  customRegenerationCommand?: string,
+  groupSourceComments = false
 ): Promise<void> => {
   let originalContent = '';
 

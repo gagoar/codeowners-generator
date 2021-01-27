@@ -90,7 +90,7 @@ export const command = async (options: Options, command: Command): Promise<void>
     const ownerRules = await generate({ rootDir: __dirname, verifyPaths, useMaintainers, ...globalOptions });
 
     if (ownerRules.length) {
-      await createOwnersFile(output, ownerRules, groupSourceComments, customRegenerationCommand);
+      await createOwnersFile(output, ownerRules, customRegenerationCommand, groupSourceComments);
 
       loader.stopAndPersist({ text: `CODEOWNERS file was created! location: ${output}`, symbol: SUCCESS_SYMBOL });
     } else {
