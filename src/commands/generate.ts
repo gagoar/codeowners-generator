@@ -82,15 +82,15 @@ export const command = async (options: Options, command: Command): Promise<void>
 
   const groupSourceComments = globalOptions.groupSourceComments || options.groupSourceComments;
 
-  const customCommand = globalOptions.customRegenerationCommand || options.customRegenerationCommand;
+  const customRegenerationCommand = globalOptions.customRegenerationCommand || options.customRegenerationCommand;
 
-  debug('Options:', { ...globalOptions, useMaintainers, groupSourceComments, customCommand, output });
+  debug('Options:', { ...globalOptions, useMaintainers, groupSourceComments, customRegenerationCommand, output });
 
   try {
     const ownerRules = await generate({ rootDir: __dirname, verifyPaths, useMaintainers, ...globalOptions });
 
     if (ownerRules.length) {
-      await createOwnersFile(output, ownerRules, groupSourceComments, customCommand);
+      await createOwnersFile(output, ownerRules, groupSourceComments, customRegenerationCommand);
 
       loader.stopAndPersist({ text: `CODEOWNERS file was created! location: ${output}`, symbol: SUCCESS_SYMBOL });
     } else {
