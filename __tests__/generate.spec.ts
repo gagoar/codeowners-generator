@@ -53,7 +53,10 @@ describe('Generate', () => {
       callback(null, content);
     });
 
-    await generateCommand({ output: 'CODEOWNERS' }, { parent: {} });
+    await generateCommand(
+      { output: 'CODEOWNERS', customRegenerationCommand: 'yarn codeowners-generator generate' },
+      { parent: {} }
+    );
     expect(writeFile.mock.calls[0]).toMatchInlineSnapshot(`
       Array [
         "CODEOWNERS",
@@ -65,7 +68,7 @@ describe('Generate', () => {
 
       #################################### Generated content - do not edit! ####################################
       # This block has been generated with codeowners-generator (for more information https://github.com/gagoar/codeowners-generator)
-      # Don't worry, the content outside this block will be kept.
+      # To re-generate, run \`yarn codeowners-generator generate\`. Don't worry, the content outside this block will be kept.
 
       # Rule extracted from dir1/CODEOWNERS
       /dir1/**/*.ts @eeny @meeny
@@ -90,7 +93,7 @@ describe('Generate', () => {
       ]
     `);
   });
-  it('should generate a CODEOWNERS FILE with groupSourceComments', async () => {
+  it('should generate a CODEOWNERS FILE with groupSourceComments and customRegenerationCommand', async () => {
     sync.mockReturnValueOnce(Object.keys(files));
 
     sync.mockReturnValueOnce(['.gitignore']);
@@ -100,14 +103,21 @@ describe('Generate', () => {
       callback(null, content);
     });
 
-    await generateCommand({ output: 'CODEOWNERS', groupSourceComments: true }, { parent: {} });
+    await generateCommand(
+      {
+        output: 'CODEOWNERS',
+        groupSourceComments: true,
+        customRegenerationCommand: 'npm run codeowners-generator generate',
+      },
+      { parent: {} }
+    );
     expect(writeFile.mock.calls).toMatchInlineSnapshot(`
       Array [
         Array [
           "CODEOWNERS",
           "#################################### Generated content - do not edit! ####################################
       # This block has been generated with codeowners-generator (for more information https://github.com/gagoar/codeowners-generator)
-      # Don't worry, the content outside this block will be kept.
+      # To re-generate, run \`npm run codeowners-generator generate\`. Don't worry, the content outside this block will be kept.
 
       # Rules extracted from dir1/CODEOWNERS
       /dir1/**/*.ts @eeny @meeny
