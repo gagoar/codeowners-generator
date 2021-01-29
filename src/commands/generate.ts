@@ -45,11 +45,11 @@ export const generate: Generate = async ({ rootDir, includes, useMaintainers = f
       >;
 
       if (groups.json?.length) {
-        const dirNames = new Set(groups.txt?.map((path: string) => dirname(path)));
-        const filteredJSONs: string[] = groups.json.filter((file: string) => {
-          if (dirNames.has(dirname(file))) {
+        const codeownersDirNames = new Set(groups.txt?.map((path: string) => dirname(path)));
+        const filteredJSONs: string[] = groups.json.filter((packageJsonFile: string) => {
+          if (codeownersDirNames.has(dirname(packageJsonFile))) {
             console.warn(
-              `We will ignore the package.json ${file}, given that we have encountered a CODEOWNERS file at the same dir level`
+              `We will ignore the package.json ${packageJsonFile}, given that we have encountered a CODEOWNERS file at the same dir level`
             );
             return false;
           }
