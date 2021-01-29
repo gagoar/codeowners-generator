@@ -1,5 +1,5 @@
 import ora from 'ora';
-import { basename } from 'path';
+import { basename, dirname } from 'path';
 import { sync } from 'fast-glob';
 import { Command, getGlobalOptions } from '../utils/getGlobalOptions';
 import { OUTPUT, INCLUDES, SUCCESS_SYMBOL, SHRUG_SYMBOL, PACKAGE_JSON_PATTERN } from '../utils/constants';
@@ -45,7 +45,18 @@ export const generate: Generate = async ({ rootDir, includes, useMaintainers = f
       >;
 
       if (groups.json?.length) {
-        codeOwners = [...codeOwners, ...(await loadOwnersFromPackage(rootDir, groups.json))];
+        const dirNames = new Set(groups.txt?.map((path: string) => dirname(path)));
+        const filteredJSONs: string[] = groups.json.filter((file: string) => {
+          if (dirNames.has(dirname(file))) {
+            console.warn(
+              `We will ignore the package.json ${file}, given that we have encountered a CODEOWNERS file at the same dir level`
+            );
+            return false;
+          }
+          return true;
+        });
+
+        codeOwners = [...codeOwners, ...(await loadOwnersFromPackage(rootDir, filteredJSONs))];
       }
 
       files = groups.txt ?? [];
