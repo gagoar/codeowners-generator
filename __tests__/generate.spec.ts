@@ -1,11 +1,12 @@
 import * as fs from 'fs';
 import * as fg from 'fast-glob';
 
+import path from 'path';
 import { generateCommand } from '../';
 import { generate } from '../src/commands/generate';
 import { fail, stopAndPersist } from '../__mocks__/ora';
 import { search } from '../__mocks__/cosmiconfig';
-import path from 'path';
+import { mockConsole, unMockConsole } from './helpers';
 
 jest.mock('fs');
 jest.mock('fast-glob');
@@ -28,6 +29,14 @@ const withGitIgnore = { ...files, '.gitignore': '../__mocks__/gitIgnore1' };
 
 type Callback = (err: Error | null, response: unknown) => void;
 describe('Generate', () => {
+  let consoleWarnMock: jest.Mock;
+  beforeAll(() => {
+    consoleWarnMock = mockConsole('warn');
+  });
+  afterAll(() => {
+    unMockConsole('warn');
+  });
+
   beforeEach(() => {
     sync.mockRestore();
     stopAndPersist.mockClear();
@@ -35,6 +44,7 @@ describe('Generate', () => {
     existsSync.mockRestore();
     search.mockRestore();
     fail.mockReset();
+    consoleWarnMock.mockReset();
   });
 
   it('should generate a CODEOWNERS file (re-using codeowners content)', async () => {
@@ -181,6 +191,78 @@ describe('Generate', () => {
     `);
   });
 
+  it('should generate a CODEOWNERS FILE with package.contributors and package.author field and removing package.json when a CODEOWNERS file exist at the same level', async () => {
+    search.mockImplementationOnce(() =>
+      Promise.resolve({
+        isEmpty: false,
+        filepath: '/some/package.json',
+        config: {
+          output: 'CODEOWNERS',
+          useMaintainers: true,
+        },
+      })
+    );
+
+    const packageFiles = {
+      ...files,
+      'dir1/package.json': '../__mocks__/package1.json',
+      'dir2/dir1/package.json': '../__mocks__/package2.json',
+      'dir6/package.json': '../__mocks__/package3.json',
+      'dir7/package.json': '../__mocks__/package4.json',
+      'dir8/package.json': '../__mocks__/package5.json',
+    };
+
+    sync.mockReturnValueOnce(Object.keys(packageFiles));
+
+    sync.mockReturnValueOnce(['.gitignore']);
+    const withAddedPackageFiles = { ...packageFiles, ...withGitIgnore };
+    readFile.mockImplementation((file: keyof typeof withAddedPackageFiles, callback: Callback) => {
+      const content = readFileSync(path.join(__dirname, withAddedPackageFiles[file]));
+      callback(null, content);
+    });
+
+    await generateCommand({}, { parent: {} });
+    expect(search).toHaveBeenCalled();
+
+    expect(consoleWarnMock).toHaveBeenCalled();
+    expect(consoleWarnMock.mock.calls).toMatchInlineSnapshot(`
+      Array [
+        Array [
+          "We will ignore the package.json dir1/package.json, given that we have encountered a CODEOWNERS file at the same dir level",
+        ],
+      ]
+    `);
+    expect(writeFile.mock.calls[0][1]).toMatchInlineSnapshot(`
+      "#################################### Generated content - do not edit! ####################################
+      # This block has been generated with codeowners-generator (for more information https://github.com/gagoar/codeowners-generator)
+      # Don't worry, the content outside this block will be kept.
+
+      # Rule extracted from dir2/dir1/package.json
+      /dir2/dir1/ friend@example.com other@example.com
+      # Rule extracted from dir8/package.json
+      /dir8/ gbuilder@builder.com other.friend@domain.com
+      # Rule extracted from dir1/CODEOWNERS
+      /dir1/**/*.ts @eeny @meeny
+      # Rule extracted from dir1/CODEOWNERS
+      /dir1/*.ts @miny
+      # Rule extracted from dir1/CODEOWNERS
+      /dir1/**/README.md @miny
+      # Rule extracted from dir1/CODEOWNERS
+      /dir1/README.md @moe
+      # Rule extracted from dir2/CODEOWNERS
+      /dir2/**/*.ts @moe
+      # Rule extracted from dir2/CODEOWNERS
+      /dir2/dir3/*.ts @miny
+      # Rule extracted from dir2/CODEOWNERS
+      /dir2/**/*.md @meeny
+      # Rule extracted from dir2/CODEOWNERS
+      /dir2/**/dir4/ @eeny
+      # Rule extracted from dir2/dir3/CODEOWNERS
+      /dir2/dir3/**/*.ts @miny
+
+      #################################### Generated content - do not edit! ####################################"
+    `);
+  });
   it('should generate a CODEOWNERS FILE with package.contributors and package.author field using cosmiconfig', async () => {
     search.mockImplementationOnce(() =>
       Promise.resolve({
