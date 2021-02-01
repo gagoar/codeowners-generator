@@ -18,14 +18,14 @@
 
   <h3 align="center">codeowners-generator</h3>
   <p align="center">
-     <a href="https://github.com/gagoar/use-herald-action">
+     <a href="https://gagoar.github.io/codeowners-generator/">
         <img src="images/logo.png" alt="Logo" width="128" height="128">
     </a>
   </p>
   <p align="center">
     ✨ use codeowners anywhere in your monorepo 🛠️
     <br />
-    <a href="https://github.com/gagoar/codeowners-generator#table-of-contents"><strong>Explore the docs »</strong></a>
+    <a href="https://gagoar.github.io/codeowners-generator/"><strong>Explore the docs »</strong></a>
     <br />
     <a href="https://github.com/gagoar/codeowners-generator/issues">Report Bug</a>
     ·
