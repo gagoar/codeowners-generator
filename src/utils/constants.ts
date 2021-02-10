@@ -25,7 +25,8 @@ export const contentTemplate = (
   customRegenerationCommand?: string
 ): string => {
   return stripIndents`
-  ${originalContent && originalContent}
+  ${originalContent && originalContent.trimEnd()}
+
   ${CONTENT_MARK}
   ${getContentLegend(customRegenerationCommand)}\n
   ${generatedContent}\n
