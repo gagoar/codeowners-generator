@@ -75,7 +75,6 @@ describe('Generate', () => {
       # We might wanna keep an eye on something else, like yml files and workflows.
       .github/workflows/ @myOrg/infraTeam
 
-
       #################################### Generated content - do not edit! ####################################
       # This block has been generated with codeowners-generator (for more information https://github.com/gagoar/codeowners-generator)
       # To re-generate, run \`yarn codeowners-generator generate\`. Don't worry, the content outside this block will be kept.
