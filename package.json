@@ -42,8 +42,7 @@
   "eslintConfig": {
     "extends": [
       "plugin:@typescript-eslint/recommended",
-      "prettier",
-      "prettier/@typescript-eslint"
+      "prettier"
     ],
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
@@ -118,7 +117,7 @@
     "auto-changelog": "2.2.1",
     "esbuild": "0.11.19",
     "eslint": "7.20.0",
-    "eslint-config-prettier": "7.2.0",
+    "eslint-config-prettier": "8.3.0",
     "husky": "6.0.0",
     "jest": "26.6.3",
     "jest-mock-process": "1.4.0",
