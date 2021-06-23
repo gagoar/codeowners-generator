@@ -5,6 +5,6 @@ const ora = {
   start: jest.fn(() => ({
     stopAndPersist,
     fail,
-  }))
-}
+  })),
+};
 export default (): typeof ora => ora;
