@@ -14,9 +14,9 @@ jest.mock('cosmiconfig');
 
 const { readFileSync } = jest.requireActual('fs');
 const sync = fg.sync as jest.Mock<unknown>;
-const readFile = (fs.readFile as unknown) as jest.Mock<unknown>;
-const writeFile = (fs.writeFileSync as unknown) as jest.Mock<unknown>;
-const existsSync = (fs.existsSync as unknown) as jest.Mock<unknown>;
+const readFile = fs.readFile as unknown as jest.Mock<unknown>;
+const writeFile = fs.writeFileSync as unknown as jest.Mock<unknown>;
+const existsSync = fs.existsSync as unknown as jest.Mock<unknown>;
 
 const files = {
   'dir1/CODEOWNERS': '../__mocks__/CODEOWNERS1',
