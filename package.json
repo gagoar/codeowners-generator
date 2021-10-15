@@ -102,7 +102,7 @@
     "fast-glob": "3.2.5",
     "ignore": "5.1.8",
     "lodash.groupby": "4.6.0",
-    "ora": "5.4.0",
+    "ora": "5.4.1",
     "parse-glob": "3.0.4"
   },
   "devDependencies": {
