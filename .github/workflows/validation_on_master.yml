@@ -35,7 +35,7 @@ jobs:
       - name: Jest
         run: npm run test --coverage
       - name: Send coverage to codecov
-        uses: codecov/codecov-action@v1
+        uses: codecov/codecov-action@v2
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           flags: unittests
