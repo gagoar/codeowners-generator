@@ -114,7 +114,7 @@
     "@types/parse-glob": "3.0.29",
     "@typescript-eslint/eslint-plugin": "4.28.0",
     "@typescript-eslint/parser": "4.28.0",
-    "auto-changelog": "2.2.1",
+    "auto-changelog": "2.4.0",
     "esbuild": "0.14.25",
     "eslint": "7.32.0",
     "eslint-config-prettier": "8.3.0",
