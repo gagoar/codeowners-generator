@@ -97,7 +97,7 @@
   "dependencies": {
     "commander": "7.2.0",
     "common-tags": "1.8.2",
-    "cosmiconfig": "7.0.0",
+    "cosmiconfig": "7.0.1",
     "debug": "4.3.2",
     "fast-glob": "3.2.11",
     "ignore": "5.1.9",
