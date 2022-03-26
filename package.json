@@ -96,7 +96,7 @@
   "author": "Gago <xeroice@gmail.com>",
   "dependencies": {
     "commander": "7.2.0",
-    "common-tags": "1.8.0",
+    "common-tags": "1.8.2",
     "cosmiconfig": "7.0.0",
     "debug": "4.3.2",
     "fast-glob": "3.2.11",
