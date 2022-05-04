@@ -101,17 +101,17 @@
     "debug": "4.3.2",
     "fast-glob": "3.2.11",
     "ignore": "5.1.9",
+    "is-glob": "4.0.3",
     "lodash.groupby": "4.6.0",
-    "ora": "5.4.1",
-    "parse-glob": "3.0.4"
+    "ora": "5.4.1"
   },
   "devDependencies": {
     "@types/common-tags": "1.8.1",
     "@types/debug": "4.1.7",
+    "@types/is-glob": "4.0.2",
     "@types/jest": "27.0.2",
     "@types/lodash.groupby": "4.6.6",
     "@types/node": "16.11.18",
-    "@types/parse-glob": "3.0.29",
     "@typescript-eslint/eslint-plugin": "4.28.0",
     "@typescript-eslint/parser": "4.28.0",
     "auto-changelog": "2.4.0",

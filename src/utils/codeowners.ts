@@ -1,5 +1,5 @@
 import fs from 'fs';
-import parseGlob from 'parse-glob';
+import isGlob from 'is-glob';
 import {
   MAINTAINERS_EMAIL_PATTERN,
   contentTemplate,
@@ -85,18 +85,17 @@ const isValidCodeownersGlob = (glob: string) => {
     // A pattern must be string and cannot be empty
     return false;
   }
-  const parsedGlob = parseGlob(glob);
 
   // These controls are based on the Github CODEOWNERS syntax documentation
   // https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/about-code-owners#codeowners-syntax
   // as well as the gitignore pattern format which it extends
   // https://git-scm.com/docs/gitignore#_pattern_format
 
-  if (parsedGlob.is.negated) {
+  if (glob.startsWith('!')) {
     // A pattern cannot use ! to negate
     return false;
   }
-  if (parsedGlob.is.braces) {
+  if (glob.includes('{') || glob.includes('}')) {
     // A pattern cannot use { } for brace expansion or brace sets
     return false;
   }
@@ -104,7 +103,7 @@ const isValidCodeownersGlob = (glob: string) => {
     // A pattern cannot start with an escaped # using \ so it is treated as a pattern and not a comment
     return false;
   }
-  if (parsedGlob.is.glob && CHARACTER_RANGE_PATTERN.test(parsedGlob.glob)) {
+  if (isGlob(glob) && CHARACTER_RANGE_PATTERN.test(glob)) {
     // A pattern cannot use [ ] to define a character range
     return false;
   }
@@ -113,21 +112,19 @@ const isValidCodeownersGlob = (glob: string) => {
 };
 
 const translateGlob = (glob: string) => {
-  const parsedGlob = parseGlob(glob);
-
   if (glob.startsWith('/')) {
     // Patterns starting with a slash should match based on the current dir.
     return glob;
   }
 
-  if (parsedGlob.base === '.' && !parsedGlob.is.globstar) {
+  if (!glob.includes('/') && !glob.includes('**')) {
     // For patterns that are might be globs but not globstars, they match
     // they match files in any folder.
     // This matches e.g. `*`, `*.ts`, `something.ts`, and `something`.
     return join('**', glob);
   }
 
-  if (parsedGlob.base !== '.' && !parsedGlob.is.glob && glob.indexOf('/') === glob.length - 1) {
+  if (!isGlob(glob) && glob.indexOf('/') === glob.length - 1) {
     // For patterns that are not globs and contain one slash trailing slash (e.g. `apps/`),
     // they match directories in any folder.
     return join('**', glob);
