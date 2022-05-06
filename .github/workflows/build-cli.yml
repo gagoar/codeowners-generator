@@ -11,7 +11,7 @@ jobs:
     uses: gagoar/ts-node-template/.github/workflows/get_node_version.yml@main
 
   build:
-    name: Run build
+    name: build-cli
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
