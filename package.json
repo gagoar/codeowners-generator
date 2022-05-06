@@ -123,7 +123,7 @@
     "jest-mock-process": "1.4.1",
     "lint-staged": "12.4.1",
     "prettier": "2.6.2",
-    "prettier-eslint": "13.0.0",
+    "prettier-eslint": "14.0.2",
     "prettier-eslint-cli": "5.0.1",
     "ts-jest": "27.0.7",
     "ts-node": "10.5.0",
