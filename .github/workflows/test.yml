@@ -1,0 +1,19 @@
+name: test
+
+on: [pull_request]
+
+jobs:
+  getNodeVersion:
+    uses: gagoar/github-app-installation-token/.github/workflows/node_version.yml@main
+
+  test:
+    runs-on: ubuntu-latest
+    needs: getNodeVersion
+    steps:
+      - uses: actions/checkout@main
+      - name: Setting node version to ${{ needs.getNodeVersion.outputs.node_version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: '${{ needs.getNodeVersion.outputs.node_version }}'
+      - run: npm install
+      - run: npm run test
