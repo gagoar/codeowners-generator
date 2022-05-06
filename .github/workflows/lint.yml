@@ -1,10 +1,14 @@
-name: lint
+name: Lint
 
-on: [pull_request]
+on:
+  push:
+    branches:
+      - master
+  pull_request:
 
 jobs:
   getNodeVersion:
-    uses: gagoar/github-app-installation-token/.github/workflows/node_version.yml@main
+    uses: gagoar/ts-node-template/.github/workflows/get_node_version.yml@main
 
   lint:
     runs-on: ubuntu-latest
