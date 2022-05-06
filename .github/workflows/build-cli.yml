@@ -1,0 +1,25 @@
+name: build-cli
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+jobs:
+  getNodeVersion:
+    uses: gagoar/ts-node-template/.github/workflows/get_node_version.yml@main
+
+  build:
+    name: build-cli
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js 12.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: 12.x
+      - name: Install dependencies
+        run: npm install
+      - name: Build
+        run: npm run build-cli
