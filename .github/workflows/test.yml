@@ -21,3 +21,12 @@ jobs:
           node-version: '${{ needs.getNodeVersion.outputs.node_version }}'
       - run: npm install
       - run: npm run test
+      - name: Send coverage to codecov
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          flags: unittests
+      - name: Coveralls
+        uses: coverallsapp/github-action@1.1.3
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
