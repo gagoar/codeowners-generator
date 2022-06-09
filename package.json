@@ -120,7 +120,7 @@
     "eslint-config-prettier": "8.5.0",
     "husky": "7.0.4",
     "jest": "27.5.1",
-    "jest-mock-process": "1.4.1",
+    "jest-mock-process": "1.5.1",
     "lint-staged": "12.4.1",
     "prettier": "2.6.2",
     "prettier-eslint": "14.1.0",
