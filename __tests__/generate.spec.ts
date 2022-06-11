@@ -13,10 +13,10 @@ jest.mock('fast-glob');
 jest.mock('cosmiconfig');
 
 const { readFileSync } = jest.requireActual('fs');
-const sync = fg.sync as jest.Mock<unknown>;
-const readFile = fs.readFile as unknown as jest.Mock<unknown>;
-const writeFile = fs.writeFileSync as unknown as jest.Mock<unknown>;
-const existsSync = fs.existsSync as unknown as jest.Mock<unknown>;
+const sync = jest.mocked(fg.sync);
+const readFile = jest.mocked(fs.readFile);
+const writeFile = jest.mocked(fs.writeFileSync);
+const existsSync = jest.mocked(fs.existsSync);
 
 const files = {
   'dir1/CODEOWNERS': '../__mocks__/CODEOWNERS1',
@@ -27,7 +27,6 @@ const files = {
 
 const withGitIgnore = { ...files, '.gitignore': '../__mocks__/gitIgnore1' };
 
-type Callback = (err: Error | null, response: unknown) => void;
 describe('Generate', () => {
   let consoleWarnMock: jest.Mock;
   beforeAll(() => {
@@ -57,8 +56,11 @@ describe('Generate', () => {
       CODEOWNERS: '../__mocks__/CODEOWNERS_POPULATED_OUTPUT',
     };
     existsSync.mockReturnValue(true);
-    readFile.mockImplementation((file: keyof typeof withPopulatedCodeownersFile, callback: Callback) => {
-      const fullPath = path.join(__dirname, withPopulatedCodeownersFile[file]);
+    readFile.mockImplementation((file, callback): void => {
+      const fullPath = path.join(
+        __dirname,
+        withPopulatedCodeownersFile[file as keyof typeof withPopulatedCodeownersFile]
+      );
       const content = readFileSync(fullPath);
       callback(null, content);
     });
@@ -107,8 +109,8 @@ describe('Generate', () => {
 
     sync.mockReturnValueOnce(['.gitignore']);
 
-    readFile.mockImplementation((file: keyof typeof withGitIgnore, callback: Callback) => {
-      const content = readFileSync(path.join(__dirname, withGitIgnore[file]));
+    readFile.mockImplementation((file, callback) => {
+      const content = readFileSync(path.join(__dirname, withGitIgnore[file as keyof typeof withGitIgnore]));
       callback(null, content);
     });
 
@@ -151,8 +153,8 @@ describe('Generate', () => {
 
     sync.mockReturnValueOnce(['.gitignore']);
 
-    readFile.mockImplementation((file: keyof typeof withGitIgnore, callback: Callback) => {
-      const content = readFileSync(path.join(__dirname, withGitIgnore[file]));
+    readFile.mockImplementation((file, callback) => {
+      const content = readFileSync(path.join(__dirname, withGitIgnore[file as keyof typeof withGitIgnore]));
       callback(null, content);
     });
 
@@ -215,8 +217,10 @@ describe('Generate', () => {
 
     sync.mockReturnValueOnce(['.gitignore']);
     const withAddedPackageFiles = { ...packageFiles, ...withGitIgnore };
-    readFile.mockImplementation((file: keyof typeof withAddedPackageFiles, callback: Callback) => {
-      const content = readFileSync(path.join(__dirname, withAddedPackageFiles[file]));
+    readFile.mockImplementation((file, callback) => {
+      const content = readFileSync(
+        path.join(__dirname, withAddedPackageFiles[file as keyof typeof withAddedPackageFiles])
+      );
       callback(null, content);
     });
 
@@ -287,8 +291,10 @@ describe('Generate', () => {
 
     sync.mockReturnValueOnce(['.gitignore']);
     const withAddedPackageFiles = { ...packageFiles, ...withGitIgnore };
-    readFile.mockImplementation((file: keyof typeof withAddedPackageFiles, callback: Callback) => {
-      const content = readFileSync(path.join(__dirname, withAddedPackageFiles[file]));
+    readFile.mockImplementation((file, callback) => {
+      const content = readFileSync(
+        path.join(__dirname, withAddedPackageFiles[file as keyof typeof withAddedPackageFiles])
+      );
       callback(null, content);
     });
 
@@ -353,8 +359,10 @@ describe('Generate', () => {
 
     sync.mockReturnValueOnce(['.gitignore']);
     const withAddedPackageFiles = { ...packageFiles, ...withGitIgnore };
-    readFile.mockImplementation((file: keyof typeof withAddedPackageFiles, callback: Callback) => {
-      const content = readFileSync(path.join(__dirname, withAddedPackageFiles[file]));
+    readFile.mockImplementation((file, callback) => {
+      const content = readFileSync(
+        path.join(__dirname, withAddedPackageFiles[file as keyof typeof withAddedPackageFiles])
+      );
       callback(null, content);
     });
 
@@ -411,8 +419,10 @@ describe('Generate', () => {
 
     sync.mockReturnValueOnce(['.gitignore']);
     const withAddedPackageFiles = { ...packageFiles, ...withGitIgnore };
-    readFile.mockImplementation((file: keyof typeof withAddedPackageFiles, callback: Callback) => {
-      const content = readFileSync(path.join(__dirname, withAddedPackageFiles[file]));
+    readFile.mockImplementation((file, callback) => {
+      const content = readFileSync(
+        path.join(__dirname, withAddedPackageFiles[file as keyof typeof withAddedPackageFiles])
+      );
       callback(null, content);
     });
 
@@ -462,8 +472,10 @@ describe('Generate', () => {
 
     sync.mockReturnValueOnce(['.gitignore']);
     const withAddedPackageFiles = { ...packageFiles, ...withGitIgnore };
-    readFile.mockImplementation((file: keyof typeof withAddedPackageFiles, callback: Callback) => {
-      const content = readFileSync(path.join(__dirname, withAddedPackageFiles[file]));
+    readFile.mockImplementation((file, callback) => {
+      const content = readFileSync(
+        path.join(__dirname, withAddedPackageFiles[file as keyof typeof withAddedPackageFiles])
+      );
       callback(null, content);
     });
 
@@ -511,8 +523,8 @@ describe('Generate', () => {
       ...files,
       ...withGitIgnore,
     };
-    readFile.mockImplementation((file: keyof typeof filesWithIgnore, callback: Callback) => {
-      const content = readFileSync(path.join(__dirname, filesWithIgnore[file]));
+    readFile.mockImplementation((file, callback) => {
+      const content = readFileSync(path.join(__dirname, filesWithIgnore[file as keyof typeof filesWithIgnore]));
       callback(null, content);
     });
 
@@ -624,8 +636,8 @@ describe('Generate', () => {
       ...files,
       ...withGitIgnore,
     };
-    readFile.mockImplementation((file: keyof typeof filesWithIgnore, callback: Callback) => {
-      const content = readFileSync(path.join(__dirname, filesWithIgnore[file]));
+    readFile.mockImplementation((file, callback) => {
+      const content = readFileSync(path.join(__dirname, filesWithIgnore[file as keyof typeof filesWithIgnore]));
       callback(null, content);
     });
     search.mockImplementationOnce(() => Promise.reject(new Error('some malformed configuration')));
@@ -644,8 +656,8 @@ describe('Generate', () => {
     sync.mockReturnValueOnce(Object.keys(files));
     sync.mockReturnValueOnce(['.gitignore']);
 
-    readFile.mockImplementation((file: keyof typeof files, callback: Callback) => {
-      const content = readFileSync(path.join(__dirname, files[file]));
+    readFile.mockImplementation((file, callback) => {
+      const content = readFileSync(path.join(__dirname, files[file as keyof typeof files]));
       callback(null, content);
     });
 
@@ -671,8 +683,8 @@ describe('Generate', () => {
       })
     );
 
-    readFile.mockImplementation((file: keyof typeof addedMalformedFiles, callback: Callback) => {
-      const content = readFileSync(path.join(__dirname, addedMalformedFiles[file]));
+    readFile.mockImplementation((file, callback) => {
+      const content = readFileSync(path.join(__dirname, addedMalformedFiles[file as keyof typeof addedMalformedFiles]));
       callback(null, content);
     });
 

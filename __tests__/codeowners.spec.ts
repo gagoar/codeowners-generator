@@ -1,9 +1,9 @@
 import { loadCodeOwnerFiles } from '../src/utils/codeowners';
-import * as readContent from '../src/utils/readContent';
+import { readContent } from '../src/utils/readContent';
 
 jest.mock('../src/utils/readContent');
 
-const readContentMock = readContent.readContent as jest.Mock<ReturnType<typeof readContent.readContent>>;
+const readContentMock = jest.mocked(readContent);
 
 describe('Codeowners', () => {
   describe('loadCodeOwnerFiles', () => {
