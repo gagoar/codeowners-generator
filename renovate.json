@@ -11,7 +11,7 @@
       "description": "Update codeowners-generator references in Markdown files",
       "matchPackageNames": ["codeowners-generator"],
       "matchPaths": [".md"],
-      "commitMessageTopic": "Update references to {{{depName}}}",
+      "commitMessageTopic": "references to {{{depName}}}",
       "additionalBranchPrefix": "docs-"
     }
   ],
