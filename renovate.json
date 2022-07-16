@@ -6,6 +6,21 @@
       "description": "Require dashboard approval for major updates",
       "matchUpdateTypes": ["major"],
       "dependencyDashboardApproval": true
+    },
+    {
+      "description": "Update references to codeowners-generator in Markdown files weekly",
+      "matchPackageNames": ["codeowners-generator"],
+      "matchPaths": [".md"],
+      "commitMessageTopic": "Update references to {{{depName}}}",
+      "additionalBranchPrefix": "docs-"
+    }
+  ],
+  "regexManagers": [
+    {
+      "description": "Update codeowners-generator references in Markdown files",
+      "fileMatch": ["\\.md$"],
+      "matchStrings": ["\"(?<depName>codeowners-generator)\": \"(?<currentValue>.*?)\""],
+      "datasourceTemplate": "npm"
     }
   ]
 }
