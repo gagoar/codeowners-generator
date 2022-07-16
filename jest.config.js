@@ -12,7 +12,9 @@ module.exports = {
   },
   preset: 'ts-jest',
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
-  testURL: 'http://localhost',
+  testEnvironmentOptions: {
+    url: 'http://localhost',
+  },
   transformIgnorePatterns: ['[/\\\\]node_modules[/\\\\].+\\.(js|jsx)$'],
   testMatch: ['**/*.(spec|test).{ts,tsx}'],
   collectCoverage: true,
