@@ -146,7 +146,7 @@ You can also define custom configuration in your package:
     "codeowners": " codeowners-generator generate"
   },
   "devDependencies": {
-    "codeowners-generator": "^1.0.0"
+    "codeowners-generator": "^2.0.0"
   }
 }
 ```
