@@ -116,7 +116,7 @@
     "@typescript-eslint/parser": "5.23.0",
     "auto-changelog": "2.4.0",
     "esbuild": "0.14.43",
-    "eslint": "8.14.0",
+    "eslint": "8.19.0",
     "eslint-config-prettier": "8.5.0",
     "husky": "7.0.4",
     "jest": "28.1.3",
