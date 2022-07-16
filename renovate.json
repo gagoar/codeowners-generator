@@ -8,7 +8,7 @@
       "dependencyDashboardApproval": true
     },
     {
-      "description": "Update references to codeowners-generator in Markdown files weekly",
+      "description": "Update codeowners-generator references in Markdown files",
       "matchPackageNames": ["codeowners-generator"],
       "matchPaths": [".md"],
       "commitMessageTopic": "Update references to {{{depName}}}",
