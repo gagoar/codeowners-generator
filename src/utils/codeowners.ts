@@ -194,9 +194,16 @@ const getOwnersFromMaintainerField = (filePath: string, content: string): ownerR
         );
       }
 
+      let glob = join('/', dirname(filePath), '/');
+
+      if (glob === '/') {
+        // A slash ('/') for the root is not valid, using a glob-star is probably more reasonable.
+        glob = '*';
+      }
+
       return {
         filePath,
-        glob: join('/', dirname(filePath), '/'),
+        glob,
         owners,
       };
     } else {
