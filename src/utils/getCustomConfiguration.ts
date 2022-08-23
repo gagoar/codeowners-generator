@@ -9,6 +9,7 @@ const debug = logger('customConfiguration');
 export type CustomConfig = {
   includes?: string[];
   useMaintainers?: boolean;
+  useRootMaintainers?: boolean;
   groupSourceComments?: boolean;
   output?: string;
   customRegenerationCommand?: string;

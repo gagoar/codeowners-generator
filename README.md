@@ -118,6 +118,8 @@ You can configure `codeowners-generator` from several places:
 
 - **useMaintainers** (`--use-maintainers`): It will use `maintainers` field from package.json to generate codeowners, by default it will use `**/package.json`
 
+- **useRootMaintainers** (`--use-root-maintainers`): It will use `maintainers` field from the package.json in the root to generate default codeowners. Works only in conjunction with `useMaintainers`. `default: false`
+
 - **groupSourceComments** (`--group-source-comments`): Instead of generating one comment per rule, enabling this flag will group them, reducing comments to one per source file. Useful if your codeowners file gets too noisy.
 
 - **customRegenerationCommand** (`--custom-regeneration-command`): Specify a custom regeneration command to be printed in the generated CODEOWNERS file, it should be mapped to run codeowners-generator (e.g. "npm run codeowners").
@@ -139,6 +141,7 @@ You can also define custom configuration in your package:
     "includes": ["**/CODEOWNERS"],
     "output": ".github/CODEOWNERS",
     "useMaintainers": true,
+    "useRootMaintainers": true,
     "groupSourceComments": true,
     "customRegenerationCommand": "npm run codeowners"
   },

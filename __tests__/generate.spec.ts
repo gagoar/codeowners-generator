@@ -515,6 +515,37 @@ describe('Generate', () => {
       #################################### Generated content - do not edit! ####################################"
     `);
   });
+  it('should generate a CODEOWNERS FILE with package.maintainers field for root package.json', async () => {
+    const packageFiles = {
+      'package.json': '../__mocks__/package1.json',
+      'dir2/package.json': '../__mocks__/package2.json',
+    };
+
+    sync.mockReturnValueOnce(['package.json', 'dir2/package.json']);
+
+    sync.mockReturnValueOnce(['.gitignore']);
+    const withAddedPackageFiles = { ...packageFiles, ...withGitIgnore };
+    readFile.mockImplementation((file, callback) => {
+      const content = readFileSync(
+        path.join(__dirname, withAddedPackageFiles[file as keyof typeof withAddedPackageFiles])
+      );
+      callback(null, content);
+    });
+
+    await generateCommand({ output: 'CODEOWNERS', useMaintainers: true, useRootMaintainers: true }, { parent: {} });
+    expect(writeFile.mock.calls[0][1]).toMatchInlineSnapshot(`
+      "#################################### Generated content - do not edit! ####################################
+      # This block has been generated with codeowners-generator (for more information https://github.com/gagoar/codeowners-generator)
+      # Don't worry, the content outside this block will be kept.
+
+      # Rule extracted from package.json
+      * friend@example.com other@example.com
+      # Rule extracted from dir2/package.json
+      /dir2/ friend@example.com other@example.com
+
+      #################################### Generated content - do not edit! ####################################"
+    `);
+  });
   it('should return rules', async () => {
     sync.mockReturnValueOnce(Object.keys(files));
     sync.mockReturnValueOnce(['.gitignore']);

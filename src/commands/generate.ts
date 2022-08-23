@@ -2,7 +2,14 @@ import ora from 'ora';
 import { basename, dirname } from 'path';
 import { sync } from 'fast-glob';
 import { Command, getGlobalOptions } from '../utils/getGlobalOptions';
-import { OUTPUT, INCLUDES, SUCCESS_SYMBOL, SHRUG_SYMBOL, PACKAGE_JSON_PATTERN } from '../utils/constants';
+import {
+  OUTPUT,
+  INCLUDES,
+  SUCCESS_SYMBOL,
+  SHRUG_SYMBOL,
+  PACKAGE_JSON_PATTERN,
+  IGNORE_ROOT_PACKAGE_JSON_PATTERN,
+} from '../utils/constants';
 import { ownerRule, createOwnersFile, loadCodeOwnerFiles, loadOwnersFromPackage } from '../utils/codeowners';
 import { logger } from '../utils/debug';
 import groupBy from 'lodash.groupby';
@@ -11,16 +18,30 @@ import { getPatternsFromIgnoreFiles } from '../utils/getPatternsFromIgnoreFiles'
 
 const debug = logger('generate');
 type Generate = (options: GenerateInput) => Promise<ownerRule[]>;
-type GenerateInput = { rootDir: string; verifyPaths?: boolean; useMaintainers?: boolean; includes?: string[] };
+type GenerateInput = {
+  rootDir: string;
+  verifyPaths?: boolean;
+  useMaintainers?: boolean;
+  useRootMaintainers?: boolean;
+  includes?: string[];
+};
 
-export const generate: Generate = async ({ rootDir, includes, useMaintainers = false }) => {
-  debug('input:', rootDir, includes, useMaintainers);
+export const generate: Generate = async ({ rootDir, includes, useMaintainers = false, useRootMaintainers = false }) => {
+  debug('input:', rootDir, includes, useMaintainers, useRootMaintainers);
 
   const includePatterns = includes && includes.length ? includes : INCLUDES;
 
   debug('includePatterns:', includePatterns);
 
-  const globs = useMaintainers ? [...includePatterns, ...PACKAGE_JSON_PATTERN] : includePatterns;
+  const globs = [...includePatterns];
+
+  if (useMaintainers) {
+    globs.push(...PACKAGE_JSON_PATTERN);
+
+    if (!useRootMaintainers) {
+      globs.push(...IGNORE_ROOT_PACKAGE_JSON_PATTERN);
+    }
+  }
 
   debug('provided globs:', globs);
 
@@ -77,6 +98,7 @@ interface Options {
   output?: string;
   verifyPaths?: boolean;
   useMaintainers?: boolean;
+  useRootMaintainers?: boolean;
   groupSourceComments?: boolean;
   includes?: string[];
   customRegenerationCommand?: string;
@@ -85,7 +107,7 @@ interface Options {
 export const command = async (options: Options, command: Command): Promise<void> => {
   const globalOptions = await getGlobalOptions(command);
 
-  const { verifyPaths, useMaintainers } = options;
+  const { verifyPaths, useMaintainers, useRootMaintainers } = options;
 
   const { output = globalOptions.output || OUTPUT } = options;
 
@@ -95,10 +117,23 @@ export const command = async (options: Options, command: Command): Promise<void>
 
   const customRegenerationCommand = globalOptions.customRegenerationCommand || options.customRegenerationCommand;
 
-  debug('Options:', { ...globalOptions, useMaintainers, groupSourceComments, customRegenerationCommand, output });
+  debug('Options:', {
+    ...globalOptions,
+    useMaintainers,
+    useRootMaintainers,
+    groupSourceComments,
+    customRegenerationCommand,
+    output,
+  });
 
   try {
-    const ownerRules = await generate({ rootDir: __dirname, verifyPaths, useMaintainers, ...globalOptions });
+    const ownerRules = await generate({
+      rootDir: __dirname,
+      verifyPaths,
+      useMaintainers,
+      useRootMaintainers,
+      ...globalOptions,
+    });
 
     if (ownerRules.length) {
       await createOwnersFile(output, ownerRules, customRegenerationCommand, groupSourceComments);
