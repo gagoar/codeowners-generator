@@ -22,6 +22,14 @@
         <img src="images/logo.png" alt="Logo" width="128" height="128">
     </a>
   </p>
+
+  <p align="center">
+    this project is sponsored by: <br>
+    <a href="https://sourcegraph.com/">
+       <img src="https://sourcegraph.com/.assets/img/sourcegraph-logo-light.svg" alt="SourceGraph" width="20%">
+    </a>
+  </p>
+   
   <p align="center">
     ✨ use codeowners anywhere in your monorepo 🛠️
     <br />
