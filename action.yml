@@ -39,7 +39,7 @@ runs:
           ARGS_INPUT+=("--custom-regeneration-command")
         fi
 
-        echo $ARGS_INPUT
+        echo ${ARGS_INPUT[@]}"
         echo "args-input=$ARGS_INPUT" >> $GITHUB_OUTPUT
 
     - shell: bash
