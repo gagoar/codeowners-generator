@@ -28,6 +28,7 @@ runs:
 
         if [ "${{inputs.use-maintainers}}" = "true" ]; then
           ARGS_INPUT+=("--use-maintainers")
+          declare -p ARGS_INPUT
         fi
 
         if [ "${{inputs.group-source-comments}}" = "true" ]; then
