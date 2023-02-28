@@ -23,6 +23,7 @@ runs:
     - id: get-input
       shell: bash
       run: |
+        set -x
         ARGS_INPUT=("--output ${{inputs.output}}")
 
         if [ "${{inputs.use-maintainers}}" = "true" ]; then
