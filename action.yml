@@ -42,4 +42,4 @@ runs:
 
     - shell: bash
       run: |
-        npx codeowners-generator generate ${{jobs.get-input.outputs.args-input}}
+        npx codeowners-generator generate ${{steps.get-input.outputs.args-input}}
