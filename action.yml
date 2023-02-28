@@ -40,7 +40,7 @@ runs:
         fi
 
         echo ${ARGS_INPUT[@]}
-        echo "args-input=$${ARGS_INPUT[@]}" >> $GITHUB_OUTPUT
+        echo "args-input=${ARGS_INPUT[@]}" >> $GITHUB_OUTPUT
 
     - shell: bash
       run: |
