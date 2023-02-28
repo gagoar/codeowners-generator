@@ -23,7 +23,6 @@ runs:
     - id: get-input
       shell: bash
       run: |
-        set -x
         ARGS_INPUT=("--output ${{inputs.output}}")
 
         if [ "${{inputs.use-maintainers}}" = "true" ]; then
@@ -39,7 +38,8 @@ runs:
           ARGS_INPUT+=("--custom-regeneration-command")
         fi
 
-        echo ${ARGS_INPUT[@]}
+        echo "Arguments we will use: ${ARGS_INPUT[@]}"
+
         echo "args-input=${ARGS_INPUT[@]}" >> $GITHUB_OUTPUT
 
     - shell: bash
