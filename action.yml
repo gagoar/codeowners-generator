@@ -1,0 +1,45 @@
+name: 'codeowners-generator'
+description: 'CODEOWNERS generator for mono-repos. This action will run codeowners-generator on your project and apply changes'
+inputs:
+  use-maintainers:
+    description: 'For every package.json found, generate a CODEOWNERS entry using the maintainers field'
+    required: false
+    default: 'false'
+  group-source-comments:
+    description: 'Instead of generating one comment per rule, enabling this flag will group them, reducing comments to one per source file. Useful if your codeowners file gets too noisy'
+    required: false
+    default: 'false'
+  custom-regeneration-command:
+    description: 'Specify a custom regeneration command to be printed in the generated CODEOWNERS file, it should be mapped to run codeowners-generator'
+    required: false
+    default: 'false'
+  output:
+    description: 'The output path and name of the file, (default: CODEOWNERS)'
+    required: false
+    default: 'CODEOWNERS'
+runs:
+  using: 'composite'
+  steps:
+    - id: get-input
+      shell: bash
+      run: |
+        ARGS_INPUT=("--output ${{inputs.output}}")
+
+        if [ "${{inputs.use-maintainers}}" = "true" ]; then
+          ARGS_INPUT+=("--use-maintainers")
+        fi
+
+        if [ "${{inputs.group-source-comments}}" = "true" ]; then
+          ARGS_INPUT+=("--group-source-comments")
+        fi
+
+        if [ "${{inputs.custom-regeneration-command}}" = "true" ]; then
+          ARGS_INPUT+=("--custom-regeneration-command")
+        fi
+
+        echo $ARGS_INPUT
+        echo "args-input=$ARGS_INPUT" >> $GITHUB_OUTPUT
+
+    - shell: bash
+      run: |
+        npx codeowners-generator generate ${{jobs.get-input.outputs.args-input}}
