@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import * as fg from 'fast-glob';
-
+import { mockProcessExit } from 'jest-mock-process';
 import path from 'path';
 import { generateCommand } from '../';
 import { generate } from '../src/commands/generate';
@@ -44,6 +44,59 @@ describe('Generate', () => {
     search.mockRestore();
     fail.mockReset();
     consoleWarnMock.mockReset();
+  });
+
+  it('should generate a CODEOWNERS file (re-using codeowners content) and not fail when using --check option', async () => {
+    sync.mockReturnValueOnce(Object.keys(files));
+
+    sync.mockReturnValueOnce(['.gitignore']);
+
+    const withPopulatedCodeownersFile = {
+      ...withGitIgnore,
+      CODEOWNERS: '../__mocks__/CODEOWNERS_POPULATED_OUTPUT_2',
+    };
+    existsSync.mockReturnValue(true);
+    readFile.mockImplementation((file, callback): void => {
+      const fullPath = path.join(
+        __dirname,
+        withPopulatedCodeownersFile[file as keyof typeof withPopulatedCodeownersFile]
+      );
+      const content = readFileSync(fullPath);
+      callback(null, content);
+    });
+
+    await generateCommand(
+      { output: 'CODEOWNERS', customRegenerationCommand: 'yarn codeowners-generator generate', check: true },
+      { parent: {} }
+    );
+  });
+  it('should generate a CODEOWNERS file (re-using codeowners content) and fail when using --check option', async () => {
+    const mockExit = mockProcessExit();
+
+    sync.mockReturnValueOnce(Object.keys(files));
+
+    sync.mockReturnValueOnce(['.gitignore']);
+
+    const withPopulatedCodeownersFile = {
+      ...withGitIgnore,
+      CODEOWNERS: '../__mocks__/CODEOWNERS_POPULATED_OUTPUT',
+    };
+    existsSync.mockReturnValue(true);
+    readFile.mockImplementation((file, callback): void => {
+      const fullPath = path.join(
+        __dirname,
+        withPopulatedCodeownersFile[file as keyof typeof withPopulatedCodeownersFile]
+      );
+      const content = readFileSync(fullPath);
+      callback(null, content);
+    });
+
+    await generateCommand(
+      { output: 'CODEOWNERS', customRegenerationCommand: 'yarn codeowners-generator generate', check: true },
+      { parent: {} }
+    );
+
+    expect(mockExit).toBeCalledWith(1);
   });
 
   it('should generate a CODEOWNERS file (re-using codeowners content)', async () => {
@@ -697,6 +750,7 @@ describe('Generate', () => {
   });
 
   it('should blow up after finding malformed CODEOWNERS', async () => {
+    const mockExit = mockProcessExit();
     const addedMalformedFiles = {
       ...files,
       'dir4/CODEOWNERS': '../__mocks__/CODEOWNERS4',
@@ -720,9 +774,10 @@ describe('Generate', () => {
     });
 
     await generateCommand({ output: 'CODEOWNERS' }, { parent: {} });
+    expect(mockExit).toHaveBeenCalledWith(1);
     expect(fail.mock.calls[0]).toMatchInlineSnapshot(`
       Array [
-        "We encountered an error: Error: *.ts in dir4/CODEOWNERS can not be parsed",
+        "We encountered an error: *.ts in dir4/CODEOWNERS can not be parsed",
       ]
     `);
   });

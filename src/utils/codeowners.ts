@@ -41,18 +41,18 @@ const filterGeneratedContent = (content: string) => {
     }, [] as string[])
     .join('\n');
 };
+type createOwnersFileResponse = [originalContent: string, newContent: string];
 export const createOwnersFile = async (
   outputFile: string,
   ownerRules: ownerRule[],
   customRegenerationCommand?: string,
   groupSourceComments = false
-): Promise<void> => {
+): Promise<createOwnersFileResponse> => {
   let originalContent = '';
 
   if (fs.existsSync(outputFile)) {
     debug(`output file ${outputFile} exists, extracting content before overwriting`);
     originalContent = await readContent(outputFile);
-    originalContent = filterGeneratedContent(originalContent);
   }
 
   let content = [] as string[];
@@ -68,7 +68,15 @@ export const createOwnersFile = async (
     content = ownerRules.map((rule) => rulesBlockTemplate(rule.filePath, [`${rule.glob} ${rule.owners.join(' ')}`]));
   }
 
-  fs.writeFileSync(outputFile, contentTemplate(content.join('\n'), originalContent, customRegenerationCommand));
+  const normalizedContent = contentTemplate(
+    content.join('\n'),
+    filterGeneratedContent(originalContent),
+    customRegenerationCommand
+  );
+
+  fs.writeFileSync(outputFile, normalizedContent);
+
+  return [originalContent, normalizedContent];
 };
 
 const parseCodeOwner = (filePath: string, codeOwnerContent: string): ownerRule[] => {

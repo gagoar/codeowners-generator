@@ -102,12 +102,13 @@ interface Options {
   groupSourceComments?: boolean;
   includes?: string[];
   customRegenerationCommand?: string;
+  check?: boolean;
 }
 
 export const command = async (options: Options, command: Command): Promise<void> => {
   const globalOptions = await getGlobalOptions(command);
 
-  const { verifyPaths, useMaintainers, useRootMaintainers } = options;
+  const { verifyPaths, useMaintainers, useRootMaintainers, check } = options;
 
   const { output = globalOptions.output || OUTPUT } = options;
 
@@ -136,8 +137,18 @@ export const command = async (options: Options, command: Command): Promise<void>
     });
 
     if (ownerRules.length) {
-      await createOwnersFile(output, ownerRules, customRegenerationCommand, groupSourceComments);
+      const [originalContent, newContent] = await createOwnersFile(
+        output,
+        ownerRules,
+        customRegenerationCommand,
+        groupSourceComments
+      );
 
+      if (originalContent.trimEnd() !== newContent && check) {
+        throw new Error(
+          'We found differences between the existing codeowners file and the generated. Remove --check option to avoid this error'
+        );
+      }
       loader.stopAndPersist({ text: `CODEOWNERS file was created! location: ${output}`, symbol: SUCCESS_SYMBOL });
     } else {
       const includes = globalOptions.includes?.length ? globalOptions.includes : INCLUDES;
@@ -147,6 +158,8 @@ export const command = async (options: Options, command: Command): Promise<void>
       });
     }
   } catch (e) {
-    loader.fail(`We encountered an error: ${e}`);
+    const error = e as Error;
+    loader.fail(`We encountered an error: ${error.message}`);
+    process.exit(1);
   }
 };
