@@ -31,7 +31,7 @@ program
   .option('--output [output file]', 'The output path and name of the file, (default: CODEOWNERS)')
   .option(
     '--check',
-    'If used it will exit with error if the top level CODEOWNERS file gets changed. Useful for CI validations'
+    'It will fail if the CODEOWNERS generated does not match the current (or missing) CODEOWNERS. Useful for validating that the CODEOWNERS file is up to date date during CI'
   )
   .action(generateCommand);
 
