@@ -29,6 +29,10 @@ program
     'Specify a custom regeneration command to be printed in the generated CODEOWNERS file, it should be mapped to run codeowners-generator'
   )
   .option('--output [output file]', 'The output path and name of the file, (default: CODEOWNERS)')
+  .option(
+    '--check',
+    'It will fail if the CODEOWNERS generated does not match the current (or missing) CODEOWNERS. Useful for validating that the CODEOWNERS file is up to date date during CI'
+  )
   .action(generateCommand);
 
 program.parse(process.argv);

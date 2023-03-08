@@ -1,5 +1,6 @@
 import ora from 'ora';
 import { basename, dirname } from 'path';
+import fs from 'fs';
 import { sync } from 'fast-glob';
 import { Command, getGlobalOptions } from '../utils/getGlobalOptions';
 import {
@@ -10,7 +11,7 @@ import {
   PACKAGE_JSON_PATTERN,
   IGNORE_ROOT_PACKAGE_JSON_PATTERN,
 } from '../utils/constants';
-import { ownerRule, createOwnersFile, loadCodeOwnerFiles, loadOwnersFromPackage } from '../utils/codeowners';
+import { ownerRule, loadCodeOwnerFiles, loadOwnersFromPackage, generateOwnersFile } from '../utils/codeowners';
 import { logger } from '../utils/debug';
 import groupBy from 'lodash.groupby';
 import ignore from 'ignore';
@@ -102,12 +103,13 @@ interface Options {
   groupSourceComments?: boolean;
   includes?: string[];
   customRegenerationCommand?: string;
+  check?: boolean;
 }
 
 export const command = async (options: Options, command: Command): Promise<void> => {
   const globalOptions = await getGlobalOptions(command);
 
-  const { verifyPaths, useMaintainers, useRootMaintainers } = options;
+  const { verifyPaths, useMaintainers, useRootMaintainers, check } = options;
 
   const { output = globalOptions.output || OUTPUT } = options;
 
@@ -136,8 +138,22 @@ export const command = async (options: Options, command: Command): Promise<void>
     });
 
     if (ownerRules.length) {
-      await createOwnersFile(output, ownerRules, customRegenerationCommand, groupSourceComments);
+      const [originalContent, newContent] = await generateOwnersFile(
+        output,
+        ownerRules,
+        customRegenerationCommand,
+        groupSourceComments
+      );
 
+      if (check) {
+        if (originalContent.trimEnd() !== newContent) {
+          throw new Error(
+            'We found differences between the existing codeowners file and the generated. Remove --check option to avoid this error'
+          );
+        }
+      } else {
+        fs.writeFileSync(output, newContent);
+      }
       loader.stopAndPersist({ text: `CODEOWNERS file was created! location: ${output}`, symbol: SUCCESS_SYMBOL });
     } else {
       const includes = globalOptions.includes?.length ? globalOptions.includes : INCLUDES;
@@ -147,6 +163,8 @@ export const command = async (options: Options, command: Command): Promise<void>
       });
     }
   } catch (e) {
-    loader.fail(`We encountered an error: ${e}`);
+    const error = e as Error;
+    loader.fail(`We encountered an error: ${error.message}`);
+    process.exit(1);
   }
 };
