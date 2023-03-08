@@ -100,7 +100,7 @@
     "cosmiconfig": "7.0.1",
     "debug": "4.3.4",
     "fast-glob": "3.2.12",
-    "ignore": "5.2.0",
+    "ignore": "5.2.4",
     "is-glob": "4.0.3",
     "lodash.groupby": "4.6.0",
     "ora": "5.4.1"
