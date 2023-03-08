@@ -132,8 +132,8 @@ You can configure `codeowners-generator` from several places:
 
 - **customRegenerationCommand** (`--custom-regeneration-command`): Specify a custom regeneration command to be printed in the generated CODEOWNERS file, it should be mapped to run codeowners-generator (e.g. "npm run codeowners").
 
-- **check** (`--check`): It will fail if the CODEOWNERS generated doesn't match the current (or missing) CODEOWNERS . Useful for validating that the CODEOWNERS file is not out of date during CI.  
-  For more details you can invoke:
+- **check** (`--check`): It will fail if the CODEOWNERS generated doesn't match the current (or missing) CODEOWNERS . Useful for validating that the CODEOWNERS file is not out of date during CI.
+- For more details you can invoke:
 
 ```sh
   codeowners-generator --help

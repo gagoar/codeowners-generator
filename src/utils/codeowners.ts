@@ -42,7 +42,7 @@ const filterGeneratedContent = (content: string) => {
     .join('\n');
 };
 type createOwnersFileResponse = [originalContent: string, newContent: string];
-export const createOwnersFile = async (
+export const generateOwnersFile = async (
   outputFile: string,
   ownerRules: ownerRule[],
   customRegenerationCommand?: string,
@@ -73,8 +73,6 @@ export const createOwnersFile = async (
     filterGeneratedContent(originalContent),
     customRegenerationCommand
   );
-
-  fs.writeFileSync(outputFile, normalizedContent);
 
   return [originalContent, normalizedContent];
 };
