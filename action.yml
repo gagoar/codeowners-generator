@@ -17,6 +17,9 @@ inputs:
     description: It will fail if the CODEOWNERS generated does not match the current (or missing) CODEOWNERS. Useful for validating that the CODEOWNERS file is up to date during CI.'
     required: false
     default: 'false'
+  version:
+    description: codeowners-generator version. It will default to the latest in npm otherwise'
+    required: false
   output:
     description: 'The output path and name of the file, (default: CODEOWNERS)'
     required: false
@@ -28,6 +31,7 @@ runs:
       shell: bash
       run: |
         ARGS_INPUT=("--output ${{inputs.output}}")
+        VERSION='latest'
 
         if [ "${{inputs.use-maintainers}}" = "true" ]; then
           ARGS_INPUT+=("--use-maintainers")
@@ -45,15 +49,16 @@ runs:
         if [ "${{inputs.check}}" = "true" ]; then
           ARGS_INPUT+=("--check")
         fi
+
+        if [ ! -z "${{inputs.version}}" ]; then
+          VERSION="${{inputs.version}}"
+        fi
+
         echo "Arguments we will use: ${ARGS_INPUT[@]}"
 
+        echo "version=$VERSION" >> $GITHUB_OUTPUT
         echo "args-input=${ARGS_INPUT[@]}" >> $GITHUB_OUTPUT
 
     - shell: bash
-      id: package-version
       run: |
-        VERSION=$(cat package.json | jq -r '.version')
-        echo "version=$VERSION" >> $GITHUB_OUTPUT
-    - shell: bash
-      run: |
-        npx codeowners-generator@${{jobs.package-version.version}} generate ${{steps.get-input.outputs.args-input}}
+        npx codeowners-generator@latest generate ${{steps.get-input.outputs.args-input}}
