@@ -20,6 +20,11 @@ program
     false
   )
   .option(
+    '--use-root-maintainers',
+    'It will use `maintainers` field from the package.json in the root to generate default codeowners. Works only in conjunction with `useMaintainers`',
+    false
+  )
+  .option(
     '--group-source-comments',
     'Instead of generating one comment per rule, enabling this flag will group them, reducing comments to one per source file. Useful if your codeowners file gets too noisy',
     false
