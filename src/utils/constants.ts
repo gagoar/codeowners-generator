@@ -24,17 +24,22 @@ export const contentTemplate = (
   generatedContent: string,
   originalContent: string,
   customRegenerationCommand?: string
-): string => {
+) => {
   return stripIndents`
-  ${originalContent && originalContent.trimEnd()}
+  ${originalContentTemplate(originalContent)}
+  ${generatedContentTemplate(generatedContent, customRegenerationCommand)}
+`;
+};
 
+export const originalContentTemplate = (originalContent: string) => originalContent && originalContent.trimEnd();
+export const generatedContentTemplate = (generatedContent: string, customRegenerationCommand?: string) => {
+  return stripIndents`
   ${CONTENT_MARK}
   ${getContentLegend(customRegenerationCommand)}\n
   ${generatedContent}\n
   ${CONTENT_MARK}\n
-`;
+  `;
 };
-
 export const rulesBlockTemplate = (source: string, entries: string[]): string => {
   return stripIndents`
   # Rule${entries.length > 1 ? 's' : ''} extracted from ${source}

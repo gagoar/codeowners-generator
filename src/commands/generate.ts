@@ -101,6 +101,7 @@ interface Options {
   useMaintainers?: boolean;
   useRootMaintainers?: boolean;
   groupSourceComments?: boolean;
+  preserveBlockPosition?: boolean;
   includes?: string[];
   customRegenerationCommand?: string;
   check?: boolean;
@@ -109,7 +110,7 @@ interface Options {
 export const command = async (options: Options, command: Command): Promise<void> => {
   const globalOptions = await getGlobalOptions(command);
 
-  const { verifyPaths, useMaintainers, useRootMaintainers, check } = options;
+  const { verifyPaths, useMaintainers, useRootMaintainers, check, preserveBlockPosition } = options;
 
   const { output = globalOptions.output || OUTPUT } = options;
 
@@ -124,6 +125,7 @@ export const command = async (options: Options, command: Command): Promise<void>
     useMaintainers,
     useRootMaintainers,
     groupSourceComments,
+    preserveBlockPosition,
     customRegenerationCommand,
     output,
   });
@@ -141,8 +143,9 @@ export const command = async (options: Options, command: Command): Promise<void>
       const [originalContent, newContent] = await generateOwnersFile(
         output,
         ownerRules,
-        customRegenerationCommand,
-        groupSourceComments
+        groupSourceComments,
+        preserveBlockPosition,
+        customRegenerationCommand
       );
 
       if (check) {

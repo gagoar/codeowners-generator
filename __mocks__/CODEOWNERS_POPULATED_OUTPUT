@@ -9,3 +9,6 @@ scripts/ @myOrg/infraTeam
 # Rule extracted from dir1/CODEOWNERS
 dir1/*.ts @eeny @meeny
 #################################### Generated content - do not edit! ####################################
+
+# Another line here that should be moved to after the generated block without preserve-block-position option enabled
+dir2/ @otherTeam

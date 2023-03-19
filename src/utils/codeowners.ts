@@ -6,6 +6,7 @@ import {
   CONTENT_MARK,
   CHARACTER_RANGE_PATTERN,
   rulesBlockTemplate,
+  generatedContentTemplate,
 } from './constants';
 import { dirname, join } from 'path';
 import { readContent } from './readContent';
@@ -26,27 +27,38 @@ export type ownerRule = {
   glob: string;
 };
 
-const filterGeneratedContent = (content: string) => {
+// to fix this I will have to return an [] and every line there.
+// I will have also to return the position where the mark was found.
+// later If the flag is set (--preserve-block-position) I will just count the array and when the same index is hit, inject the content.
+
+const filterGeneratedContent = (content: string): [withoutGeneratedCode: string[], blockPosition: number] => {
   const lines = content.split('\n');
 
   let skip = false;
-  return lines
-    .reduce((memo, line) => {
-      if (line === CONTENT_MARK) {
-        skip = !skip;
-        return memo;
-      }
+  let generatedBlockPosition = -1;
 
-      return skip ? memo : [...memo, line];
-    }, [] as string[])
-    .join('\n');
+  const withoutGeneratedCode = lines.reduce((memo, line, index) => {
+    if (line === CONTENT_MARK) {
+      skip = !skip;
+      if (generatedBlockPosition === -1) {
+        generatedBlockPosition = index;
+      }
+      return memo;
+    }
+
+    return skip ? memo : [...memo, line];
+  }, [] as string[]);
+
+  return [withoutGeneratedCode, generatedBlockPosition];
 };
+
 type createOwnersFileResponse = [originalContent: string, newContent: string];
 export const generateOwnersFile = async (
   outputFile: string,
   ownerRules: ownerRule[],
-  customRegenerationCommand?: string,
-  groupSourceComments = false
+  groupSourceComments = false,
+  preserveBlockPosition = false,
+  customRegenerationCommand?: string
 ): Promise<createOwnersFileResponse> => {
   let originalContent = '';
 
@@ -67,12 +79,26 @@ export const generateOwnersFile = async (
   } else {
     content = ownerRules.map((rule) => rulesBlockTemplate(rule.filePath, [`${rule.glob} ${rule.owners.join(' ')}`]));
   }
+  const [withoutGeneratedCode, blockPosition] = filterGeneratedContent(originalContent);
 
-  const normalizedContent = contentTemplate(
-    content.join('\n'),
-    filterGeneratedContent(originalContent),
-    customRegenerationCommand
-  );
+  let normalizedContent = '';
+  // this block should consider the option --preserve-block-position
+  // contentTemplate should change, maybe to contain this logic? I'm not sure yet.
+
+  if (preserveBlockPosition && blockPosition !== -1 && withoutGeneratedCode.length) {
+    normalizedContent = withoutGeneratedCode
+      .reduce((memo, line, index) => {
+        if (index === blockPosition) {
+          memo += generatedContentTemplate(content.join('\n'), customRegenerationCommand) + '\n';
+        }
+        memo += `${line}\n`;
+
+        return memo;
+      }, '')
+      .trimEnd();
+  } else {
+    normalizedContent = contentTemplate(content.join('\n'), withoutGeneratedCode.join('\n'), customRegenerationCommand);
+  }
 
   return [originalContent, normalizedContent];
 };

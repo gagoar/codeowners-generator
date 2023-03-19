@@ -16,7 +16,7 @@ export type CustomConfig = {
 };
 
 export const getCustomConfiguration = async (): Promise<CustomConfig | void> => {
-  const loader = ora('Loading available configuration').start();
+  const loader = ora('Loading configuration').start();
 
   try {
     const explorer = cosmiconfig(packageJSON.name);
