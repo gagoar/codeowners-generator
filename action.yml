@@ -1,0 +1,67 @@
+name: 'codeowners-generator'
+description: 'CODEOWNERS generator for mono-repos. This action will run codeowners-generator on your project and apply changes'
+inputs:
+  use-maintainers:
+    description: 'For every package.json found, generate a CODEOWNERS entry using the maintainers field'
+    required: false
+    default: 'false'
+  group-source-comments:
+    description: 'Instead of generating one comment per rule, enabling this flag will group them, reducing comments to one per source file. Useful if your codeowners file gets too noisy'
+    required: false
+    default: 'false'
+  custom-regeneration-command:
+    description: 'Specify a custom regeneration command to be printed in the generated CODEOWNERS file, it should be mapped to run codeowners-generator'
+    required: false
+    default: 'false'
+  check:
+    description: It will fail if the CODEOWNERS generated does not match the current (or missing) CODEOWNERS. Useful for validating that the CODEOWNERS file is up to date during CI.'
+    required: false
+    default: 'false'
+  output:
+    description: 'The output path and name of the file, (default: CODEOWNERS)'
+    required: false
+    default: 'CODEOWNERS'
+  version:
+    description: codeowners-generator version. It will default to the latest in npm otherwise'
+    required: false
+runs:
+  using: 'composite'
+  steps:
+    - id: get-input
+      shell: bash
+      run: |
+        ARGS_INPUT=("--output ${{inputs.output}}")
+        VERSION='latest'
+
+        if [ "${{inputs.use-maintainers}}" = "true" ]; then
+          ARGS_INPUT+=("--use-maintainers")
+        fi
+
+        if [ "${{inputs.use-maintainers}}" = "true" ]; then
+          ARGS_INPUT+=("--use-root-maintainers")
+        fi
+
+        if [ "${{inputs.group-source-comments}}" = "true" ]; then
+          ARGS_INPUT+=("--group-source-comments")
+        fi
+
+        if [ "${{inputs.custom-regeneration-command}}" = "true" ]; then
+          ARGS_INPUT+=("--custom-regeneration-command")
+        fi
+
+        if [ "${{inputs.check}}" = "true" ]; then
+          ARGS_INPUT+=("--check")
+        fi
+
+        if [ ! -z "${{inputs.version}}" ]; then
+          VERSION="${{inputs.version}}"
+        fi
+
+        echo "Arguments we will use: ${ARGS_INPUT[@]}"
+
+        echo "version=$VERSION" >> $GITHUB_OUTPUT
+        echo "args-input=${ARGS_INPUT[@]}" >> $GITHUB_OUTPUT
+
+    - shell: bash
+      run: |
+        npx codeowners-generator@${{steps.get-input.outputs.version}} generate ${{steps.get-input.outputs.args-input}}

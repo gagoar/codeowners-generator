@@ -49,6 +49,7 @@
 - [Built With](#built-with)
 - [Installation](#installation)
 - [Usage](#usage)
+- [Action](#action)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -110,6 +111,74 @@ codeowners-generator generate --use-maintainers
 
 ```sh
   codeowners-generator generate --includes '**/CODEOWNERS'
+```
+
+## Action
+
+Now you can use `codeowners-generator` to validate if the CODEOWNERS file has been updated during a Pull Request.
+
+```yml
+name: Lint CODEOWNERS
+
+on:
+  pull_request:
+
+jobs:
+  codeowners:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2 # to checkout the code of the repo you want to check the CODEOWNERS from.
+      - name: check codeowners
+        uses: gagoar/codeowners-generator@master
+        with:
+          use-maintainers: true
+          check: true
+```
+
+You can also use it to update the Pull Request. For that, you will need a GitHub App or Personal Token with the necessary permissions (code content). The code for that will look roughly like this:
+
+```yml
+name: update CODEOWNERS
+
+on:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: gagoar/codeowners-generator@master
+        with:
+          use-maintainers: true
+      - run: |
+          STATUS=$(git diff --quiet && echo clean || echo modified)
+          echo "status=$(echo $STATUS)" >> $GITHUB_OUTPUT
+        id: gitStatus
+      - run: |
+          echo ${{ steps.gitStatus.outputs.status }}
+          echo ${{ contains(steps.gitStatus.outputs.status, 'modified') }}
+      - name: Commit CODEOWNERS
+        if: contains(steps.gitStatus.outputs.status, 'modified')
+        run: |
+          set -x
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add CODEOWNERS
+          git commit -m "update CODEOWNERS"
+      - id: auth
+        if: contains(steps.gitStatus.outputs.status, 'modified')
+        uses: jnwng/github-app-installation-token-action@v2
+        with:
+          appId: ${{ secrets.YOUR_APP_ID }}
+          installationId: ${{ secrets.YOUR_APP_INSTALLATION_ID }}
+          privateKey: ${{ secrets.YOUR_APP_PRIVATE_KEY }}
+      - name: Push changes
+        if: contains(steps.gitStatus.outputs.status, 'modified')
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ steps.auth.outputs.token }}
+          branch: ${{github.head_ref}}
 ```
 
 <!-- CONFIGURATION -->
