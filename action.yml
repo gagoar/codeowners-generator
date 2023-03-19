@@ -17,13 +17,13 @@ inputs:
     description: It will fail if the CODEOWNERS generated does not match the current (or missing) CODEOWNERS. Useful for validating that the CODEOWNERS file is up to date during CI.'
     required: false
     default: 'false'
-  version:
-    description: codeowners-generator version. It will default to the latest in npm otherwise'
-    required: false
   output:
     description: 'The output path and name of the file, (default: CODEOWNERS)'
     required: false
     default: 'CODEOWNERS'
+  version:
+    description: codeowners-generator version. It will default to the latest in npm otherwise'
+    required: false
 runs:
   using: 'composite'
   steps:
@@ -35,7 +35,10 @@ runs:
 
         if [ "${{inputs.use-maintainers}}" = "true" ]; then
           ARGS_INPUT+=("--use-maintainers")
-          declare -p ARGS_INPUT
+        fi
+
+        if [ "${{inputs.use-maintainers}}" = "true" ]; then
+          ARGS_INPUT+=("--use-root-maintainers")
         fi
 
         if [ "${{inputs.group-source-comments}}" = "true" ]; then
@@ -61,4 +64,4 @@ runs:
 
     - shell: bash
       run: |
-        npx codeowners-generator@latest generate ${{steps.get-input.outputs.args-input}}
+        npx codeowners-generator@${{steps.get-input.outputs.version}} generate ${{steps.get-input.outputs.args-input}}
