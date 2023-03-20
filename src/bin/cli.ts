@@ -31,7 +31,7 @@ program
   )
   .option(
     '--preserve-block-position',
-    'It will keep the generated block in the same position it was found in the CODEOWNERS file (if present)',
+    'It will keep the generated block in the same position it was found in the CODEOWNERS file (if present). Useful for when you make manual additions',
     false
   )
   .option(
