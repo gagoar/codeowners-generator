@@ -1,16 +1,10 @@
 process.env.TZ = 'UTC';
 
 module.exports = {
-  globals: {
-    'ts-jest': {
-      disableSourceMapSupport: true,
-    },
-  },
   verbose: true,
   transform: {
-    '^.+\\.tsx?$': 'ts-jest',
+    '^.+\\.(t|j)sx?$': '@swc/jest',
   },
-  preset: 'ts-jest',
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   testEnvironmentOptions: {
     url: 'http://localhost',
