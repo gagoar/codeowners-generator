@@ -21,10 +21,6 @@ export type ownerRule = {
   glob: string;
 };
 
-// to fix this I will have to return an [] and every line there.
-// I will have also to return the position where the mark was found.
-// later If the flag is set (--preserve-block-position) I will just count the array and when the same index is hit, inject the content.
-
 const filterGeneratedContent = (content: string): [withoutGeneratedCode: string[], blockPosition: number] => {
   const lines = content.split('\n');
 
