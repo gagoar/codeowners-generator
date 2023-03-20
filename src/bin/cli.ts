@@ -30,6 +30,11 @@ program
     false
   )
   .option(
+    '--preserve-block-position',
+    'It will keep the generated block in the same position it was found in the CODEOWNERS file (if present)',
+    false
+  )
+  .option(
     '--custom-regeneration-command',
     'Specify a custom regeneration command to be printed in the generated CODEOWNERS file, it should be mapped to run codeowners-generator'
   )
