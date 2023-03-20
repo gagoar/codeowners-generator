@@ -82,9 +82,9 @@ export const generateOwnersFile = async (
   if (originalContent) {
     normalizedContent = withoutGeneratedCode.reduce((memo, line, index) => {
       if (preserveBlockPosition && index === blockPosition) {
-        memo = memo + generatedContent;
+        memo += generatedContent;
       }
-      memo = memo + line + '\n';
+      memo += line + '\n';
 
       return memo;
     }, '');
