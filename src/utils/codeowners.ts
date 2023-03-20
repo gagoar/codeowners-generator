@@ -1,17 +1,11 @@
 import fs from 'fs';
 import isGlob from 'is-glob';
-import {
-  MAINTAINERS_EMAIL_PATTERN,
-  contentTemplate,
-  CONTENT_MARK,
-  CHARACTER_RANGE_PATTERN,
-  rulesBlockTemplate,
-  generatedContentTemplate,
-} from './constants';
+import { MAINTAINERS_EMAIL_PATTERN, CONTENT_MARK, CHARACTER_RANGE_PATTERN } from './constants';
 import { dirname, join } from 'path';
 import { readContent } from './readContent';
 import { logger } from '../utils/debug';
 import groupBy from 'lodash.groupby';
+import { generatedContentTemplate, rulesBlockTemplate } from './templates';
 
 const debug = logger('utils/codeowners');
 
@@ -82,25 +76,25 @@ export const generateOwnersFile = async (
   const [withoutGeneratedCode, blockPosition] = filterGeneratedContent(originalContent);
 
   let normalizedContent = '';
-  // this block should consider the option --preserve-block-position
-  // contentTemplate should change, maybe to contain this logic? I'm not sure yet.
 
-  if (preserveBlockPosition && blockPosition !== -1 && withoutGeneratedCode.length) {
-    normalizedContent = withoutGeneratedCode
-      .reduce((memo, line, index) => {
-        if (index === blockPosition) {
-          memo += generatedContentTemplate(content.join('\n'), customRegenerationCommand) + '\n';
-        }
-        memo += `${line}\n`;
+  const generatedContent = generatedContentTemplate(content.join('\n'), customRegenerationCommand) + '\n';
 
-        return memo;
-      }, '')
-      .trimEnd();
-  } else {
-    normalizedContent = contentTemplate(content.join('\n'), withoutGeneratedCode.join('\n'), customRegenerationCommand);
+  if (originalContent) {
+    normalizedContent = withoutGeneratedCode.reduce((memo, line, index) => {
+      if (preserveBlockPosition && index === blockPosition) {
+        memo = memo + generatedContent;
+      }
+      memo = memo + line + '\n';
+
+      return memo;
+    }, '');
   }
 
-  return [originalContent, normalizedContent];
+  if (!preserveBlockPosition) {
+    normalizedContent = normalizedContent + generatedContent;
+  }
+
+  return [originalContent, normalizedContent.trimEnd()];
 };
 
 const parseCodeOwner = (filePath: string, codeOwnerContent: string): ownerRule[] => {
