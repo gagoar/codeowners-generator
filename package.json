@@ -13,6 +13,7 @@
     "build-cli": "esbuild --bundle src/bin/cli.ts --platform=node --target=node12 --main-fields=main --outdir=dist/",
     "build": "esbuild --bundle index.ts --platform=node --target=node12 --main-fields=main --outdir=build/",
     "lint": "eslint src/* --ext .ts",
+    "execute": "tsx src/bin/cli.ts",
     "version": "auto-changelog -p && git add CHANGELOG.md",
     "release": "npm run build && npm run build-cli && npm publish",
     "prepare": "husky install"
@@ -106,6 +107,8 @@
     "ora": "5.4.1"
   },
   "devDependencies": {
+    "@swc/core": "^1.3.41",
+    "@swc/jest": "^0.2.24",
     "@types/common-tags": "1.8.1",
     "@types/debug": "4.1.7",
     "@types/is-glob": "4.0.2",
@@ -119,13 +122,12 @@
     "eslint": "8.19.0",
     "eslint-config-prettier": "8.5.0",
     "husky": "8.0.3",
-    "jest": "28.1.3",
+    "jest": "^28.1.3",
     "jest-mock-process": "^2.0.0",
     "lint-staged": "13.0.3",
     "prettier": "2.7.1",
-    "ts-jest": "28.0.8",
-    "ts-node": "10.9.1",
     "tslib": "2.4.0",
+    "tsx": "^3.12.5",
     "typescript": "4.7.4"
   }
 }
