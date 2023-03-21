@@ -87,11 +87,6 @@ const parseCodeOwner = (filePath: string, codeOwnerContent: string): ownerRule[]
 };
 
 const isValidCodeownersGlob = (glob: string) => {
-  if (typeof glob !== 'string' || glob.length <= 0) {
-    // A pattern must be string and cannot be empty
-    return false;
-  }
-
   // These controls are based on the Github CODEOWNERS syntax documentation
   // https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/about-code-owners#codeowners-syntax
   // as well as the gitignore pattern format which it extends
