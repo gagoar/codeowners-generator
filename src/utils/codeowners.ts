@@ -87,34 +87,26 @@ const parseCodeOwner = (filePath: string, codeOwnerContent: string): ownerRule[]
 };
 
 const isValidCodeownersGlob = (glob: string) => {
-  if (typeof glob !== 'string' || glob.length <= 0) {
-    // A pattern must be string and cannot be empty
-    return false;
-  }
-
   // These controls are based on the Github CODEOWNERS syntax documentation
   // https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/about-code-owners#codeowners-syntax
   // as well as the gitignore pattern format which it extends
   // https://git-scm.com/docs/gitignore#_pattern_format
 
-  if (glob.startsWith('!')) {
-    // A pattern cannot use ! to negate
-    return false;
-  }
-  if (glob.includes('{') || glob.includes('}')) {
-    // A pattern cannot use { } for brace expansion or brace sets
-    return false;
-  }
-  if (glob.startsWith('\\#')) {
-    // A pattern cannot start with an escaped # using \ so it is treated as a pattern and not a comment
-    return false;
-  }
-  if (isGlob(glob) && CHARACTER_RANGE_PATTERN.test(glob)) {
-    // A pattern cannot use [ ] to define a character range
-    return false;
-  }
+  const isGlobString = isString(glob);
+  const isNotEmpty = glob.length > 0;
+  const isNotNegated = !glob.startsWith('!');
+  const doesNotUseBraceExpansion = !glob.includes('{') && !glob.includes('}');
+  const doesNotStartWithEscapedHash = !glob.startsWith('\\#');
+  const doesNotUseCharacterRange = !isGlob(glob) || !CHARACTER_RANGE_PATTERN.test(glob);
 
-  return true;
+  return (
+    isGlobString &&
+    isNotEmpty &&
+    isNotNegated &&
+    doesNotUseBraceExpansion &&
+    doesNotStartWithEscapedHash &&
+    doesNotUseCharacterRange
+  );
 };
 
 const translateGlob = (glob: string) => {
