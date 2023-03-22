@@ -1,16 +1,11 @@
 import fs from 'fs';
 import isGlob from 'is-glob';
-import {
-  MAINTAINERS_EMAIL_PATTERN,
-  contentTemplate,
-  CONTENT_MARK,
-  CHARACTER_RANGE_PATTERN,
-  rulesBlockTemplate,
-} from './constants';
+import { MAINTAINERS_EMAIL_PATTERN, CONTENT_MARK, CHARACTER_RANGE_PATTERN } from './constants';
 import { dirname, join } from 'path';
 import { readContent } from './readContent';
 import { logger } from '../utils/debug';
 import groupBy from 'lodash.groupby';
+import { generatedContentTemplate, rulesBlockTemplate } from './templates';
 
 const debug = logger('utils/codeowners');
 
@@ -26,27 +21,34 @@ export type ownerRule = {
   glob: string;
 };
 
-const filterGeneratedContent = (content: string) => {
+const filterGeneratedContent = (content: string): [withoutGeneratedCode: string[], blockPosition: number] => {
   const lines = content.split('\n');
 
   let skip = false;
-  return lines
-    .reduce((memo, line) => {
-      if (line === CONTENT_MARK) {
-        skip = !skip;
-        return memo;
-      }
+  let generatedBlockPosition = -1;
 
-      return skip ? memo : [...memo, line];
-    }, [] as string[])
-    .join('\n');
+  const withoutGeneratedCode = lines.reduce((memo, line, index) => {
+    if (line === CONTENT_MARK) {
+      skip = !skip;
+      if (generatedBlockPosition === -1) {
+        generatedBlockPosition = index;
+      }
+      return memo;
+    }
+
+    return skip ? memo : [...memo, line];
+  }, [] as string[]);
+
+  return [withoutGeneratedCode, generatedBlockPosition];
 };
+
 type createOwnersFileResponse = [originalContent: string, newContent: string];
 export const generateOwnersFile = async (
   outputFile: string,
   ownerRules: ownerRule[],
-  customRegenerationCommand?: string,
-  groupSourceComments = false
+  groupSourceComments = false,
+  preserveBlockPosition = false,
+  customRegenerationCommand?: string
 ): Promise<createOwnersFileResponse> => {
   let originalContent = '';
 
@@ -67,14 +69,28 @@ export const generateOwnersFile = async (
   } else {
     content = ownerRules.map((rule) => rulesBlockTemplate(rule.filePath, [`${rule.glob} ${rule.owners.join(' ')}`]));
   }
+  const [withoutGeneratedCode, blockPosition] = filterGeneratedContent(originalContent);
 
-  const normalizedContent = contentTemplate(
-    content.join('\n'),
-    filterGeneratedContent(originalContent),
-    customRegenerationCommand
-  );
+  let normalizedContent = '';
 
-  return [originalContent, normalizedContent];
+  const generatedContent = generatedContentTemplate(content.join('\n'), customRegenerationCommand) + '\n';
+
+  if (originalContent) {
+    normalizedContent = withoutGeneratedCode.reduce((memo, line, index) => {
+      if (preserveBlockPosition && index === blockPosition) {
+        memo += generatedContent;
+      }
+      memo += line + '\n';
+
+      return memo;
+    }, '');
+  }
+
+  if (!preserveBlockPosition) {
+    normalizedContent = normalizedContent + generatedContent;
+  }
+
+  return [originalContent, normalizedContent.trimEnd()];
 };
 
 const parseCodeOwner = (filePath: string, codeOwnerContent: string): ownerRule[] => {

@@ -199,6 +199,8 @@ You can configure `codeowners-generator` from several places:
 
 - **groupSourceComments** (`--group-source-comments`): Instead of generating one comment per rule, enabling this flag will group them, reducing comments to one per source file. Useful if your codeowners file gets too noisy.
 
+- **preserveBlockPosition** (`--preserve-block-position`): It will keep the generated block in the same position it was found in the CODEOWNERS file (if present). Useful for when you make manual additions.
+
 - **customRegenerationCommand** (`--custom-regeneration-command`): Specify a custom regeneration command to be printed in the generated CODEOWNERS file, it should be mapped to run codeowners-generator (e.g. "npm run codeowners").
 
 - **check** (`--check`): It will fail if the CODEOWNERS generated doesn't match the current (or missing) CODEOWNERS . Useful for validating that the CODEOWNERS file is not out of date during CI.

@@ -66,7 +66,12 @@ describe('Generate', () => {
     });
 
     await generateCommand(
-      { output: 'CODEOWNERS', customRegenerationCommand: 'yarn codeowners-generator generate', check: true },
+      {
+        output: 'CODEOWNERS',
+        customRegenerationCommand: 'yarn codeowners-generator generate',
+        check: true,
+        preserveBlockPosition: true,
+      },
       { parent: {} }
     );
   });
@@ -130,6 +135,10 @@ describe('Generate', () => {
       # We might wanna keep an eye on something else, like yml files and workflows.
       .github/workflows/ @myOrg/infraTeam
 
+
+      # Another line here that should be moved to after the generated block without preserve-block-position option enabled
+      dir2/ @otherTeam
+
       #################################### Generated content - do not edit! ####################################
       # This block has been generated with codeowners-generator (for more information https://github.com/gagoar/codeowners-generator)
       # To re-generate, run \`yarn codeowners-generator generate\`. Don't worry, the content outside this block will be kept.
@@ -154,6 +163,72 @@ describe('Generate', () => {
       /dir2/dir3/**/*.ts @miny
 
       #################################### Generated content - do not edit! ####################################",
+      ]
+    `);
+  });
+
+  it('should generate a CODEOWNERS file (re-using codeowners content, with preserve-block-position enabled)', async () => {
+    sync.mockReturnValueOnce(Object.keys(files));
+
+    sync.mockReturnValueOnce(['.gitignore']);
+
+    const withPopulatedCodeownersFile = {
+      ...withGitIgnore,
+      CODEOWNERS: '../__mocks__/CODEOWNERS_POPULATED_OUTPUT',
+    };
+    existsSync.mockReturnValue(true);
+    readFile.mockImplementation((file, callback): void => {
+      const fullPath = path.join(
+        __dirname,
+        withPopulatedCodeownersFile[file as keyof typeof withPopulatedCodeownersFile]
+      );
+      const content = readFileSync(fullPath);
+      callback(null, content);
+    });
+
+    await generateCommand(
+      {
+        output: 'CODEOWNERS',
+        customRegenerationCommand: 'yarn codeowners-generator generate',
+        preserveBlockPosition: true,
+      },
+      { parent: {} }
+    );
+    expect(writeFile.mock.calls[0]).toMatchInlineSnapshot(`
+      Array [
+        "CODEOWNERS",
+        "# We are already using CODEOWNERS and we don't want to lose the content of this file.
+      scripts/ @myOrg/infraTeam
+      # We might wanna keep an eye on something else, like yml files and workflows.
+      .github/workflows/ @myOrg/infraTeam
+
+      #################################### Generated content - do not edit! ####################################
+      # This block has been generated with codeowners-generator (for more information https://github.com/gagoar/codeowners-generator)
+      # To re-generate, run \`yarn codeowners-generator generate\`. Don't worry, the content outside this block will be kept.
+
+      # Rule extracted from dir1/CODEOWNERS
+      /dir1/**/*.ts @eeny @meeny
+      # Rule extracted from dir1/CODEOWNERS
+      /dir1/*.ts @miny
+      # Rule extracted from dir1/CODEOWNERS
+      /dir1/**/README.md @miny
+      # Rule extracted from dir1/CODEOWNERS
+      /dir1/README.md @moe
+      # Rule extracted from dir2/CODEOWNERS
+      /dir2/**/*.ts @moe
+      # Rule extracted from dir2/CODEOWNERS
+      /dir2/dir3/*.ts @miny
+      # Rule extracted from dir2/CODEOWNERS
+      /dir2/**/*.md @meeny
+      # Rule extracted from dir2/CODEOWNERS
+      /dir2/**/dir4/ @eeny
+      # Rule extracted from dir2/dir3/CODEOWNERS
+      /dir2/dir3/**/*.ts @miny
+
+      #################################### Generated content - do not edit! ####################################
+
+      # Another line here that should be moved to after the generated block without preserve-block-position option enabled
+      dir2/ @otherTeam",
       ]
     `);
   });
