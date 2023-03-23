@@ -21,9 +21,14 @@ inputs:
     description: 'The output path and name of the file, (default: CODEOWNERS)'
     required: false
     default: 'CODEOWNERS'
+  preserve-block-position:
+    description: Keep the generated block in the same position it was found in the CODEOWNERS file (if present). Useful for when you make manual additions.
+    required: false
+    default: 'false'
   version:
     description: codeowners-generator version. It will default to the latest in npm otherwise'
     required: false
+
 runs:
   using: 'composite'
   steps:
@@ -51,6 +56,10 @@ runs:
 
         if [ "${{inputs.check}}" = "true" ]; then
           ARGS_INPUT+=("--check")
+        fi
+
+        if [ ! -z "${{inputs.preserve-block-position}}" ]; then
+          ARGS_INPUT+="("--preserve-block-position")
         fi
 
         if [ ! -z "${{inputs.version}}" ]; then
