@@ -59,7 +59,7 @@ runs:
         fi
 
         if [ ! -z "${{inputs.preserve-block-position}}" ]; then
-          ARGS_INPUT+="("--preserve-block-position")
+          ARGS_INPUT+=("--preserve-block-position")
         fi
 
         if [ ! -z "${{inputs.version}}" ]; then
