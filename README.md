@@ -184,13 +184,7 @@ jobs:
 
 <!-- CONFIGURATION -->
 
-Remember that you can always create a configuration file in your project that it will be picked up by the tool running on the action. For example, if you create any files with the following names, `codeowners-generator` will pick it up:
-
-- a `codowners-generator` property in package.json
-- a `.codowners-generatorrc` file in JSON or YAML format
-- a `.codowners-generator.json`, `.codowners-generator.yaml`, `.codowners-generator.yml`, `.codowners-generator.js`, or `.codowners-generator.cjs` file
-- a `codowners-generatorrc`, `codowners-generator.json`, `codowners-generatorrc.yaml`, `codowners-generatorrc.yml`, `codowners-generator.js` or `codowners-generator.cjs` file inside a .config subdirectory
-- a `codowners-generator.config.js` or `codowners-generator.config.cjs` CommonJS module exporting an object
+Remember that you can always create a configuration file in your project that it will be picked up by the tool running on the action. For examples in how to configure take a look at the [configuration section below](#configuration).
 
 ## Configuration
 
@@ -250,7 +244,15 @@ When the command is invoked it will look for the `codeowners-generator` configur
 (my-package)$ npm run codeowners
 ```
 
-Custom configuration can be defined in many places, for more information check [cosmiconfig](https://github.com/davidtheclark/cosmiconfig)
+If you create any files matching the following patterns, `codeowners-generator` will pick them up:
+
+- a `codowners-generator` property in package.json
+- a `.codowners-generatorrc` file in JSON or YAML format
+- a `.codowners-generator.json`, `.codowners-generator.yaml`, `.codowners-generator.yml`, `.codowners-generator.js`, or `.codowners-generator.cjs` file
+- a `codowners-generatorrc`, `codowners-generator.json`, `codowners-generatorrc.yaml`, `codowners-generatorrc.yml`, `codowners-generator.js` or `codowners-generator.cjs` file inside a .config subdirectory
+- a `codowners-generator.config.js` or `codowners-generator.config.cjs` CommonJS module exporting an object
+
+Form more insight into the custom configuration and where it can be defined check [cosmiconfig](https://github.com/davidtheclark/cosmiconfig)
 
 <!-- ROADMAP -->
 
