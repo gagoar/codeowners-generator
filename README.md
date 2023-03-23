@@ -48,6 +48,7 @@
 - [About the Project](#about-the-project)
 - [Built With](#built-with)
 - [Installation](#installation)
+- [Configuration](#configuration)
 - [Usage](#usage)
 - [Action](#action)
 - [Contributing](#contributing)
@@ -182,6 +183,14 @@ jobs:
 ```
 
 <!-- CONFIGURATION -->
+
+Remember that you can always create a configuration file in your project that it will be picked up by the tool running on the action. For example, if you create any files with the following names, `codeowners-generator` will pick it up:
+
+- a `codowners-generator` property in package.json
+- a `.codowners-generatorrc` file in JSON or YAML format
+- a `.codowners-generator.json`, `.codowners-generator.yaml`, `.codowners-generator.yml`, `.codowners-generator.js`, or `.codowners-generator.cjs` file
+- a `codowners-generatorrc`, `codowners-generator.json`, `codowners-generatorrc.yaml`, `codowners-generatorrc.yml`, `codowners-generator.js` or `codowners-generator.cjs` file inside a .config subdirectory
+- a `codowners-generator.config.js` or `codowners-generator.config.cjs` CommonJS module exporting an object
 
 ## Configuration
 
