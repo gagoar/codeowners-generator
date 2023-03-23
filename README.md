@@ -252,7 +252,7 @@ If you create any files matching the following patterns, `codeowners-generator` 
 - a `codowners-generatorrc`, `codowners-generator.json`, `codowners-generatorrc.yaml`, `codowners-generatorrc.yml`, `codowners-generator.js` or `codowners-generator.cjs` file inside a .config subdirectory
 - a `codowners-generator.config.js` or `codowners-generator.config.cjs` CommonJS module exporting an object
 
-Form more insight into the custom configuration and where it can be defined check [cosmiconfig](https://github.com/davidtheclark/cosmiconfig)
+For more insight into the custom configuration and where it can be defined check [cosmiconfig](https://github.com/davidtheclark/cosmiconfig)
 
 <!-- ROADMAP -->
 
