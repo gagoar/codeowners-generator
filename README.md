@@ -184,7 +184,7 @@ jobs:
 
 <!-- CONFIGURATION -->
 
-Remember that you can always create a configuration file in your project that it will be picked up by the tool running on the action. For examples in how to configure take a look at the [configuration section below](#configuration).
+Remember that you can always create a configuration file in your project that will be picked up by the tool running on the action. For examples in how to configure take a look at the [configuration section below](#configuration).
 
 ## Configuration
 
