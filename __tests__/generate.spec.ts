@@ -147,7 +147,7 @@ describe('Generate', () => {
       /dir1/**/*.ts @eeny @meeny
       # Rule extracted from dir1/CODEOWNERS
       /dir1/*.ts @miny
-      # Rule extracted from dir1/CODEOWNERS(containing path exclusions)
+      # Rule extracted from dir1/CODEOWNERS (containing path exclusions)
       /dir1/*.md
       # Rule extracted from dir1/CODEOWNERS
       /dir1/**/README.md @miny
@@ -212,7 +212,7 @@ describe('Generate', () => {
       /dir1/**/*.ts @eeny @meeny
       # Rule extracted from dir1/CODEOWNERS
       /dir1/*.ts @miny
-      # Rule extracted from dir1/CODEOWNERS(containing path exclusions)
+      # Rule extracted from dir1/CODEOWNERS (containing path exclusions)
       /dir1/*.md
       # Rule extracted from dir1/CODEOWNERS
       /dir1/**/README.md @miny
@@ -304,7 +304,7 @@ describe('Generate', () => {
       /dir1/**/*.ts @eeny @meeny
       # Rule extracted from dir1/CODEOWNERS
       /dir1/*.ts @miny
-      # Rule extracted from dir1/CODEOWNERS(containing path exclusions)
+      # Rule extracted from dir1/CODEOWNERS (containing path exclusions)
       /dir1/*.md
       # Rule extracted from dir1/CODEOWNERS
       /dir1/**/README.md @miny
@@ -383,7 +383,7 @@ describe('Generate', () => {
       /dir1/**/*.ts @eeny @meeny
       # Rule extracted from dir1/CODEOWNERS
       /dir1/*.ts @miny
-      # Rule extracted from dir1/CODEOWNERS(containing path exclusions)
+      # Rule extracted from dir1/CODEOWNERS (containing path exclusions)
       /dir1/*.md
       # Rule extracted from dir1/CODEOWNERS
       /dir1/**/README.md @miny
@@ -452,7 +452,7 @@ describe('Generate', () => {
       /dir1/**/*.ts @eeny @meeny
       # Rule extracted from dir1/CODEOWNERS
       /dir1/*.ts @miny
-      # Rule extracted from dir1/CODEOWNERS(containing path exclusions)
+      # Rule extracted from dir1/CODEOWNERS (containing path exclusions)
       /dir1/*.md
       # Rule extracted from dir1/CODEOWNERS
       /dir1/**/README.md @miny
@@ -638,7 +638,7 @@ describe('Generate', () => {
       /dir1/**/*.ts @eeny @meeny
       # Rule extracted from dir1/CODEOWNERS
       /dir1/*.ts @miny
-      # Rule extracted from dir1/CODEOWNERS(containing path exclusions)
+      # Rule extracted from dir1/CODEOWNERS (containing path exclusions)
       /dir1/*.md
       # Rule extracted from dir1/CODEOWNERS
       /dir1/**/README.md @miny
