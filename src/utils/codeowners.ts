@@ -151,7 +151,7 @@ const createMatcherCodeownersRule = (filePath: string, rule: string) => {
   const parts = rule.split(/\s+/);
   const [glob, ...owners] = parts;
 
-  if (owners.length && isValidCodeownersGlob(glob)) {
+  if (isValidCodeownersGlob(glob)) {
     return {
       glob: join('/', dirname(filePath), translateGlob(glob)),
       owners,

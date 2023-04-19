@@ -4,11 +4,10 @@ import { readContent } from '../src/utils/readContent';
 jest.mock('../src/utils/readContent');
 
 const readContentMock = jest.mocked(readContent);
-
+type ValidRulesCases = [shouldStatement: string, pattern: string, resultingPath: string, owners?: string];
 describe('Codeowners', () => {
   describe('loadCodeOwnerFiles', () => {
     const invalidRuleCases = [
-      ['should throw if a rule is missing owners', '*.ts', '*.ts in dir1/CODEOWNERS can not be parsed'],
       ['should throw if a rule is missing a file pattern', ' @eeny', ' @eeny in dir1/CODEOWNERS can not be parsed'],
       [
         'should throw if a rule is using ! to negate a pattern',
@@ -38,7 +37,8 @@ describe('Codeowners', () => {
       await expect(loadCodeOwnerFiles('/root', ['/root/dir1/CODEOWNERS'])).rejects.toThrowError(expectedError);
     });
 
-    const validRuleCases = [
+    const validRuleCases: ValidRulesCases[] = [
+      ['should be considered a rule with an exclusion if a rule is missing owners', '/*.ts', '/dir1/*.ts', ''],
       ['should match * to all file under the given directory and its subdirectories', '*', '/dir1/**/*'],
       [
         'should only match /* to all file in the root of the given directory and not its subdirectories',
@@ -80,11 +80,11 @@ describe('Codeowners', () => {
       ],
     ];
 
-    it.each(validRuleCases)('%s (%s)', async (_name, pattern, expectedGlob) => {
-      readContentMock.mockResolvedValueOnce(`${pattern} @eeny`);
+    it.each(validRuleCases)('%s (%s)', async (_name, pattern, expectedGlob, owners = '@eeny') => {
+      readContentMock.mockResolvedValueOnce(`${pattern} ${owners}`);
 
       await expect(loadCodeOwnerFiles('/root', ['/root/dir1/CODEOWNERS'])).resolves.toEqual([
-        { filePath: 'dir1/CODEOWNERS', glob: expectedGlob, owners: ['@eeny'] },
+        { filePath: 'dir1/CODEOWNERS', glob: expectedGlob, owners: [owners] },
       ]);
     });
   });
