@@ -147,6 +147,8 @@ describe('Generate', () => {
       /dir1/**/*.ts @eeny @meeny
       # Rule extracted from dir1/CODEOWNERS
       /dir1/*.ts @miny
+      # Rule extracted from dir1/CODEOWNERS(containing path exclusions)
+      /dir1/*.md
       # Rule extracted from dir1/CODEOWNERS
       /dir1/**/README.md @miny
       # Rule extracted from dir1/CODEOWNERS
@@ -210,6 +212,8 @@ describe('Generate', () => {
       /dir1/**/*.ts @eeny @meeny
       # Rule extracted from dir1/CODEOWNERS
       /dir1/*.ts @miny
+      # Rule extracted from dir1/CODEOWNERS(containing path exclusions)
+      /dir1/*.md
       # Rule extracted from dir1/CODEOWNERS
       /dir1/**/README.md @miny
       # Rule extracted from dir1/CODEOWNERS
@@ -261,6 +265,7 @@ describe('Generate', () => {
       # Rules extracted from dir1/CODEOWNERS
       /dir1/**/*.ts @eeny @meeny
       /dir1/*.ts @miny
+      /dir1/*.md 
       /dir1/**/README.md @miny
       /dir1/README.md @moe
       # Rules extracted from dir2/CODEOWNERS
@@ -299,6 +304,8 @@ describe('Generate', () => {
       /dir1/**/*.ts @eeny @meeny
       # Rule extracted from dir1/CODEOWNERS
       /dir1/*.ts @miny
+      # Rule extracted from dir1/CODEOWNERS(containing path exclusions)
+      /dir1/*.md
       # Rule extracted from dir1/CODEOWNERS
       /dir1/**/README.md @miny
       # Rule extracted from dir1/CODEOWNERS
@@ -376,6 +383,8 @@ describe('Generate', () => {
       /dir1/**/*.ts @eeny @meeny
       # Rule extracted from dir1/CODEOWNERS
       /dir1/*.ts @miny
+      # Rule extracted from dir1/CODEOWNERS(containing path exclusions)
+      /dir1/*.md
       # Rule extracted from dir1/CODEOWNERS
       /dir1/**/README.md @miny
       # Rule extracted from dir1/CODEOWNERS
@@ -443,6 +452,8 @@ describe('Generate', () => {
       /dir1/**/*.ts @eeny @meeny
       # Rule extracted from dir1/CODEOWNERS
       /dir1/*.ts @miny
+      # Rule extracted from dir1/CODEOWNERS(containing path exclusions)
+      /dir1/*.md
       # Rule extracted from dir1/CODEOWNERS
       /dir1/**/README.md @miny
       # Rule extracted from dir1/CODEOWNERS
@@ -508,6 +519,7 @@ describe('Generate', () => {
       # Rules extracted from dir1/CODEOWNERS
       /dir1/**/*.ts @eeny @meeny
       /dir1/*.ts @miny
+      /dir1/*.md 
       /dir1/**/README.md @miny
       /dir1/README.md @moe
       # Rules extracted from dir2/CODEOWNERS
@@ -568,6 +580,7 @@ describe('Generate', () => {
       # Rules extracted from dir1/CODEOWNERS
       /dir1/**/*.ts @eeny @meeny
       /dir1/*.ts @miny
+      /dir1/*.md 
       /dir1/**/README.md @miny
       /dir1/README.md @moe
       # Rules extracted from dir2/CODEOWNERS
@@ -625,6 +638,8 @@ describe('Generate', () => {
       /dir1/**/*.ts @eeny @meeny
       # Rule extracted from dir1/CODEOWNERS
       /dir1/*.ts @miny
+      # Rule extracted from dir1/CODEOWNERS(containing path exclusions)
+      /dir1/*.md
       # Rule extracted from dir1/CODEOWNERS
       /dir1/**/README.md @miny
       # Rule extracted from dir1/CODEOWNERS
@@ -704,6 +719,11 @@ describe('Generate', () => {
           "owners": Array [
             "@miny",
           ],
+        },
+        Object {
+          "filePath": "dir1/CODEOWNERS",
+          "glob": "/dir1/*.md",
+          "owners": Array [],
         },
         Object {
           "filePath": "dir1/CODEOWNERS",
@@ -822,38 +842,5 @@ describe('Generate', () => {
 
     await generateCommand({}, { parent: {} });
     expect(writeFile).toHaveBeenCalled();
-  });
-
-  it('should blow up after finding malformed CODEOWNERS', async () => {
-    const mockExit = mockProcessExit();
-    const addedMalformedFiles = {
-      ...files,
-      'dir4/CODEOWNERS': '../__mocks__/CODEOWNERS4',
-    };
-    sync.mockReturnValueOnce([...Object.keys(files), 'dir4/CODEOWNERS']);
-    sync.mockReturnValueOnce([]);
-    search.mockImplementationOnce(() =>
-      Promise.resolve({
-        isEmpty: false,
-        filepath: '/some/package.json',
-        config: {
-          output: 'CODEOWNERS',
-          useMaintainers: true,
-        },
-      })
-    );
-
-    readFile.mockImplementation((file, callback) => {
-      const content = readFileSync(path.join(__dirname, addedMalformedFiles[file as keyof typeof addedMalformedFiles]));
-      callback(null, content);
-    });
-
-    await generateCommand({ output: 'CODEOWNERS' }, { parent: {} });
-    expect(mockExit).toHaveBeenCalledWith(1);
-    expect(fail.mock.calls[0]).toMatchInlineSnapshot(`
-      Array [
-        "We encountered an error: *.ts in dir4/CODEOWNERS can not be parsed",
-      ]
-    `);
   });
 });

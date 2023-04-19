@@ -18,7 +18,9 @@ export const generatedContentTemplate = (generatedContent: string, customRegener
 };
 export const rulesBlockTemplate = (source: string, entries: string[]): string => {
   return stripIndents`
-  # Rule${entries.length > 1 ? 's' : ''} extracted from ${source}
+  # Rule${entries.length > 1 ? 's' : ''} extracted from ${source}${
+    entries.some((rule) => rule.trim().includes(' ')) ? '' : '(containing path exclusions)'
+  }
   ${entries.join('\n')}
   `;
 };
