@@ -47,6 +47,7 @@ describe('Generate', () => {
   });
 
   it('should generate a CODEOWNERS file (re-using codeowners content) and not fail when using --check option', async () => {
+    mockProcessExit(false);
     sync.mockReturnValueOnce(Object.keys(files));
 
     sync.mockReturnValueOnce(['.gitignore']);
@@ -76,7 +77,7 @@ describe('Generate', () => {
     );
   });
   it('should generate a CODEOWNERS file (re-using codeowners content) and fail when using --check option', async () => {
-    const mockExit = mockProcessExit();
+    const mockExit = mockProcessExit(false);
 
     sync.mockReturnValueOnce(Object.keys(files));
 
