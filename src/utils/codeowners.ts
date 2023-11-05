@@ -1,7 +1,7 @@
 import fs from 'fs';
 import isGlob from 'is-glob';
 import { MAINTAINERS_EMAIL_PATTERN, CONTENT_MARK, CHARACTER_RANGE_PATTERN } from './constants';
-import { dirname, join } from 'path';
+import { dirname, join } from 'path/posix';
 import { readContent } from './readContent';
 import { logger } from '../utils/debug';
 import groupBy from 'lodash.groupby';

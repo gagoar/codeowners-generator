@@ -1,5 +1,5 @@
 import ora from 'ora';
-import { basename, dirname } from 'path';
+import { basename, dirname } from 'path/posix';
 import fs from 'fs';
 import { sync } from 'fast-glob';
 import { Command, getGlobalOptions } from '../utils/getGlobalOptions';
