@@ -16,7 +16,7 @@ jobs:
           - ubuntu-latest
           - windows-latest
     env:
-      DEBUG: '*'
+      DEBUG: 'codeowners-generator'
     steps:
       - uses: actions/checkout@v3
       - name: Setting node version
