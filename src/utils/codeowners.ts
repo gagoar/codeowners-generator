@@ -22,7 +22,7 @@ export type ownerRule = {
 };
 
 const filterGeneratedContent = (content: string): [withoutGeneratedCode: string[], blockPosition: number] => {
-  const lines = content.split('\n');
+  const lines = content.split(/\r?\n/);
 
   let skip = false;
   let generatedBlockPosition = -1;
@@ -94,7 +94,7 @@ export const generateOwnersFile = async (
 };
 
 const parseCodeOwner = (filePath: string, codeOwnerContent: string): ownerRule[] => {
-  const content = codeOwnerContent.split('\n');
+  const content = codeOwnerContent.split(/\r?\n/);
 
   // TODO: include comments optionally.
   const filteredRules = content.filter((line) => line && !line.startsWith('#'));

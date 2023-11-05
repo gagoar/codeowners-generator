@@ -17,7 +17,7 @@ export const getPatternsFromIgnoreFiles = async (): Promise<string[]> => {
     matches.map(async (filePath) => {
       try {
         const content = await readContent(filePath);
-        const lines = content.split('\n').filter((line) => line && !line.startsWith('#'));
+        const lines = content.split(/\r?\n/).filter((line) => line && !line.startsWith('#'));
 
         return lines;
       } catch (e) {
