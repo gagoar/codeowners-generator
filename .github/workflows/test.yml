@@ -15,6 +15,8 @@ jobs:
           - macos-latest
           - ubuntu-latest
           - windows-latest
+    env:
+      DEBUG: '*'
     steps:
       - uses: actions/checkout@v3
       - name: Setting node version
