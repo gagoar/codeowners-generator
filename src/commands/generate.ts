@@ -1,5 +1,5 @@
 import ora from 'ora';
-import { basename, dirname } from 'path';
+import { basename, dirname } from 'path/posix';
 import fs from 'fs';
 import { sync } from 'fast-glob';
 import { Command, getGlobalOptions } from '../utils/getGlobalOptions';
@@ -167,6 +167,7 @@ export const command = async (options: Options, command: Command): Promise<void>
     }
   } catch (e) {
     const error = e as Error;
+    debug(`We encountered an error: ${error.message}`);
     loader.fail(`We encountered an error: ${error.message}`);
     process.exit(1);
   }

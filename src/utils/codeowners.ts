@@ -1,7 +1,7 @@
 import fs from 'fs';
 import isGlob from 'is-glob';
-import { MAINTAINERS_EMAIL_PATTERN, CONTENT_MARK, CHARACTER_RANGE_PATTERN } from './constants';
-import { dirname, join } from 'path';
+import { MAINTAINERS_EMAIL_PATTERN, CONTENT_MARK, CHARACTER_RANGE_PATTERN, LINE_ENDING_PATTERN } from './constants';
+import { dirname, join } from 'path/posix';
 import { readContent } from './readContent';
 import { logger } from '../utils/debug';
 import groupBy from 'lodash.groupby';
@@ -22,7 +22,7 @@ export type ownerRule = {
 };
 
 const filterGeneratedContent = (content: string): [withoutGeneratedCode: string[], blockPosition: number] => {
-  const lines = content.split('\n');
+  const lines = content.split(LINE_ENDING_PATTERN);
 
   let skip = false;
   let generatedBlockPosition = -1;
@@ -94,7 +94,7 @@ export const generateOwnersFile = async (
 };
 
 const parseCodeOwner = (filePath: string, codeOwnerContent: string): ownerRule[] => {
-  const content = codeOwnerContent.split('\n');
+  const content = codeOwnerContent.split(LINE_ENDING_PATTERN);
 
   // TODO: include comments optionally.
   const filteredRules = content.filter((line) => line && !line.startsWith('#'));
