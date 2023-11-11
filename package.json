@@ -51,11 +51,6 @@
       "project": "./tsconfig.eslint.json"
     },
     "rules": {
-      "quotes": [
-        2,
-        "single",
-        "avoid-escape"
-      ],
       "no-debugger": "error",
       "no-process-env": "off",
       "import/prefer-default-export": "off",
