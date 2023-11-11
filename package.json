@@ -114,7 +114,7 @@
     "@types/is-glob": "4.0.2",
     "@types/jest": "28.1.8",
     "@types/lodash.groupby": "4.6.7",
-    "@types/node": "16.18.16",
+    "@types/node": "16.18.61",
     "@typescript-eslint/eslint-plugin": "5.30.6",
     "@typescript-eslint/parser": "5.30.6",
     "auto-changelog": "2.4.0",
