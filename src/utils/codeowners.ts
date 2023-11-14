@@ -1,7 +1,7 @@
 import fs from 'fs';
 import isGlob from 'is-glob';
 import { MAINTAINERS_EMAIL_PATTERN, CONTENT_MARK, CHARACTER_RANGE_PATTERN, LINE_ENDING_PATTERN } from './constants';
-import { posix as pathPosix } from 'path';
+import { posix as path } from 'path';
 import { readContent } from './readContent';
 import { logger } from '../utils/debug';
 import groupBy from 'lodash.groupby';
@@ -9,7 +9,7 @@ import { generatedContentTemplate, rulesBlockTemplate } from './templates';
 
 const debug = logger('utils/codeowners');
 
-const { dirname, join } = pathPosix;
+const { dirname, join } = path;
 
 const isString = (x: unknown): x is string => {
   return typeof x === 'string';
