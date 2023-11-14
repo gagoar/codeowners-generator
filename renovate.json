@@ -1,6 +1,6 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["config:base", "schedule:monthly"],
+  "extends": ["config:base", ":semanticCommits", "schedule:monthly"],
   "packageRules": [
     {
       "description": "Require dashboard approval for major updates",
@@ -12,7 +12,8 @@
       "matchPackageNames": ["codeowners-generator"],
       "matchPaths": [".md"],
       "commitMessageTopic": "references to {{{depName}}}",
-      "additionalBranchPrefix": "docs-"
+      "additionalBranchPrefix": "docs-",
+      "semanticCommitType": "docs"
     }
   ],
   "regexManagers": [
