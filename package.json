@@ -16,7 +16,8 @@
     "execute": "tsx src/bin/cli.ts",
     "version": "auto-changelog -p && git add CHANGELOG.md",
     "release": "npm run build && npm run build-cli && npm publish",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "prettier": "prettier --ignore-path .gitignore --check ."
   },
   "engines": {
     "node": ">10.0.0"
@@ -50,11 +51,6 @@
       "project": "./tsconfig.eslint.json"
     },
     "rules": {
-      "quotes": [
-        2,
-        "single",
-        "avoid-escape"
-      ],
       "no-debugger": "error",
       "no-process-env": "off",
       "import/prefer-default-export": "off",
