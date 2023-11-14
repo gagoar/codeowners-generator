@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import * as fg from 'fast-glob';
 import { mockProcessExit } from 'jest-mock-process';
-import path from 'path/posix';
+import { posix as path } from 'path';
 import { generateCommand } from '../';
 import { generate } from '../src/commands/generate';
 import { fail, stopAndPersist } from '../__mocks__/ora';

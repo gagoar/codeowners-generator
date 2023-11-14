@@ -1,5 +1,5 @@
 import ora from 'ora';
-import { basename, dirname } from 'path/posix';
+import { posix as path } from 'path';
 import fs from 'fs';
 import { sync } from 'fast-glob';
 import { Command, getGlobalOptions } from '../utils/getGlobalOptions';
@@ -26,6 +26,8 @@ type GenerateInput = {
   useRootMaintainers?: boolean;
   includes?: string[];
 };
+
+const { basename, dirname } = path;
 
 export const generate: Generate = async ({ rootDir, includes, useMaintainers = false, useRootMaintainers = false }) => {
   debug('input:', rootDir, includes, useMaintainers, useRootMaintainers);
