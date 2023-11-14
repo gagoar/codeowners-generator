@@ -14,6 +14,11 @@
       "commitMessageTopic": "references to {{{depName}}}",
       "additionalBranchPrefix": "docs-",
       "semanticCommitType": "docs"
+    },
+    {
+      "description": "Use ci commit type for Github Actions",
+      "matchManagers": ["github-actions"],
+      "semanticCommitType": "ci"
     }
   ],
   "regexManagers": [
