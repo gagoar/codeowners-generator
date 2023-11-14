@@ -129,7 +129,7 @@ describe('Generate', () => {
       { parent: {} }
     );
     expect(writeFile.mock.calls[0]).toMatchInlineSnapshot(`
-      Array [
+      [
         "CODEOWNERS",
         "# We are already using CODEOWNERS and we don't want to lose the content of this file.
       scripts/ @myOrg/infraTeam
@@ -198,7 +198,7 @@ describe('Generate', () => {
       { parent: {} }
     );
     expect(writeFile.mock.calls[0]).toMatchInlineSnapshot(`
-      Array [
+      [
         "CODEOWNERS",
         "# We are already using CODEOWNERS and we don't want to lose the content of this file.
       scripts/ @myOrg/infraTeam
@@ -256,8 +256,8 @@ describe('Generate', () => {
       { parent: {} }
     );
     expect(writeFile.mock.calls).toMatchInlineSnapshot(`
-      Array [
-        Array [
+      [
+        [
           "CODEOWNERS",
           "#################################### Generated content - do not edit! ####################################
       # This block has been generated with codeowners-generator (for more information https://github.com/gagoar/codeowners-generator)
@@ -294,8 +294,8 @@ describe('Generate', () => {
 
     await generateCommand({ output: 'CODEOWNERS' }, { parent: {} });
     expect(writeFile.mock.calls).toMatchInlineSnapshot(`
-      Array [
-        Array [
+      [
+        [
           "CODEOWNERS",
           "#################################### Generated content - do not edit! ####################################
       # This block has been generated with codeowners-generator (for more information https://github.com/gagoar/codeowners-generator)
@@ -365,8 +365,8 @@ describe('Generate', () => {
 
     expect(consoleWarnMock).toHaveBeenCalled();
     expect(consoleWarnMock.mock.calls).toMatchInlineSnapshot(`
-      Array [
-        Array [
+      [
+        [
           "We will ignore the package.json dir1/package.json, given that we have encountered a CODEOWNERS file at the same dir level",
         ],
       ]
@@ -705,74 +705,74 @@ describe('Generate', () => {
 
     const response = await generate({ rootDir: __dirname });
     expect(response).toMatchInlineSnapshot(`
-      Array [
-        Object {
+      [
+        {
           "filePath": "dir1/CODEOWNERS",
           "glob": "/dir1/**/*.ts",
-          "owners": Array [
+          "owners": [
             "@eeny",
             "@meeny",
           ],
         },
-        Object {
+        {
           "filePath": "dir1/CODEOWNERS",
           "glob": "/dir1/*.ts",
-          "owners": Array [
+          "owners": [
             "@miny",
           ],
         },
-        Object {
+        {
           "filePath": "dir1/CODEOWNERS",
           "glob": "/dir1/*.md",
-          "owners": Array [],
+          "owners": [],
         },
-        Object {
+        {
           "filePath": "dir1/CODEOWNERS",
           "glob": "/dir1/**/README.md",
-          "owners": Array [
+          "owners": [
             "@miny",
           ],
         },
-        Object {
+        {
           "filePath": "dir1/CODEOWNERS",
           "glob": "/dir1/README.md",
-          "owners": Array [
+          "owners": [
             "@moe",
           ],
         },
-        Object {
+        {
           "filePath": "dir2/CODEOWNERS",
           "glob": "/dir2/**/*.ts",
-          "owners": Array [
+          "owners": [
             "@moe",
           ],
         },
-        Object {
+        {
           "filePath": "dir2/CODEOWNERS",
           "glob": "/dir2/dir3/*.ts",
-          "owners": Array [
+          "owners": [
             "@miny",
           ],
         },
-        Object {
+        {
           "filePath": "dir2/CODEOWNERS",
           "glob": "/dir2/**/*.md",
-          "owners": Array [
+          "owners": [
             "@meeny",
             "",
           ],
         },
-        Object {
+        {
           "filePath": "dir2/CODEOWNERS",
           "glob": "/dir2/**/dir4/",
-          "owners": Array [
+          "owners": [
             "@eeny",
           ],
         },
-        Object {
+        {
           "filePath": "dir2/dir3/CODEOWNERS",
           "glob": "/dir2/dir3/**/*.ts",
-          "owners": Array [
+          "owners": [
             "@miny",
           ],
         },
@@ -791,16 +791,16 @@ describe('Generate', () => {
       }
     );
     expect(stopAndPersist.mock.calls).toMatchInlineSnapshot(`
-      Array [
-        Array [
-          Object {
+      [
+        [
+          {
             "symbol": "💫",
             "text": "No custom configuration found",
           },
         ],
-        Array [
-          Object {
-            "symbol": "¯\\\\_(ツ)_/¯",
+        [
+          {
+            "symbol": "¯\\_(ツ)_/¯",
             "text": "We couldn't find any codeowners under **/NOT_STANDARD_CODEOWNERS",
           },
         ],
@@ -824,8 +824,8 @@ describe('Generate', () => {
 
     await generateCommand({}, { parent: {} });
     expect(fail.mock.calls).toMatchInlineSnapshot(`
-      Array [
-        Array [
+      [
+        [
           "We found an error looking for custom configuration, we will use cli options if provided",
         ],
       ]
