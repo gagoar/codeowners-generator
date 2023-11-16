@@ -24,7 +24,7 @@ export const getPatternsFromIgnoreFiles = async (): Promise<string[]> => {
         debug(`We failed when reading ${filePath}, skipping file. reason: `, e);
         return [];
       }
-    })
+    }),
   );
 
   const patterns = filesContent.reduce((memo, patterns) => [...memo, ...patterns], [] as string[]);
