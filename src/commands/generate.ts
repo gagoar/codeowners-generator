@@ -2,7 +2,7 @@ import ora from 'ora';
 import { posix as path } from 'path';
 import fs from 'fs';
 import { sync } from 'fast-glob';
-import { Command, getGlobalOptions } from '../utils/getGlobalOptions';
+import { Command, GlobalOptions, getGlobalOptions } from '../utils/getGlobalOptions';
 import {
   OUTPUT,
   INCLUDES,
@@ -97,15 +97,8 @@ export const generate: Generate = async ({ rootDir, includes, useMaintainers = f
   }
 };
 
-interface Options {
-  output?: string;
+interface Options extends GlobalOptions {
   verifyPaths?: boolean;
-  useMaintainers?: boolean;
-  useRootMaintainers?: boolean;
-  groupSourceComments?: boolean;
-  preserveBlockPosition?: boolean;
-  includes?: string[];
-  customRegenerationCommand?: string;
   check?: boolean;
 }
 

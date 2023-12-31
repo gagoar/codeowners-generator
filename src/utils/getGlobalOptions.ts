@@ -1,10 +1,6 @@
-import { getCustomConfiguration } from './getCustomConfiguration';
-interface GlobalOptions {
-  includes?: string[];
-  output?: string;
-  customRegenerationCommand?: string;
-  groupSourceComments?: boolean;
-}
+import { CustomConfig, getCustomConfiguration } from './getCustomConfiguration';
+
+export type GlobalOptions = CustomConfig;
 export interface Command {
   parent: Partial<GlobalOptions>;
 }
