@@ -105,24 +105,26 @@ interface Options extends GlobalOptions {
 export const command = async (options: Options, command: Command): Promise<void> => {
   const globalOptions = await getGlobalOptions(command);
 
-  const { verifyPaths, useMaintainers, useRootMaintainers, check, preserveBlockPosition } = options;
+  const loader = ora(`generating codeowners...\n`).start();
 
-  const { output = globalOptions.output || OUTPUT } = options;
+  const { verifyPaths, check } = options;
 
-  const loader = ora('generating codeowners...').start();
+  const output = options.output || globalOptions.output || OUTPUT;
 
+  const useMaintainers = globalOptions.useMaintainers || options.useMaintainers;
+  const useRootMaintainers = globalOptions.useRootMaintainers || options.useRootMaintainers;
   const groupSourceComments = globalOptions.groupSourceComments || options.groupSourceComments;
-
+  const preserveBlockPosition = globalOptions.preserveBlockPosition || options.preserveBlockPosition;
   const customRegenerationCommand = globalOptions.customRegenerationCommand || options.customRegenerationCommand;
 
   debug('Options:', {
     ...globalOptions,
+    output,
     useMaintainers,
     useRootMaintainers,
     groupSourceComments,
     preserveBlockPosition,
     customRegenerationCommand,
-    output,
   });
 
   try {
