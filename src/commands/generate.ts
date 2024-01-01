@@ -105,11 +105,11 @@ interface Options extends GlobalOptions {
 export const command = async (options: Options, command: Command): Promise<void> => {
   const globalOptions = await getGlobalOptions(command);
 
-  const loader = ora(`generating codeowners...\n`).start();
-
   const { verifyPaths, check } = options;
 
   const output = options.output || globalOptions.output || OUTPUT;
+
+  const loader = ora('generating codeowners...').start();
 
   const useMaintainers = globalOptions.useMaintainers || options.useMaintainers;
   const useRootMaintainers = globalOptions.useRootMaintainers || options.useRootMaintainers;
