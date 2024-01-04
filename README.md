@@ -192,7 +192,7 @@ You can configure `codeowners-generator` from several places:
 
 ### CLI options
 
-- **includes** (`--includes`): The glob used to find CODEOWNERS files in the repo `default: ['**/CODEOWNERS', '!CODEOWNERS', '!node_modules']`
+- **includes** (`--includes`): The glob used to find CODEOWNERS files in the repo `default: ['**/CODEOWNERS', '!CODEOWNERS', '!.github/CODEOWNERS', '!docs/CODEOWNERS', '!node_modules']`
 
 - **output** (`--output`): The output path and name of the file `default: CODEOWNERS`
 
