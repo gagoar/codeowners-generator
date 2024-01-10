@@ -21,7 +21,6 @@ const debug = logger('generate');
 type Generate = (options: GenerateInput) => Promise<ownerRule[]>;
 type GenerateInput = {
   rootDir: string;
-  verifyPaths?: boolean;
   useMaintainers?: boolean;
   useRootMaintainers?: boolean;
   includes?: string[];
@@ -98,14 +97,13 @@ export const generate: Generate = async ({ rootDir, includes, useMaintainers = f
 };
 
 interface Options extends GlobalOptions {
-  verifyPaths?: boolean;
   check?: boolean;
 }
 
 export const command = async (options: Options, command: Command): Promise<void> => {
   const globalOptions = await getGlobalOptions(command);
 
-  const { verifyPaths, check } = options;
+  const { check } = options;
 
   const output = options.output || globalOptions.output || OUTPUT;
 
@@ -130,7 +128,6 @@ export const command = async (options: Options, command: Command): Promise<void>
   try {
     const ownerRules = await generate({
       rootDir: __dirname,
-      verifyPaths,
       useMaintainers,
       useRootMaintainers,
       ...globalOptions,
