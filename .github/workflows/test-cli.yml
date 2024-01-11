@@ -1,0 +1,84 @@
+name: Test CLI
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+      - name: Install npm dependencies
+        run: npm ci
+      - name: Build and package project
+        run: |
+          npm run build
+          npm run build-cli
+          npm pack
+      - name: Upload project artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: built-project
+          path: codeowners-generator-*.tgz
+          retention-days: 5
+  test:
+    name: Test
+    needs: build
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - macos-latest
+          - ubuntu-latest
+          - windows-latest
+        node-version:
+          - 12
+          - 14
+          - 16
+          - 18
+          - 20
+          - 21
+    steps:
+      - name: Set git to use LF
+        if: ${{ matrix.os == 'windows-latest' }}
+        run: |
+          git config --global core.autocrlf false
+          git config --global core.eol lf
+      - name: Download project artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: built-project
+          path: .
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install project
+        shell: bash
+        run: npm i -g codeowners-generator-*.tgz
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Test CLI
+        shell: bash
+        working-directory: ./.github/test-cli-mock-project
+        run: |
+          echo "::group::Show CODEOWNERS content"
+          cat CODEOWNERS
+          echo ""
+          echo "::endgroup::"
+          echo "::group::Get Version"
+          codeowners-generator --version
+          echo "::endgroup::"
+          echo "::group::Check CODEOWNERS content"
+          codeowners-generator generate --check
+          echo "::endgroup::"
