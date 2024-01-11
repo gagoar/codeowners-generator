@@ -2,8 +2,8 @@
   "name": "codeowners-generator",
   "repository": "git@github.com:gagoar/codeowners-generator.git",
   "license": "MIT",
-  "version": "2.3.0",
-  "description": " CODEOWNERS generator for mono-repos",
+  "version": "2.3.1",
+  "description": "CODEOWNERS generator for mono-repos",
   "main": "build/index.js",
   "bin": {
     "codeowners-generator": "dist/cli.js"
@@ -14,8 +14,6 @@
     "build": "esbuild --bundle index.ts --platform=node --target=node12 --main-fields=main --outdir=build/",
     "lint": "eslint src/* --ext .ts",
     "execute": "tsx src/bin/cli.ts",
-    "version": "auto-changelog -p && git add CHANGELOG.md",
-    "release": "npm run build && npm run build-cli && npm publish",
     "prepare": "husky install",
     "prettier": "prettier --ignore-path .gitignore --check ."
   },
@@ -94,7 +92,7 @@
   "dependencies": {
     "commander": "7.2.0",
     "common-tags": "1.8.2",
-    "cosmiconfig": "7.0.1",
+    "cosmiconfig": "7.1.0",
     "debug": "4.3.4",
     "fast-glob": "3.2.12",
     "ignore": "5.2.4",
@@ -113,7 +111,6 @@
     "@types/node": "16.18.61",
     "@typescript-eslint/eslint-plugin": "6.10.0",
     "@typescript-eslint/parser": "6.10.0",
-    "auto-changelog": "2.4.0",
     "esbuild": "0.14.53",
     "eslint": "8.53.0",
     "eslint-config-prettier": "9.0.0",

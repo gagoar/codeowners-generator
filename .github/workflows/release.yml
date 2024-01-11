@@ -1,23 +1,42 @@
 name: Release
+
 on:
   push:
-    # Sequence of patterns matched against refs/tags
-    tags:
-      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+    branches:
+      - master
 
 jobs:
-  npm:
+  release-please:
+    permissions:
+      contents: write
+      pull-requests: write
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - name: Setting node version
+      - name: Release Please
+        uses: google-github-actions/release-please-action@v3
+        id: release
+        with:
+          release-type: node
+          package-name: codeowners-generator
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        if: ${{ steps.release.outputs.release_created }}
+      - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version-file: '.nvmrc'
           registry-url: 'https://registry.npmjs.org'
-      - run: npm install
-      - run: npm run build
-      - run: npm run build-cli
-      - run: npm publish
+        if: ${{ steps.release.outputs.release_created }}
+      - name: Install dependencies
+        run: npm ci
+        if: ${{ steps.release.outputs.release_created }}
+      - name: Build package
+        run: |
+          npm run build
+          npm run build-cli
+        if: ${{ steps.release.outputs.release_created }}
+      - name: Publish package
+        run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        if: ${{ steps.release.outputs.release_created }}
