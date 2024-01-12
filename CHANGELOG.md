@@ -1,5 +1,18 @@
 # Changelog
 
+## [2.4.0](https://github.com/gagoar/codeowners-generator/compare/v2.3.1...v2.4.0) (2024-01-12)
+
+
+### Features
+
+* Expose includes variable to actions ([#392](https://github.com/gagoar/codeowners-generator/issues/392)) ([670d636](https://github.com/gagoar/codeowners-generator/commit/670d636f7b9d3d61e9df7455d5f6561928d573b6))
+* Read rest of options from custom configuration file ([#391](https://github.com/gagoar/codeowners-generator/issues/391)) ([80756fe](https://github.com/gagoar/codeowners-generator/commit/80756feb11314c9e08a12c2a14911589a4903992))
+
+
+### Bug Fixes
+
+* **deps:** update dependency cosmiconfig to v7.1.0 ([#368](https://github.com/gagoar/codeowners-generator/issues/368)) ([91bab21](https://github.com/gagoar/codeowners-generator/commit/91bab21a3ab45f625f1504900c7c03b56a31e6be))
+
 ## [2.3.1](https://github.com/gagoar/codeowners-generator/compare/v2.3.0...v2.3.1)
 
 - Update jest monorepo to v29 (major) [`#379`](https://github.com/gagoar/codeowners-generator/pull/379)
