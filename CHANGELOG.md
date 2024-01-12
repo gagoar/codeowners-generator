@@ -1,3 +1,4 @@
+<!-- prettier-ignore-start -->
 # Changelog
 
 ## [2.4.0](https://github.com/gagoar/codeowners-generator/compare/v2.3.1...v2.4.0) (2024-01-12)
@@ -446,3 +447,5 @@
 
 - basic functionality + tests [`#1`](https://github.com/gagoar/codeowners-generator/pull/1)
 - Initial commit [`b23784e`](https://github.com/gagoar/codeowners-generator/commit/b23784ec9aee2faef91b502c70adf1dd79675ebf)
+
+<!-- prettier-ignore-end -->
