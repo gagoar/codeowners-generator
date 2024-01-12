@@ -6,12 +6,14 @@ import packageJSON from '../../package.json';
 import { logger } from './debug';
 
 const debug = logger('customConfiguration');
+
 export type CustomConfig = {
   includes?: string[];
+  output?: string;
   useMaintainers?: boolean;
   useRootMaintainers?: boolean;
   groupSourceComments?: boolean;
-  output?: string;
+  preserveBlockPosition?: boolean;
   customRegenerationCommand?: string;
 };
 

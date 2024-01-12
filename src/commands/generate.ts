@@ -2,7 +2,7 @@ import ora from 'ora';
 import { posix as path } from 'path';
 import fs from 'fs';
 import { sync } from 'fast-glob';
-import { Command, getGlobalOptions } from '../utils/getGlobalOptions';
+import { Command, GlobalOptions, getGlobalOptions } from '../utils/getGlobalOptions';
 import {
   OUTPUT,
   INCLUDES,
@@ -21,7 +21,6 @@ const debug = logger('generate');
 type Generate = (options: GenerateInput) => Promise<ownerRule[]>;
 type GenerateInput = {
   rootDir: string;
-  verifyPaths?: boolean;
   useMaintainers?: boolean;
   useRootMaintainers?: boolean;
   includes?: string[];
@@ -97,45 +96,38 @@ export const generate: Generate = async ({ rootDir, includes, useMaintainers = f
   }
 };
 
-interface Options {
-  output?: string;
-  verifyPaths?: boolean;
-  useMaintainers?: boolean;
-  useRootMaintainers?: boolean;
-  groupSourceComments?: boolean;
-  preserveBlockPosition?: boolean;
-  includes?: string[];
-  customRegenerationCommand?: string;
+interface Options extends GlobalOptions {
   check?: boolean;
 }
 
 export const command = async (options: Options, command: Command): Promise<void> => {
   const globalOptions = await getGlobalOptions(command);
 
-  const { verifyPaths, useMaintainers, useRootMaintainers, check, preserveBlockPosition } = options;
+  const { check } = options;
 
-  const { output = globalOptions.output || OUTPUT } = options;
+  const output = options.output || globalOptions.output || OUTPUT;
 
   const loader = ora('generating codeowners...').start();
 
+  const useMaintainers = globalOptions.useMaintainers || options.useMaintainers;
+  const useRootMaintainers = globalOptions.useRootMaintainers || options.useRootMaintainers;
   const groupSourceComments = globalOptions.groupSourceComments || options.groupSourceComments;
-
+  const preserveBlockPosition = globalOptions.preserveBlockPosition || options.preserveBlockPosition;
   const customRegenerationCommand = globalOptions.customRegenerationCommand || options.customRegenerationCommand;
 
   debug('Options:', {
     ...globalOptions,
+    output,
     useMaintainers,
     useRootMaintainers,
     groupSourceComments,
     preserveBlockPosition,
     customRegenerationCommand,
-    output,
   });
 
   try {
     const ownerRules = await generate({
       rootDir: __dirname,
-      verifyPaths,
       useMaintainers,
       useRootMaintainers,
       ...globalOptions,
