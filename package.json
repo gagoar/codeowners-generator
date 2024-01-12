@@ -4,6 +4,10 @@
   "license": "MIT",
   "version": "2.4.0",
   "description": "CODEOWNERS generator for mono-repos",
+  "files": [
+    "build",
+    "dist"
+  ],
   "main": "build/index.js",
   "bin": {
     "codeowners-generator": "dist/cli.js"
