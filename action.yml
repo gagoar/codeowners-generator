@@ -25,6 +25,10 @@ inputs:
     description: Keep the generated block in the same position it was found in the CODEOWNERS file (if present). Useful for when you make manual additions.
     required: false
     default: 'false'
+  includes:
+    description: The glob used to find CODEOWNERS files in the repo. Defaults to the value in src/utils/constants.ts
+    required: false
+    default: ''
   version:
     description: codeowners-generator version. It will default to the latest in npm otherwise'
     required: false
@@ -60,6 +64,10 @@ runs:
 
         if [ ! -z "${{inputs.preserve-block-position}}" ]; then
           ARGS_INPUT+=("--preserve-block-position")
+        fi
+
+        if [ "${{inputs.includes}}" ]; then
+          ARGS_INPUT+=("--includes ${{inputs.includes}}")
         fi
 
         if [ ! -z "${{inputs.version}}" ]; then
