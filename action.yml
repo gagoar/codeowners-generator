@@ -62,7 +62,7 @@ runs:
           ARGS_INPUT+=("--check")
         fi
 
-        if [ ! -z "${{inputs.preserve-block-position}}" ]; then
+        if [ "${{inputs.preserve-block-position}}" = "true" ]; then
           ARGS_INPUT+=("--preserve-block-position")
         fi
 
