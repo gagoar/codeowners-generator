@@ -1,6 +1,23 @@
 <!-- prettier-ignore-start -->
 # Changelog
 
+## [2.4.1](https://github.com/gagoar/codeowners-generator/compare/v2.4.0...v2.4.1) (2024-01-16)
+
+
+### ⚠ BREAKING CHANGES
+
+* **action:** Effectively change default value for preserve-block-position in github actions
+
+### Bug Fixes
+
+* **action:** Fix preserve-block-position default ([#393](https://github.com/gagoar/codeowners-generator/issues/393)) ([f4ae6ee](https://github.com/gagoar/codeowners-generator/commit/f4ae6eeb1f4adfc32f4ab478053292b4ee284757))
+* only include relevant files in published package ([#399](https://github.com/gagoar/codeowners-generator/issues/399)) ([3bff598](https://github.com/gagoar/codeowners-generator/commit/3bff598d60289ca9df82dccfdd66a0058f5d1c83))
+
+
+### Miscellaneous Chores
+
+* release 2.4.1 ([#401](https://github.com/gagoar/codeowners-generator/issues/401)) ([10be326](https://github.com/gagoar/codeowners-generator/commit/10be3261f5c4d77e7d072aaad676b9dce92e515b))
+
 ## [2.4.0](https://github.com/gagoar/codeowners-generator/compare/v2.3.1...v2.4.0) (2024-01-12)
 
 
