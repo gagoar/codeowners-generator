@@ -50,7 +50,7 @@ export const generateOwnersFile = async (
   ownerRules: ownerRule[],
   groupSourceComments = false,
   preserveBlockPosition = false,
-  customRegenerationCommand?: string
+  customRegenerationCommand?: string,
 ): Promise<createOwnersFileResponse> => {
   let originalContent = '';
 
@@ -168,7 +168,7 @@ export const loadCodeOwnerFiles = async (dirname: string, files: string[]): Prom
       const content = await readContent(filePath);
 
       return parseCodeOwner(filePath.replace(`${dirname}/`, ''), content);
-    })
+    }),
   );
   return codeOwners.reduce((memo, rules) => [...memo, ...rules], []);
 };
@@ -206,7 +206,7 @@ const getOwnersFromMaintainerField = (filePath: string, content: string): ownerR
 
       if (!owners.length) {
         throw new Error(
-          `malformed maintainer entry ${maintainers} this file will be skipped. For more info https://classic.yarnpkg.com/en/docs/package-json/#toc-maintainers`
+          `malformed maintainer entry ${maintainers} this file will be skipped. For more info https://classic.yarnpkg.com/en/docs/package-json/#toc-maintainers`,
         );
       }
 
@@ -239,7 +239,7 @@ export const loadOwnersFromPackage = async (dirname: string, files: string[]): P
       } catch (e) {
         return undefined;
       }
-    })
+    }),
   );
 
   // https://github.com/microsoft/TypeScript/issues/30621

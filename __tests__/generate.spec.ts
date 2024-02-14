@@ -60,7 +60,7 @@ describe('Generate', () => {
     readFile.mockImplementation((file, callback): void => {
       const fullPath = path.join(
         __dirname,
-        withPopulatedCodeownersFile[file as keyof typeof withPopulatedCodeownersFile]
+        withPopulatedCodeownersFile[file as keyof typeof withPopulatedCodeownersFile],
       );
       const content = readFileSync(fullPath);
       callback(null, content);
@@ -73,7 +73,7 @@ describe('Generate', () => {
         check: true,
         preserveBlockPosition: true,
       },
-      { parent: {} }
+      { parent: {} },
     );
   });
   it('should generate a CODEOWNERS file (re-using codeowners content) and fail when using --check option', async () => {
@@ -91,7 +91,7 @@ describe('Generate', () => {
     readFile.mockImplementation((file, callback): void => {
       const fullPath = path.join(
         __dirname,
-        withPopulatedCodeownersFile[file as keyof typeof withPopulatedCodeownersFile]
+        withPopulatedCodeownersFile[file as keyof typeof withPopulatedCodeownersFile],
       );
       const content = readFileSync(fullPath);
       callback(null, content);
@@ -99,7 +99,7 @@ describe('Generate', () => {
 
     await generateCommand(
       { output: 'CODEOWNERS', customRegenerationCommand: 'yarn codeowners-generator generate', check: true },
-      { parent: {} }
+      { parent: {} },
     );
 
     expect(mockExit).toBeCalledWith(1);
@@ -118,7 +118,7 @@ describe('Generate', () => {
     readFile.mockImplementation((file, callback): void => {
       const fullPath = path.join(
         __dirname,
-        withPopulatedCodeownersFile[file as keyof typeof withPopulatedCodeownersFile]
+        withPopulatedCodeownersFile[file as keyof typeof withPopulatedCodeownersFile],
       );
       const content = readFileSync(fullPath);
       callback(null, content);
@@ -126,7 +126,7 @@ describe('Generate', () => {
 
     await generateCommand(
       { output: 'CODEOWNERS', customRegenerationCommand: 'yarn codeowners-generator generate' },
-      { parent: {} }
+      { parent: {} },
     );
     expect(writeFile.mock.calls[0]).toMatchInlineSnapshot(`
       [
@@ -183,7 +183,7 @@ describe('Generate', () => {
     readFile.mockImplementation((file, callback): void => {
       const fullPath = path.join(
         __dirname,
-        withPopulatedCodeownersFile[file as keyof typeof withPopulatedCodeownersFile]
+        withPopulatedCodeownersFile[file as keyof typeof withPopulatedCodeownersFile],
       );
       const content = readFileSync(fullPath);
       callback(null, content);
@@ -195,7 +195,7 @@ describe('Generate', () => {
         customRegenerationCommand: 'yarn codeowners-generator generate',
         preserveBlockPosition: true,
       },
-      { parent: {} }
+      { parent: {} },
     );
     expect(writeFile.mock.calls[0]).toMatchInlineSnapshot(`
       [
@@ -253,7 +253,7 @@ describe('Generate', () => {
         groupSourceComments: true,
         customRegenerationCommand: 'npm run codeowners-generator generate',
       },
-      { parent: {} }
+      { parent: {} },
     );
     expect(writeFile.mock.calls).toMatchInlineSnapshot(`
       [
@@ -337,7 +337,7 @@ describe('Generate', () => {
           output: 'CODEOWNERS',
           useMaintainers: true,
         },
-      })
+      }),
     );
 
     const packageFiles = {
@@ -355,7 +355,7 @@ describe('Generate', () => {
     const withAddedPackageFiles = { ...packageFiles, ...withGitIgnore };
     readFile.mockImplementation((file, callback) => {
       const content = readFileSync(
-        path.join(__dirname, withAddedPackageFiles[file as keyof typeof withAddedPackageFiles])
+        path.join(__dirname, withAddedPackageFiles[file as keyof typeof withAddedPackageFiles]),
       );
       callback(null, content);
     });
@@ -413,7 +413,7 @@ describe('Generate', () => {
           output: 'CODEOWNERS',
           useMaintainers: true,
         },
-      })
+      }),
     );
 
     const packageFiles = {
@@ -431,7 +431,7 @@ describe('Generate', () => {
     const withAddedPackageFiles = { ...packageFiles, ...withGitIgnore };
     readFile.mockImplementation((file, callback) => {
       const content = readFileSync(
-        path.join(__dirname, withAddedPackageFiles[file as keyof typeof withAddedPackageFiles])
+        path.join(__dirname, withAddedPackageFiles[file as keyof typeof withAddedPackageFiles]),
       );
       callback(null, content);
     });
@@ -484,7 +484,7 @@ describe('Generate', () => {
           groupSourceComments: true,
           includes: ['dir1/*', 'dir2/*', 'dir5/*', 'dir6/*', 'dir7/*'],
         },
-      })
+      }),
     );
 
     const packageFiles = {
@@ -501,7 +501,7 @@ describe('Generate', () => {
     const withAddedPackageFiles = { ...packageFiles, ...withGitIgnore };
     readFile.mockImplementation((file, callback) => {
       const content = readFileSync(
-        path.join(__dirname, withAddedPackageFiles[file as keyof typeof withAddedPackageFiles])
+        path.join(__dirname, withAddedPackageFiles[file as keyof typeof withAddedPackageFiles]),
       );
       callback(null, content);
     });
@@ -545,7 +545,7 @@ describe('Generate', () => {
           groupSourceComments: true,
           includes: ['dir1/*', 'dir2/*', 'dir5/*', 'dir6/*', 'dir7/*'],
         },
-      })
+      }),
     );
 
     const packageFiles = {
@@ -562,7 +562,7 @@ describe('Generate', () => {
     const withAddedPackageFiles = { ...packageFiles, ...withGitIgnore };
     readFile.mockImplementation((file, callback) => {
       const content = readFileSync(
-        path.join(__dirname, withAddedPackageFiles[file as keyof typeof withAddedPackageFiles])
+        path.join(__dirname, withAddedPackageFiles[file as keyof typeof withAddedPackageFiles]),
       );
       callback(null, content);
     });
@@ -616,7 +616,7 @@ describe('Generate', () => {
     const withAddedPackageFiles = { ...packageFiles, ...withGitIgnore };
     readFile.mockImplementation((file, callback) => {
       const content = readFileSync(
-        path.join(__dirname, withAddedPackageFiles[file as keyof typeof withAddedPackageFiles])
+        path.join(__dirname, withAddedPackageFiles[file as keyof typeof withAddedPackageFiles]),
       );
       callback(null, content);
     });
@@ -671,7 +671,7 @@ describe('Generate', () => {
     const withAddedPackageFiles = { ...packageFiles, ...withGitIgnore };
     readFile.mockImplementation((file, callback) => {
       const content = readFileSync(
-        path.join(__dirname, withAddedPackageFiles[file as keyof typeof withAddedPackageFiles])
+        path.join(__dirname, withAddedPackageFiles[file as keyof typeof withAddedPackageFiles]),
       );
       callback(null, content);
     });
@@ -788,7 +788,7 @@ describe('Generate', () => {
         parent: {
           includes: ['**/NOT_STANDARD_CODEOWNERS'],
         },
-      }
+      },
     );
     expect(stopAndPersist.mock.calls).toMatchInlineSnapshot(`
       [
