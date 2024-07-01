@@ -72,7 +72,7 @@ export const generate: Generate = async ({ rootDir, includes, useMaintainers = f
         const filteredJSONs: string[] = groups.json.filter((packageJsonFile: string) => {
           if (codeownersDirNames.has(dirname(packageJsonFile))) {
             console.warn(
-              `We will ignore the package.json ${packageJsonFile}, given that we have encountered a CODEOWNERS file at the same dir level`
+              `We will ignore the package.json ${packageJsonFile}, given that we have encountered a CODEOWNERS file at the same dir level`,
             );
             return false;
           }
@@ -139,13 +139,13 @@ export const command = async (options: Options, command: Command): Promise<void>
         ownerRules,
         groupSourceComments,
         preserveBlockPosition,
-        customRegenerationCommand
+        customRegenerationCommand,
       );
 
       if (check) {
         if (originalContent.trimEnd() !== newContent) {
           throw new Error(
-            'We found differences between the existing codeowners file and the generated. Remove --check option to avoid this error'
+            'We found differences between the existing codeowners file and the generated. Remove --check option to avoid this error',
           );
         }
       } else {
