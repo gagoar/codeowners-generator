@@ -145,13 +145,14 @@ export const command = async (options: Options, command: Command): Promise<void>
       if (check) {
         if (originalContent.trimEnd() !== newContent) {
           throw new Error(
-            'We found differences between the existing codeowners file and the generated. Remove --check option to avoid this error'
+            'We found differences between the existing codeowners file and the generated rules. Remove --check option to fix this.'
           );
         }
       } else {
         fs.writeFileSync(output, newContent);
       }
-      loader.stopAndPersist({ text: `CODEOWNERS file was created! location: ${output}`, symbol: SUCCESS_SYMBOL });
+      const message = check ? `up to date` : 'updated with the generated rules';
+      loader.stopAndPersist({ text: `CODEOWNERS file ${message}! location: ${output}`, symbol: SUCCESS_SYMBOL });
     } else {
       const includes = globalOptions.includes?.length ? globalOptions.includes : INCLUDES;
       loader.stopAndPersist({
