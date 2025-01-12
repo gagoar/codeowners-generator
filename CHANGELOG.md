@@ -1,6 +1,13 @@
 <!-- prettier-ignore-start -->
 # Changelog
 
+## [2.5.0](https://github.com/gagoar/codeowners-generator/compare/v2.4.1...v2.5.0) (2025-01-12)
+
+
+### Features
+
+* hidden directories scan ([#405](https://github.com/gagoar/codeowners-generator/issues/405)) ([80d3507](https://github.com/gagoar/codeowners-generator/commit/80d3507591e0da0426384e8cacbfc554f4dc7297))
+
 ## [2.4.1](https://github.com/gagoar/codeowners-generator/compare/v2.4.0...v2.4.1) (2024-01-16)
 
 
