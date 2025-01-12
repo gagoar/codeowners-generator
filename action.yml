@@ -32,6 +32,10 @@ inputs:
   version:
     description: codeowners-generator version. It will default to the latest in npm otherwise'
     required: false
+  hidden-directories:
+    description: Also include searching in hidden (dot) directories.
+    required: false
+    default: 'false'
 
 runs:
   using: 'composite'
@@ -68,6 +72,10 @@ runs:
 
         if [ "${{inputs.includes}}" ]; then
           ARGS_INPUT+=("--includes ${{inputs.includes}}")
+        fi
+
+        if [ "${{inputs.hidden-directories}}" ]; then
+          ARGS_INPUT+=("--hidden-directories")
         fi
 
         if [ ! -z "${{inputs.version}}" ]; then

@@ -43,6 +43,7 @@ program
     '--check',
     'It will fail if the CODEOWNERS generated does not match the current (or missing) CODEOWNERS. Useful for validating that the CODEOWNERS file is up to date date during CI'
   )
+  .option('--hidden-directories', 'Includes hidden directories when searching for CODEOWNERS files', false)
   .action(generateCommand);
 
 program.parse(process.argv);

@@ -844,4 +844,26 @@ describe('Generate', () => {
     await generateCommand({}, { parent: {} });
     expect(writeFile).toHaveBeenCalled();
   });
+
+  it('should call sync with dot flag when hidden flag is set', async () => {
+    await generateCommand(
+      {
+        hiddenDirectories: true,
+      },
+      { parent: {} }
+    );
+
+    expect(sync.mock.calls[0][1]?.dot).toBeTruthy;
+  });
+
+  it('should call sync without dot flag when hidden flag is not set', async () => {
+    await generateCommand(
+      {
+        hiddenDirectories: false,
+      },
+      { parent: {} }
+    );
+
+    expect(sync.mock.calls[0][1]?.dot).toBeFalsy;
+  });
 });

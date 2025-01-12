@@ -24,11 +24,18 @@ type GenerateInput = {
   useMaintainers?: boolean;
   useRootMaintainers?: boolean;
   includes?: string[];
+  hiddenDirectories: boolean;
 };
 
 const { basename, dirname } = path;
 
-export const generate: Generate = async ({ rootDir, includes, useMaintainers = false, useRootMaintainers = false }) => {
+export const generate: Generate = async ({
+  rootDir,
+  includes,
+  useMaintainers = false,
+  useRootMaintainers = false,
+  hiddenDirectories = false,
+}) => {
   debug('input:', rootDir, includes, useMaintainers, useRootMaintainers);
 
   const includePatterns = includes && includes.length ? includes : INCLUDES;
@@ -48,6 +55,7 @@ export const generate: Generate = async ({ rootDir, includes, useMaintainers = f
   debug('provided globs:', globs);
 
   const matches = sync(globs, {
+    dot: hiddenDirectories,
     onlyFiles: true,
   });
 
@@ -98,6 +106,7 @@ export const generate: Generate = async ({ rootDir, includes, useMaintainers = f
 
 interface Options extends GlobalOptions {
   check?: boolean;
+  hiddenDirectories?: boolean;
 }
 
 export const command = async (options: Options, command: Command): Promise<void> => {
@@ -114,6 +123,7 @@ export const command = async (options: Options, command: Command): Promise<void>
   const groupSourceComments = globalOptions.groupSourceComments || options.groupSourceComments;
   const preserveBlockPosition = globalOptions.preserveBlockPosition || options.preserveBlockPosition;
   const customRegenerationCommand = globalOptions.customRegenerationCommand || options.customRegenerationCommand;
+  const { hiddenDirectories } = options;
 
   debug('Options:', {
     ...globalOptions,
@@ -123,6 +133,7 @@ export const command = async (options: Options, command: Command): Promise<void>
     groupSourceComments,
     preserveBlockPosition,
     customRegenerationCommand,
+    hiddenDirectories,
   });
 
   try {
@@ -130,6 +141,7 @@ export const command = async (options: Options, command: Command): Promise<void>
       rootDir: __dirname,
       useMaintainers,
       useRootMaintainers,
+      hiddenDirectories,
       ...globalOptions,
     });
 
