@@ -209,7 +209,8 @@ You can configure `codeowners-generator` from several places:
 - **check** (`--check`): It will fail if the CODEOWNERS generated doesn't match the current (or missing) CODEOWNERS . Useful for validating that the CODEOWNERS file is not out of date during CI.
 
 - **hidden-directories** (`--hidden-directories`): Also include searching in hidden (dot) directories.
-  For more details you can invoke:
+
+For more details you can invoke:
 
 ```sh
   codeowners-generator --help
